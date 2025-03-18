@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 public class LensGameMain extends Application {
     static StackPane rootContainer = new StackPane();
     private static Scene lensGameScene;
+    private static Scene lensGameInstructionsScene;
 
     public static void main(String[] args) {
 
@@ -54,7 +55,7 @@ public class LensGameMain extends Application {
         });
 
         homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
-        Image homeButtonImage = new Image("C:\\Users\\maria\\IdeaProjects\\LensGameGUI\\src\\main\\resources\\Assets\\home button.png");
+        Image homeButtonImage = new Image(getClass().getResource("/Assets/home button.png").toExternalForm());
         ImageView homeButtonImageView = new ImageView(homeButtonImage);
         homeButtonImageView.setFitHeight(100);
         homeButtonImageView.setFitWidth(100);
@@ -69,7 +70,7 @@ public class LensGameMain extends Application {
             hintStage.showAndWait();
         });
         hintButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
-        Image hintButtonImage = new Image("C:\\Users\\maria\\IdeaProjects\\LensGameGUI\\src\\main\\resources\\Assets\\hint button2.png");
+        Image hintButtonImage = new Image(getClass().getResource("/Assets/home button2.png").toExternalForm());
         ImageView hintButtonImageView = new ImageView(hintButtonImage);
         hintButtonImageView.setFitHeight(100);
         hintButtonImageView.setFitWidth(100);
@@ -201,6 +202,43 @@ public class LensGameMain extends Application {
         HBox box  = new HBox(textArea);
         Scene scene = new Scene(box, 1000, 500);
         return scene;
+    }
+
+    public Scene buildLensGameIntructions(Stage stage){
+        //1000 x 620
+        Image backgroundImage = new Image(getClass().getResource("/Assets/instructionsBackgroundEmpty.png").toExternalForm());
+        ImageView backgroundImageView = new ImageView(backgroundImage);
+        HBox background = new HBox(backgroundImageView);
+        background.setAlignment(Pos.CENTER);
+
+        Button iUnderstandButton = new Button();
+        iUnderstandButton.setOnAction(event ->{
+            stage.setScene(buildLensGameScene());
+        });
+
+        iUnderstandButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+        Image iUnderstandButtonImage = new Image(getClass().getResource("/Assets/iUnderstandButton.png.png").toExternalForm());
+        ImageView iUnderstandButtonImageView = new ImageView(iUnderstandButtonImage);
+        iUnderstandButtonImageView.setPreserveRatio(true);
+        iUnderstandButtonImageView.setFitHeight(300);
+        hoverBrightenessFX(iUnderstandButton, iUnderstandButtonImageView);
+        iUnderstandButton.setGraphic(iUnderstandButtonImageView);
+
+        Label instrcutions = new Label("The culprit dropped some sort of lens on the crime scene!" +
+                "\nI wonder if it can lead to a clue..." +
+                "\nI can find the lens' strength (power) by using my science background!" +
+                "\nIf I remember correctly: one can move an object around until its rays converge in the right spot. " +
+                "\nThat gives the eye's near-point... " +
+                "\nWith some calculations, I'll be able to find a prescription and add the lens to see if I got it right!");
+
+
+        HBox instructionsBox = new HBox(30, instrcutions, iUnderstandButton);
+        instructionsBox.setAlignment(Pos.CENTER);
+        instructionsBox.setPadding(new Insets(30));
+
+        StackPane root = new StackPane(background, instructionsBox);
+        lensGameInstructionsScene = new Scene(root,1000,620);
+        return lensGameInstructionsScene;
     }
     public static Scene getLensGameScene() {
         if (lensGameScene == null) {
