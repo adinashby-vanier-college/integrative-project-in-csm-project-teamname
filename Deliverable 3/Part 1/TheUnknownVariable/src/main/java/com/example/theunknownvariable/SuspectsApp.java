@@ -1,4 +1,4 @@
-package com.example.demo1;
+package com.example.theunknownvariable;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -8,7 +8,7 @@ public class SuspectsApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        SuspectUI viewList = new SuspectUI(); // Use the StackPane-based view
+        SuspectUI viewList = new SuspectUI(primaryStage); // Use the StackPane-based view
         Scene scene = new Scene(viewList, 1366, 768);
         primaryStage.setTitle("Suspects");
         primaryStage.setScene(scene);

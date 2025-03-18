@@ -10,23 +10,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
-public class GameUI extends Application {
+public class GameUI {
 
-//    @Override
+    //    @Override
 //    public void start(Stage primaryStage) {
 //
 //    }
-@Override
-public void start(Stage primaryStage) {
-    // Create the instructions screen
-    VBox instructionsScreen = createInstructionsScreen(primaryStage);
+    public Scene displayMathGame(Stage primaryStage) {
+        // Create the instructions screen
+        VBox instructionsScreen = createInstructionsScreen(primaryStage);
 
-    // Set up the instructions scene
-    Scene instructionsScene = new Scene(instructionsScreen, 1366, 768);
-    primaryStage.setTitle("Hangman Game - Instructions");
-    primaryStage.setScene(instructionsScene);
-    primaryStage.show();
-}
+        // Set up the instructions scene
+        return new Scene(instructionsScreen, 1366, 768);
+    }
 
     private VBox createInstructionsScreen(Stage primaryStage) {
         VBox layout = new VBox(20); // Spacing between elements
@@ -192,7 +188,7 @@ public void start(Stage primaryStage) {
         VBox content = new VBox(10);
         content.setPadding(new Insets(10));
         content.setStyle(
-                "-fx-background-image: url('hintBackground.png'); " +
+                "-fx-background-image: url('hintBackgroundg4.png'); " +
                         "-fx-background-size: cover; " +
                         "-fx-background-color: rgba(0, 0, 0, 0.6); " // Add a dark overlay
         );
@@ -209,14 +205,8 @@ public void start(Stage primaryStage) {
         content.getChildren().add(theoryText);
 
         // Create and set the scene
-        Scene scene = new Scene(content, 400, 200);
+        Scene scene = new Scene(content, 1000, 640);
         theoryWindow.setScene(scene);
         theoryWindow.show();
-    }
-
-
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

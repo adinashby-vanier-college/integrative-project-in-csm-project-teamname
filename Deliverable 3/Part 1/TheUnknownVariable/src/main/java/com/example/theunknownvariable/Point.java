@@ -1,4 +1,4 @@
-package com.example.demo1;
+package com.example.theunknownvariable;
 
 public class Point {
     private double x, y;
