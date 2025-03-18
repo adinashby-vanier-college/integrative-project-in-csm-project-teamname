@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 public class TutorialClass extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        LensGameMain lensGameMain = new LensGameMain();
+        LensGameMain lensGameMain = new LensGameMain(stage);
         Scene scene = lensGameMain.getLensGameScene();
         stage.setScene(scene);
         stage.show();

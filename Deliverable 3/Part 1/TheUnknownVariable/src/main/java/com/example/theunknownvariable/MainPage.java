@@ -62,11 +62,11 @@ public class MainPage {
 
     public void eventHandling(){
         //Switch to game 1
-//        g1Button.setOnAction(event->{
-//            LensGameMain lensGameMain = new LensGameMain();
-//            Scene scene = lensGameMain.getLensGameScene();
-//            switchScenes(scene);
-//        });
+        g1Button.setOnAction(event->{
+            LensGameMain lensGameMain = new LensGameMain(stage);
+            Scene scene = lensGameMain.getLensGameInstructionsScene();
+            switchScenes(scene);
+        });
         //Switch to game 2
         g2Button.setOnAction(event->{
             UserInterface projectileMotion = new UserInterface(stage);
@@ -81,7 +81,7 @@ public class MainPage {
         });
         //Switch to game 4
         g4Button.setOnAction(event->{
-            GameUI mathGame = new GameUI();
+            GameUI mathGame = new GameUI(stage);
             Scene scene = mathGame.displayMathGame(stage);
             switchScenes(scene);
         });

@@ -16,16 +16,16 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.stage.Stage;
 
-public class LensGameMain extends Application {
+public class LensGameMain{
     static StackPane rootContainer = new StackPane();
     private static Scene lensGameScene;
     private static Scene lensGameInstructionsScene;
+    private static Stage stage;
 
-    public static void main(String[] args) {
-
-        launch();
+    public LensGameMain(Stage stage){
+        this.stage = stage;
     }
-    @Override
+
     public void start(Stage stage) {
         lensGameScene = buildLensGameScene();
         lensGameInstructionsScene = buildLensGameInstructions();
@@ -62,6 +62,11 @@ public class LensGameMain extends Application {
         homeButtonImageView.setFitWidth(100);
         hoverBrightenessFX(homeButton, homeButtonImageView);
         homeButton.setGraphic(homeButtonImageView);
+        homeButton.setOnAction(event->{
+            MainPage mainPage = new MainPage(stage);
+            Scene scene = mainPage.displayMainPage();
+            switchScenes(scene);
+        });
 
         Button hintButton = new Button();
         hintButton.setOnAction(event -> {
@@ -230,7 +235,8 @@ public class LensGameMain extends Application {
 
         Button iUnderstandButton = new Button();
         iUnderstandButton.setOnAction(event ->{
-            lensGameInstructionsScene.setRoot(rootContainer);
+            Scene scene = getLensGameScene();
+            switchScenes(scene);
         });
 
         iUnderstandButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
@@ -262,12 +268,17 @@ public class LensGameMain extends Application {
         lensGameInstructionsScene = new Scene(root,1366,768);
         return lensGameInstructionsScene;
     }
+    public void switchScenes(Scene scene) {
+        // Switch to the specified scene
+        stage.setScene(scene);
+        stage.centerOnScreen();
+    }
     public static Scene getLensGameScene() {
-        return lensGameScene != null ? lensGameScene : new LensGameMain().buildLensGameScene();
+        return lensGameScene != null ? lensGameScene : new LensGameMain(stage).buildLensGameScene();
     }
     public static Scene getLensGameInstructionsScene() {
         if (lensGameInstructionsScene == null) {
-            lensGameInstructionsScene = new LensGameMain().buildLensGameInstructions();
+            lensGameInstructionsScene = new LensGameMain(stage).buildLensGameInstructions();
         }
         return lensGameInstructionsScene;
     }

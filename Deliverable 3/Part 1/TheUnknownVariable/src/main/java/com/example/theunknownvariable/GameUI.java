@@ -12,10 +12,14 @@ import javafx.stage.Stage;
 
 public class GameUI {
 
+    private Stage stage;
     //    @Override
 //    public void start(Stage primaryStage) {
 //
 //    }
+    public GameUI(Stage stage) {
+        this.stage = stage;
+    }
     public Scene displayMathGame(Stage primaryStage) {
         // Create the instructions screen
         VBox instructionsScreen = createInstructionsScreen(primaryStage);
@@ -164,6 +168,12 @@ public class GameUI {
         Button homeButton = new Button();
         homeButton.setStyle("-fx-background-image: url('home_button.png'); -fx-background-size: cover; -fx-background-color: transparent;");
         homeButton.setMinSize(90, 90);
+        //Switch to home
+        homeButton.setOnAction(event->{
+            MainPage mainPage = new MainPage(stage);
+            Scene scene = mainPage.displayMainPage();
+            switchScenes(scene);
+        });
 
         Button theoryButton = new Button();
         theoryButton.setStyle("-fx-background-image: url('theory_button.png'); -fx-background-size: cover; -fx-background-color: transparent;");
@@ -177,6 +187,11 @@ public class GameUI {
         bottomOptions.getChildren().addAll(theoryButton, homeButton);
 
         return bottomOptions;
+    }
+    public void switchScenes(Scene scene) {
+        // Switch to the specified scene
+        stage.setScene(scene);
+        stage.centerOnScreen();
     }
 
     // Method to display the theory window
