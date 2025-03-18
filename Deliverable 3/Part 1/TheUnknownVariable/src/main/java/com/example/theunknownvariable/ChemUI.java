@@ -212,7 +212,7 @@ public class ChemUI {
 
     public Scene displayHint(){
         //Background png
-        Image background = new Image("hintBackground.png");
+        Image background = new Image("hintBackgroundg4.png");
         ImageView backgroundView = new ImageView(background);
         backgroundView.setFitHeight(640);
         backgroundView.setPreserveRatio(true);
