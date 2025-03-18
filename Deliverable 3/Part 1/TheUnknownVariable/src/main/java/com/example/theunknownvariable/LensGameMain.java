@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class LensGameMain{
@@ -243,23 +244,26 @@ public class LensGameMain{
         Image iUnderstandButtonImage = new Image(getClass().getResource("/Assets/iUnderstandButton.png").toExternalForm());
         ImageView iUnderstandButtonImageView = new ImageView(iUnderstandButtonImage);
         iUnderstandButtonImageView.setPreserveRatio(true);
-        iUnderstandButtonImageView.setFitHeight(70);
+        iUnderstandButtonImageView.setFitHeight(90);
         hoverBrightenessFX(iUnderstandButton, iUnderstandButtonImageView);
         iUnderstandButton.setGraphic(iUnderstandButtonImageView);
 
+        Font cinzelFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Cinzel-Regular.ttf"), 24);
         Label instructions = new Label("The culprit dropped some sort of lens on the crime scene!"
                 +
                 "\nI wonder if it can lead to a clue..." +
                 "\nI can find the lens' strength (power) by using my science background!" +
-                "\nIf I remember correctly: one can move an object around until its rays converge in the right spot. " +
+                "\nIf I remember correctly: one can move an object around until its\n rays converge in the right spot. " +
                 "\nThat gives the eye's near-point... " +
-                "\nWith some calculations, I'll be able to find a prescription and add the lens to see if I got it right!");
-        instructions.getStylesheets().add(
-                getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
-        );
-        instructions.getStyleClass().add("instructions");
+                "\nWith some calculations, I'll be able to find a prescription and\n add the lens to see if I got it right!");
+//        instructions.getStylesheets().add(
+//                getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
+//        );
+//        instructions.getStyleClass().add("instructions");
+        instructions.setFont(cinzelFont); // Apply the custom font
+        instructions.setStyle("-fx-text-fill: white; -fx-text-alignment: center;");
 
-        VBox instructionsBox = new VBox(10, instructions, iUnderstandButton);
+        VBox instructionsBox = new VBox(30, instructions, iUnderstandButton);
         instructionsBox.setAlignment(Pos.CENTER);
         instructionsBox.setPadding(new Insets(10));
 

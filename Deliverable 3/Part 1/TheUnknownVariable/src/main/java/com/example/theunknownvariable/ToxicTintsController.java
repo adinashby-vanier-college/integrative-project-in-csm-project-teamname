@@ -14,7 +14,7 @@ public class ToxicTintsController extends Application {
         Clues cluesPage = new Clues(stage);
         HomePage homePage = new HomePage(stage);
         Scene scene = homePage.displayHomePage();
-        stage.setTitle("Hello!");
+        stage.setTitle("The Unknown Variable");
         stage.setScene(scene);
         stage.show();
     }

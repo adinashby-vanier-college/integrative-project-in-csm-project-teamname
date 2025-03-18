@@ -138,12 +138,30 @@ public class SuspectUI extends StackPane {
         Label infoLabel = new Label(suspectDetails);
         infoLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: black; -fx-padding: 10px;");
 
-        ScrollPane scrollPane = new ScrollPane(infoLabel);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setPrefSize(380, 280);
+//        ScrollPane scrollPane = new ScrollPane(infoLabel);
+//        scrollPane.setFitToWidth(true);
+//        scrollPane.setPrefSize(380, 280);
 
-        StackPane popupLayout = new StackPane(scrollPane);
-        popupLayout.setStyle("-fx-background-color: rgba(255, 255, 255, 1);");
+
+        infoLabel.setStyle("-fx-font-family: \"Times New Roman\";\n" +
+//                "    -fx-alignment: center;" +
+                "    -fx-font-size: 20px;\n" +
+//                "    -fx-font-weight: bold;\n" +
+                "    -fx-text-fill: rgb(241, 226, 221);" +
+                "    -fx-padding: 15px;");
+        infoLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+
+        VBox infoBox = new VBox(infoLabel);
+        infoBox.setAlignment(Pos.CENTER);
+        infoBox.setPadding(new Insets(20));
+
+        Image backgroundImage = new Image(getClass().getResource("/Assets/background.png").toExternalForm());
+        ImageView backgroundImageView = new ImageView(backgroundImage);
+        backgroundImageView.setPreserveRatio(true);
+        HBox background = new HBox(backgroundImageView);
+        background.setAlignment(Pos.CENTER);
+
+        StackPane popupLayout = new StackPane(background, infoBox);
         Scene popupScene = new Scene(popupLayout, 400, 300);
 
         popupStage.setScene(popupScene);
