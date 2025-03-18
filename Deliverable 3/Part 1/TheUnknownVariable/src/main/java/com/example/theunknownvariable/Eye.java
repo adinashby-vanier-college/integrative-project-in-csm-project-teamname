@@ -14,7 +14,7 @@ public class Eye  {
 
 
     public VBox getEyeBox(){
-        Image i = new Image("C:\\Users\\maria\\IdeaProjects\\LensGameGUI\\src\\main\\resources\\Assets\\eye.png");
+        Image i = new Image(getClass().getResource("/Assets/eye.png").toExternalForm());
         ImageView iv = new ImageView(i);
         iv.setPreserveRatio(true);
         iv.setFitWidth(250);

@@ -62,11 +62,11 @@ public class MainPage {
 
     public void eventHandling(){
         //Switch to game 1
-        g3Button.setOnAction(event->{
-            ChemUI chemGame = new ChemUI(stage);
-            Scene scene = chemGame.displayInstructions();
-            switchScenes(scene);
-        });
+//        g1Button.setOnAction(event->{
+//            LensGameMain lensGameMain = new LensGameMain();
+//            Scene scene = lensGameMain.getLensGameScene();
+//            switchScenes(scene);
+//        });
         //Switch to game 2
         g2Button.setOnAction(event->{
             UserInterface projectileMotion = new UserInterface(stage);
@@ -80,9 +80,9 @@ public class MainPage {
             switchScenes(scene);
         });
         //Switch to game 4
-        g3Button.setOnAction(event->{
-            ChemUI chemGame = new ChemUI(stage);
-            Scene scene = chemGame.displayInstructions();
+        g4Button.setOnAction(event->{
+            GameUI mathGame = new GameUI();
+            Scene scene = mathGame.displayMathGame(stage);
             switchScenes(scene);
         });
 
