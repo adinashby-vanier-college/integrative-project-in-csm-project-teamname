@@ -1,8 +1,9 @@
-package com.example.demo1;
+package com.example.theunknownvariable;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,9 +33,12 @@ public class UserInterface extends StackPane {
     private Image Line;
     private Slider heightSlider;
     private Pane root;
+    private Button instructionsButton;
+    private Stage stage;
+    private Button menuButton;
 
-    public UserInterface() {
-
+    public UserInterface(Stage stage) {
+        this.stage = stage;
         root = new Pane();
         root.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -121,8 +125,13 @@ public class UserInterface extends StackPane {
         ImageView menuView = new ImageView(Menu);
         menuView.setFitWidth(100);
         menuView.setFitHeight(100);
-        HBox menuBox = new HBox(menuView);
+        menuButton = new Button("",menuView);
+        menuButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+        menuButton.setOnMouseEntered(e -> menuView.setOpacity(0.8));
+        menuButton.setOnMouseExited(e -> menuView.setOpacity(1.0));
+        HBox menuBox = new HBox(menuButton);
         menuBox.setPadding(new Insets(0, 0, 0, 5));
+        eventHandling();
 
         VBox vboxBottomRight = new VBox(5);
         vboxBottomRight.getChildren().addAll(theoryBox, menuBox);
@@ -166,27 +175,71 @@ public class UserInterface extends StackPane {
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.setTitle("Theory Explanation");
 
-        Image backgroundImage = new Image("background.png");
+        Image backgroundImage = new Image("hintBackgroundg2.png");
         ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(800);
-        backgroundView.setFitHeight(400);
-        backgroundView.setPreserveRatio(false);
+        backgroundView.setFitWidth(1000);
+        backgroundView.setFitHeight(640);
+//        backgroundView.setPreserveRatio(true);
 
-        Label theoryLabel = new Label("The theory behind projectile motion...");
-        theoryLabel.setWrapText(true);
-        theoryLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: white; -fx-padding: 20px;");
-
-        StackPane textContainer = new StackPane(theoryLabel);
-        textContainer.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6); -fx-background-radius: 15;");
-        textContainer.setMaxWidth(800);
-        textContainer.setPadding(new Insets(30));
+//        Label theoryLabel = new Label("The theory behind projectile motion...");
+//        theoryLabel.setWrapText(true);
+//        theoryLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: white; -fx-padding: 20px;");
+//
+//        StackPane textContainer = new StackPane(theoryLabel);
+//        textContainer.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6); -fx-background-radius: 15;");
+//        textContainer.setMaxWidth(800);
+//        textContainer.setPadding(new Insets(30));
 
         StackPane popupLayout = new StackPane();
-        popupLayout.getChildren().addAll(backgroundView, textContainer);
-        StackPane.setAlignment(textContainer, Pos.CENTER);
+        popupLayout.getChildren().addAll(backgroundView);
+//        StackPane.setAlignment(textContainer, Pos.CENTER);
 
-        Scene popupScene = new Scene(popupLayout, 800, 400);
+        Scene popupScene = new Scene(popupLayout, 1000, 620);
         popupStage.setScene(popupScene);
         popupStage.showAndWait();
     }
+    public Scene displayInstructions() {
+        //Background png
+        Image background = new Image("instructionsBackgroundg2.png");
+        ImageView backgroundView = new ImageView(background);
+        backgroundView.setFitHeight(768);
+        backgroundView.setPreserveRatio(true);
+
+        //Button
+        Image understand = new Image("instructionsButton.png");
+        ImageView understandV = new ImageView(understand);
+        understandV.setFitWidth(250);
+        understandV.setPreserveRatio(true);
+        instructionsButton = new Button("", understandV);
+        instructionsButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+        instructionsButton.setOnMouseEntered(e -> understandV.setOpacity(0.8));
+        instructionsButton.setOnMouseExited(e -> understandV.setOpacity(1.0));
+        StackPane understandStack = new StackPane(instructionsButton);
+        understandStack.setAlignment(Pos.BOTTOM_CENTER);
+
+        //Switch to game 2
+        instructionsButton.setOnAction(event -> {
+            UserInterface view = new UserInterface(stage); // Use the StackPane-based view
+            Scene scene = new Scene(view, 1366, 768);
+            switchScenes(scene);
+        });
+        //Layout
+        StackPane stack = new StackPane(backgroundView, understandStack);
+
+        return new Scene(stack, 1366, 768);
+    }
+    public void eventHandling(){
+        //Switch to game 3
+        menuButton.setOnAction(event->{
+            MainPage mainPage = new MainPage(stage);
+            Scene scene = mainPage.displayMainPage();
+            switchScenes(scene);
+        });
+    }
+    public void switchScenes(Scene scene) {
+        // Switch to the specified scene
+        stage.setScene(scene);
+        stage.centerOnScreen();
+    }
+
 }

@@ -1,8 +1,9 @@
-package com.example.demo1;
+package com.example.theunknownvariable;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -23,7 +24,11 @@ public class SuspectUI extends StackPane {
             "/Sarah.png", "/Suspect.png"
     };
 
-    public SuspectUI() {
+    private Stage stage;
+    private Button menuButton;
+
+    public SuspectUI(Stage stage) {
+        this.stage = stage;
         StackPane root = new StackPane();
         root.setPrefSize(1366, 768);
 
@@ -32,7 +37,6 @@ public class SuspectUI extends StackPane {
         backgroundView.setFitWidth(1366);
         backgroundView.setFitHeight(768);
         backgroundView.setPreserveRatio(false);
-
 
         GridPane suspectGrid = new GridPane();
         suspectGrid.setHgap(80);
@@ -58,7 +62,6 @@ public class SuspectUI extends StackPane {
                             "-fx-background-radius: 6px;"
             );
 
-
             VBox suspectCard = new VBox(12);
             suspectCard.setAlignment(Pos.CENTER);
             suspectCard.setPadding(new Insets(12));
@@ -69,7 +72,6 @@ public class SuspectUI extends StackPane {
                             "-fx-effect: dropshadow(gaussian, rgba(86,82,78,0.5), 10, 0, 0, 6);"
             );
             suspectCard.getChildren().addAll(suspectImageView, suspectNameLabel);
-
 
             suspectCard.setOnMouseEntered(e -> suspectCard.setStyle(
                     "-fx-background-color: #56524e;" +
@@ -90,8 +92,39 @@ public class SuspectUI extends StackPane {
             suspectGrid.add(suspectCard, col, row);
         }
 
-        root.getChildren().addAll(backgroundView, suspectGrid);
+        // Add the menu button in the bottom right corner
+        menuButton = getMenuButton();
+        StackPane.setAlignment(menuButton, Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(menuButton, new Insets(0, 20, 20, 0));
+
+        root.getChildren().addAll(backgroundView, suspectGrid, menuButton);
         getChildren().add(root);
+    }
+
+    public Button getMenuButton() {
+        Image menuImage = new Image("menu2.png");
+        ImageView menu = new ImageView(menuImage);
+        menu.setFitWidth(100);
+        menu.setPreserveRatio(true);
+
+        Button menuButton = new Button("", menu);
+        menuButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+        menuButton.setOnMouseEntered(e -> menu.setOpacity(0.8));
+        menuButton.setOnMouseExited(e -> menu.setOpacity(1.0));
+
+        menuButton.setOnAction(event -> {
+            HomePage homePage = new HomePage(stage);
+            Scene scene = homePage.displayHomePage();
+            switchScenes(scene);
+        });
+
+        return menuButton;
+    }
+
+    public void switchScenes(Scene scene) {
+        Stage stage = (Stage) getScene().getWindow();
+        stage.setScene(scene);
+        stage.centerOnScreen();
     }
 
     private void showSuspectInfo(String suspectName) {
