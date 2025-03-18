@@ -18,11 +18,24 @@ import javafx.stage.Stage;
 
 public class LensGameMain extends Application {
     static StackPane rootContainer = new StackPane();
+    private static Scene lensGameScene;
 
+    public static void main(String[] args) {
+
+        launch();
+    }
     @Override
     public void start(Stage stage) {
+        lensGameScene = buildLensGameScene();
+        stage.setScene(lensGameScene);
+        stage.setTitle("Lens Game");
+        stage.show();
+    }
+
+
+    public Scene buildLensGameScene() {
         //background
-        Image backgroundImage = new Image("src/main/resources/Assets/background.png");
+        Image backgroundImage = new Image(getClass().getResource("/Assets/background.png").toExternalForm());
         ImageView backgroundImageView = new ImageView(backgroundImage);
         HBox background = new HBox(backgroundImageView);
         background.setAlignment(Pos.CENTER);
@@ -38,8 +51,8 @@ public class LensGameMain extends Application {
         //home and hint button
         Button homeButton = new Button();
         homeButton.setOnAction(event ->{
-
         });
+
         homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         Image homeButtonImage = new Image("C:\\Users\\maria\\IdeaProjects\\LensGameGUI\\src\\main\\resources\\Assets\\home button.png");
         ImageView homeButtonImageView = new ImageView(homeButtonImage);
@@ -71,7 +84,7 @@ public class LensGameMain extends Application {
         TestObject testObject = new TestObject();
         StackPane testObjectContainer = testObject.getObjectPane();
 
-        //Eye
+        //eye
         Eye eye = new Eye();
         VBox eyeBox = eye.getEyeBox();
 
@@ -125,12 +138,9 @@ public class LensGameMain extends Application {
         VBox foreground = new VBox(topBox, eyeNobjectBox,bottomBox);
 
         rootContainer = new StackPane(background, foreground);
-        lensGameScene = new Scene(rootContainer, 1366,768);
-        stage.setScene(lensGameScene);
-        stage.setTitle("Lens Game");
-        stage.show();
-    }
+        return new Scene(rootContainer, 1366,768);
 
+    }
     public void hoverBrightenessFX(Button button, ImageView imageView){
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(0);
@@ -192,11 +202,12 @@ public class LensGameMain extends Application {
         Scene scene = new Scene(box, 1000, 500);
         return scene;
     }
-    public static Scene lensGameScene = new Scene(rootContainer, 1366, 768);
-    public static Scene getLensGaneScene(){
+    public static Scene getLensGameScene() {
+        if (lensGameScene == null) {
+            lensGameScene = new LensGameMain().buildLensGameScene();
+        }
         return lensGameScene;
     }
-    public static void main(String[] args) {
-        launch();
-    }
+
+
 }

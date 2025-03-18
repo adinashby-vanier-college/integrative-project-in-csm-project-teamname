@@ -103,7 +103,7 @@ public class RulerMarker {
                 "    -fx-font-size: 20px;\n" +
                 "    -fx-font-weight: bold;\n" +
                 "    -fx-text-fill: rgb(241, 226, 221);");
-        Image markerPNG = new Image("C:\\Users\\maria\\IdeaProjects\\LensGameGUI\\src\\main\\resources\\Assets\\marker.png");
+        Image markerPNG = new Image(getClass().getResource("/Assets/marker.png").toExternalForm());
         ImageView markerImageView = new ImageView(markerPNG);
         markerImageView.setFitHeight(90);
         markerImageView.setFitWidth(90);
