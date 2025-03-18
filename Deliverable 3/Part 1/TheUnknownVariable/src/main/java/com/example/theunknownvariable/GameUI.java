@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class GameUI {
@@ -32,6 +33,9 @@ public class GameUI {
                 "-fx-background-image: url('math_instructions.png'); " +
                 "-fx-background-size: cover;"); // Background image for the instructions screen
 
+        // Add custom font
+        Font cinzelFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Cinzel-Regular.ttf"), 24);
+
         // Add instructions text
         Label instructions = new Label("Welcome to the Hangman Game!\n\n"
                 + "Instructions:\n"
@@ -40,7 +44,9 @@ public class GameUI {
                 + "3. You have a limited number of attempts.\n"
                 + "4. Avoid making too many mistakes, or you'll lose!\n\n"
                 + "Click the button below to start.");
-        instructions.setStyle("-fx-text-fill: white; -fx-font-size: 24px; -fx-text-alignment: center;");
+
+        instructions.setFont(cinzelFont); // Apply the custom font
+        instructions.setStyle("-fx-text-fill: white; -fx-text-alignment: center;");
 
         // Add the "Yes, I Understand" button with an image
         Button proceedButton = new Button();
