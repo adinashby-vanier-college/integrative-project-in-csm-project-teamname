@@ -28,7 +28,8 @@ public class LensGameMain extends Application {
     @Override
     public void start(Stage stage) {
         lensGameScene = buildLensGameScene();
-        stage.setScene(lensGameScene);
+        lensGameInstructionsScene = buildLensGameInstructions();
+        stage.setScene(lensGameInstructionsScene);
         stage.setTitle("Lens Game");
         stage.show();
     }
@@ -70,7 +71,7 @@ public class LensGameMain extends Application {
             hintStage.showAndWait();
         });
         hintButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
-        Image hintButtonImage = new Image(getClass().getResource("/Assets/home button2.png").toExternalForm());
+        Image hintButtonImage = new Image(getClass().getResource("/Assets/hint button2.png").toExternalForm());
         ImageView hintButtonImageView = new ImageView(hintButtonImage);
         hintButtonImageView.setFitHeight(100);
         hintButtonImageView.setFitWidth(100);
@@ -183,6 +184,14 @@ public class LensGameMain extends Application {
 
     }
     public Scene getHintScene(){
+        //1000 x 620
+        Image backgroundImage = new Image(getClass().getResource("/Assets/hintBackground.png").toExternalForm());
+        ImageView backgroundImageView = new ImageView(backgroundImage);
+        backgroundImageView.setPreserveRatio(true);
+        HBox background = new HBox(backgroundImageView);
+        backgroundImageView.setFitHeight(620);
+        background.setAlignment(Pos.CENTER);
+
         TextArea textArea = new TextArea("Eye prescriptions often include a measurement expressing the strength of a lens needed to correct a person's vision. That measurement is in Diopter units, which are the inverse of the focal length of a lens. The focal length of a lens is the distance from the lens to the point where it focuses light, and this distance is inversely proportional to the strength of the lens. To find a prescription, one must understand the relationship between the near point, far point, and the focal length of the corrective lens.\n\n" +
                 "To calculate a prescription, the lens formula is used:\n" +
                 "\n" +
@@ -199,53 +208,70 @@ public class LensGameMain extends Application {
         textArea.getStylesheets().add(
                 getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
         );
+
         HBox box  = new HBox(textArea);
-        Scene scene = new Scene(box, 1000, 500);
+        box.setMaxSize(720,440);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(120,210,10,10));
+        StackPane stack = new StackPane(background, box);
+
+        Scene scene = new Scene(stack, 1000, 620);
         return scene;
     }
 
-    public Scene buildLensGameIntructions(Stage stage){
-        //1000 x 620
+    public Scene buildLensGameInstructions(){
+
         Image backgroundImage = new Image(getClass().getResource("/Assets/instructionsBackgroundEmpty.png").toExternalForm());
         ImageView backgroundImageView = new ImageView(backgroundImage);
+        backgroundImageView.setPreserveRatio(true);
         HBox background = new HBox(backgroundImageView);
+        backgroundImageView.setFitHeight(768);
         background.setAlignment(Pos.CENTER);
 
         Button iUnderstandButton = new Button();
         iUnderstandButton.setOnAction(event ->{
-            stage.setScene(buildLensGameScene());
+            lensGameInstructionsScene.setRoot(rootContainer);
         });
 
         iUnderstandButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
-        Image iUnderstandButtonImage = new Image(getClass().getResource("/Assets/iUnderstandButton.png.png").toExternalForm());
+        Image iUnderstandButtonImage = new Image(getClass().getResource("/Assets/iUnderstandButton.png").toExternalForm());
         ImageView iUnderstandButtonImageView = new ImageView(iUnderstandButtonImage);
         iUnderstandButtonImageView.setPreserveRatio(true);
-        iUnderstandButtonImageView.setFitHeight(300);
+        iUnderstandButtonImageView.setFitHeight(70);
         hoverBrightenessFX(iUnderstandButton, iUnderstandButtonImageView);
         iUnderstandButton.setGraphic(iUnderstandButtonImageView);
 
-        Label instrcutions = new Label("The culprit dropped some sort of lens on the crime scene!" +
+        Label instructions = new Label("The culprit dropped some sort of lens on the crime scene!"
+                +
                 "\nI wonder if it can lead to a clue..." +
                 "\nI can find the lens' strength (power) by using my science background!" +
                 "\nIf I remember correctly: one can move an object around until its rays converge in the right spot. " +
                 "\nThat gives the eye's near-point... " +
                 "\nWith some calculations, I'll be able to find a prescription and add the lens to see if I got it right!");
+        instructions.getStylesheets().add(
+                getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
+        );
+        instructions.getStyleClass().add("instructions");
 
-
-        HBox instructionsBox = new HBox(30, instrcutions, iUnderstandButton);
+        VBox instructionsBox = new VBox(10, instructions, iUnderstandButton);
         instructionsBox.setAlignment(Pos.CENTER);
-        instructionsBox.setPadding(new Insets(30));
+        instructionsBox.setPadding(new Insets(10));
 
         StackPane root = new StackPane(background, instructionsBox);
-        lensGameInstructionsScene = new Scene(root,1000,620);
+        root.setAlignment(Pos.CENTER);
+        lensGameInstructionsScene = new Scene(root,1366,768);
         return lensGameInstructionsScene;
     }
     public static Scene getLensGameScene() {
-        if (lensGameScene == null) {
-            lensGameScene = new LensGameMain().buildLensGameScene();
-        }
-        return lensGameScene;
+        return lensGameScene != null ? lensGameScene : new LensGameMain().buildLensGameScene();
     }
+    public static Scene getLensGameInstructionsScene() {
+        if (lensGameInstructionsScene == null) {
+            lensGameInstructionsScene = new LensGameMain().buildLensGameInstructions();
+        }
+        return lensGameInstructionsScene;
+    }
+
 
 
 }
