@@ -1,5 +1,6 @@
-package com.example.theunknownvariable;
+package com.example.theunknownvariable.UI;
 
+import com.example.theunknownvariable.SuspectUI;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -124,7 +125,7 @@ public class HomePage {
             }
             case "accuse" -> {
                 //Button 3: Sodium Chloride
-                Image accuseImage = new Image("file:accuse.png");
+                Image accuseImage = new Image("accuse.png");
                 ImageView accuse = new ImageView(accuseImage);
                 accuse.setFitWidth(250);
                 accuse.setPreserveRatio(true);

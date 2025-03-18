@@ -1,12 +1,16 @@
-package com.example.theunknownvariable;
+package com.example.theunknownvariable.Controller;
 
+import com.example.theunknownvariable.UI.Clues;
+import com.example.theunknownvariable.UI.MainPage;
+import com.example.theunknownvariable.UI.ChemUI;
+import com.example.theunknownvariable.UI.HomePage;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ToxicTintsController extends Application {
+public class GameController extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         ChemUI userInterface = new ChemUI(stage);

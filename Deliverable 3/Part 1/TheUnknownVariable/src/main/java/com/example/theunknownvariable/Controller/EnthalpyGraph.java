@@ -1,7 +1,5 @@
-package com.example.theunknownvariable;
+package com.example.theunknownvariable.Controller;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;

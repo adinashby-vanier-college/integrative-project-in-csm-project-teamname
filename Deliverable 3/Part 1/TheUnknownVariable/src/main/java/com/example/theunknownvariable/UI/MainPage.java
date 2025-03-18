@@ -1,5 +1,8 @@
-package com.example.theunknownvariable;
+package com.example.theunknownvariable.UI;
 
+import com.example.theunknownvariable.GameUI;
+import com.example.theunknownvariable.LensGameMain;
+import com.example.theunknownvariable.UserInterface;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

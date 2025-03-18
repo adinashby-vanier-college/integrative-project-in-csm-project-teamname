@@ -1,5 +1,5 @@
 package com.example.theunknownvariable;
-import javafx.application.Application;
+import com.example.theunknownvariable.UI.MainPage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
