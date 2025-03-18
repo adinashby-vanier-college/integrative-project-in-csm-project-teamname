@@ -2,12 +2,14 @@ package com.example.theunknownvariable;// GameUI.java
 // GameUI.java
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class GameUI {
@@ -35,20 +37,28 @@ public class GameUI {
                 "-fx-background-image: url('math_instructions.png'); " +
                 "-fx-background-size: cover;"); // Background image for the instructions screen
 
+        // Add custom font
+        Font cinzelFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Cinzel-Regular.ttf"), 24);
+
         // Add instructions text
         Label instructions = new Label("Welcome to the Hangman Game!\n\n"
                 + "Instructions:\n"
-                + "1. Guess the letters of the word.\n"
-                + "2. You have a limited number of attempts.\n"
-                + "3. Avoid making too many mistakes, or you'll lose!\n\n"
+                + "1. Click on an empty letter space.\n"
+                + "2. Solve the problem to reveal a letter.\n"
+                + "3. You have a limited number of attempts.\n"
+                + "4. Avoid making too many mistakes, or you'll lose!\n\n"
                 + "Click the button below to start.");
-        instructions.setStyle("-fx-text-fill: white; -fx-font-size: 24px; -fx-text-alignment: center;");
+
+        instructions.setFont(cinzelFont); // Apply the custom font
+        instructions.setStyle("-fx-text-fill: white; -fx-text-alignment: center;");
 
         // Add the "Yes, I Understand" button with an image
         Button proceedButton = new Button();
-        proceedButton.setStyle("-fx-background-image: url('understand.png'); -fx-background-size: cover; "
+        proceedButton.setStyle("-fx-background-image: url('understand.png'); "
+                + "-fx-background-size: 100% 100%; " // Scale image to fit the button
                 + "-fx-background-color: transparent; -fx-padding: 0;");
-        proceedButton.setMinSize(200, 100); // Adjust the button size to fit the image
+        proceedButton.setPrefSize(300, 150); // Adjust size to prevent cutting off
+        proceedButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE); // Prevent over-scaling
 
         // Add action to transition to the main game
         proceedButton.setOnAction(event -> {
@@ -156,10 +166,31 @@ public class GameUI {
 
     private void openNewWindow() {
         Stage newWindow = new Stage();
-        newWindow.setTitle("New Window");
-        newWindow.setScene(new Scene(new Pane(), 300, 200));
+        newWindow.setTitle("Question Window");
+
+        // Create a VBox layout for the content
+        VBox content = new VBox();
+        content.setStyle(
+                "-fx-background-image: url('background_game.png'); " +
+                        "-fx-background-size: cover; "
+        );
+        content.setPrefSize(1000, 620); // Set size of the window layout
+        content.setPadding(new Insets(10));
+        content.setAlignment(Pos.CENTER); // Center align content
+
+        // Add the "Question 1" text
+        Label questionLabel = new Label("Question 1");
+        questionLabel.setStyle("-fx-text-fill: white; -fx-font-size: 36px; -fx-font-weight: bold;");
+
+        // Add elements to the content layout
+        content.getChildren().add(questionLabel);
+
+        // Create and set the scene
+        Scene scene = new Scene(content, 1000, 620);
+        newWindow.setScene(scene);
         newWindow.show();
     }
+
 
     private VBox createBottomOptions() {
         VBox bottomOptions = new VBox(20); // Added spacing between buttons
@@ -208,19 +239,10 @@ public class GameUI {
                         "-fx-background-color: rgba(0, 0, 0, 0.6); " // Add a dark overlay
         );
 
-        // Add white-colored placeholder text
-        Label theoryText = new Label("Note that we require that f(c) exists in order for x = c to actually be a critical point. This is an important, and often overlooked, point. What this is really saying is that all critical points must be in the domain of the function. If a point is not in the domain of the function then it is not a critical point.\n" +
-                "\n" +
-                "Note as well that, at this point, we only work with real numbers and so any complex numbers that might arise in finding critical points (and they will arise on occasion) will be ignored. There are portions of calculus that work a little differently when working with complex numbers and so in a first calculus class such as this we ignore complex numbers and only work with real numbers. Calculus with complex numbers is beyond the scope of this course and is usually taught in higher level mathematics courses.\n" +
-                "\n" +
-                "The main point of this section is to work some examples finding critical points. So, let’s work some examples.");
-        theoryText.setStyle("-fx-text-fill: white; -fx-font-size: 16px;"); // White font with a readable size
-
-        // Add text to the VBox layout
-        content.getChildren().add(theoryText);
-
         // Create and set the scene
+
         Scene scene = new Scene(content, 1000, 640);
+
         theoryWindow.setScene(scene);
         theoryWindow.show();
     }
