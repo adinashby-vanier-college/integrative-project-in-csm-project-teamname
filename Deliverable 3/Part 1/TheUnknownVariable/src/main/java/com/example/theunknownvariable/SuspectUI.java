@@ -16,12 +16,12 @@ public class SuspectUI extends StackPane {
 
     private static final int NUM_SUSPECTS = 6;
     private static final String[] SUSPECT_NAMES = {
-            "Anita", "Lea", "Mohammad", "Picasso", "Sarah", "Suspect"
+            "Anita", "Lea", "Mohammad", "Picasso", "Sara", "Suspect"
     };
     private static final String[] SUSPECT_IMAGES = {
             "/Anita.png", "/Lea.png",
             "/Mohammad.png", "/Picasso.png",
-            "/Sarah.png", "/Suspect.png"
+            "/Sara.png", "/Suspect.png"
     };
 
     private Stage stage;
