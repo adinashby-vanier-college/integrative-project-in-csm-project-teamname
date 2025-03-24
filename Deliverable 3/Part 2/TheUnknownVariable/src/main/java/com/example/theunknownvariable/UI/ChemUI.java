@@ -1,7 +1,7 @@
 package com.example.theunknownvariable.UI;
 
 import com.example.theunknownvariable.Controller.EnthalpyGraph;
-import Model.Tubes;
+import com.example.theunknownvariable.Model.Tubes;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

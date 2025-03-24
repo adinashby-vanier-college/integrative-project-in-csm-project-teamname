@@ -1,4 +1,4 @@
-package com.example.theunknownvariable;
+package com.example.theunknownvariable.Model;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

@@ -9,6 +9,6 @@ module com.example.theunknownvariable {
     opens com.example.theunknownvariable.UI to javafx.fxml;
     exports com.example.theunknownvariable.Controller;
     opens com.example.theunknownvariable.Controller to javafx.fxml;
-    exports Model;
-    opens Model to javafx.fxml;
+    exports com.example.theunknownvariable.Model;
+    opens com.example.theunknownvariable.Model to javafx.fxml;
 }

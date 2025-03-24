@@ -1,9 +1,8 @@
-package com.example.theunknownvariable;
+package com.example.theunknownvariable.Model;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class PrescriptionLens extends Application {
-
+public class Rays extends Application {
     public static void main(String[] args) {
         launch(args);
     }
@@ -12,7 +11,5 @@ public class PrescriptionLens extends Application {
     public void start(Stage primaryStage) {
 
     }
-
-
 
 }

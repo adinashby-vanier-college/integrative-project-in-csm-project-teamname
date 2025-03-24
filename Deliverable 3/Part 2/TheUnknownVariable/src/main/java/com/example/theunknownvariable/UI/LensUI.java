@@ -1,4 +1,4 @@
-package com.example.theunknownvariable;
+package com.example.theunknownvariable.UI;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,7 +9,7 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.stage.Stage;
 
-public class Lens extends Application {
+public class LensUI extends Application {
     @Override
     public void start(Stage stage) {
         // Large radius to make the lens thin
@@ -41,7 +41,7 @@ public class Lens extends Application {
         StackPane root = new StackPane(box);
         Scene scene = new Scene(root, 300, 300, Color.WHITE);
         stage.setScene(scene);
-        stage.setTitle("Thin Converging Lens");
+        stage.setTitle("Thin Converging LensUI");
         stage.show();
     }
 
