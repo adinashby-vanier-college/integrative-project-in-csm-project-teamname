@@ -127,7 +127,7 @@ public class RulerMarker {
         return cmPosition;
     }
     public HBox getMarkerContainer(){
-        markerContainer.getChildren().addAll(markerPane);
+        markerContainer = new HBox(markerPane);
         return  markerContainer;
     }
 
