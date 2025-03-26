@@ -1,5 +1,4 @@
-package com.example.theunknownvariable;
-import javafx.application.Application;
+package com.example.theunknownvariable.UI;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
@@ -13,7 +12,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 public class RulerMarker {
     private static final double rulerSIZE = 40;
@@ -129,7 +127,7 @@ public class RulerMarker {
         return cmPosition;
     }
     public HBox getMarkerContainer(){
-        markerContainer.getChildren().addAll(markerPane);
+        markerContainer = new HBox(markerPane);
         return  markerContainer;
     }
 

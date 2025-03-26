@@ -1,12 +1,10 @@
-package com.example.theunknownvariable;
+package com.example.theunknownvariable.UI;
 
-import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
-public class Eye  {
+public class EyeUI {
 
     public static void main(String[] args) {
 

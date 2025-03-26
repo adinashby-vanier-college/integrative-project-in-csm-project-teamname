@@ -1,4 +1,4 @@
-package Model;
+package com.example.theunknownvariable.Model;
 
 public class Substance {
     private static final Substance instance = new Substance(); // Singleton instance

@@ -1,4 +1,7 @@
-package com.example.theunknownvariable;
+package com.example.theunknownvariable.Controller;
+import com.example.theunknownvariable.UI.RulerMarker;
+import com.example.theunknownvariable.UI.TestObject;
+import com.example.theunknownvariable.UI.EyeUI;
 import com.example.theunknownvariable.UI.MainPage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -31,7 +34,7 @@ public class LensGameMain{
         lensGameScene = buildLensGameScene();
         lensGameInstructionsScene = buildLensGameInstructions();
         stage.setScene(lensGameInstructionsScene);
-        stage.setTitle("Lens Game");
+        stage.setTitle("LensUI Game");
         stage.show();
     }
 
@@ -73,7 +76,7 @@ public class LensGameMain{
         hintButton.setOnAction(event -> {
             Stage hintStage = new Stage();
             hintStage.setScene(getHintScene());
-            hintStage.setTitle("Lens Game Hint");
+            hintStage.setTitle("LensUI Game Hint");
             hintStage.showAndWait();
         });
         hintButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
@@ -93,7 +96,7 @@ public class LensGameMain{
         StackPane testObjectContainer = testObject.getObjectPane();
 
         //eye
-        Eye eye = new Eye();
+        EyeUI eye = new EyeUI();
         VBox eyeBox = eye.getEyeBox();
 
         //Empty rectangle container for lens
@@ -166,7 +169,7 @@ public class LensGameMain{
         return  prescriptionLensRect;
     }
     public HBox getTopContainer(){
-        Button addLensButton = new Button("Add Lens");
+        Button addLensButton = new Button("Add LensUI");
         addLensButton.getStylesheets().add(
                 getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
         );
@@ -198,7 +201,7 @@ public class LensGameMain{
         backgroundImageView.setFitHeight(620);
         background.setAlignment(Pos.CENTER);
 
-        TextArea textArea = new TextArea("Eye prescriptions often include a measurement expressing the strength of a lens needed to correct a person's vision. That measurement is in Diopter units, which are the inverse of the focal length of a lens. The focal length of a lens is the distance from the lens to the point where it focuses light, and this distance is inversely proportional to the strength of the lens. To find a prescription, one must understand the relationship between the near point, far point, and the focal length of the corrective lens.\n\n" +
+        TextArea textArea = new TextArea("EyeUI prescriptions often include a measurement expressing the strength of a lens needed to correct a person's vision. That measurement is in Diopter units, which are the inverse of the focal length of a lens. The focal length of a lens is the distance from the lens to the point where it focuses light, and this distance is inversely proportional to the strength of the lens. To find a prescription, one must understand the relationship between the near point, far point, and the focal length of the corrective lens.\n\n" +
                 "To calculate a prescription, the lens formula is used:\n" +
                 "\n" +
                 "1/f = 1/do - 1/di\n" +

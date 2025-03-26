@@ -1,10 +1,11 @@
-package com.example.theunknownvariable;
+package com.example.theunknownvariable.Controller;
 
+import com.example.theunknownvariable.Controller.LensGameMain;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class TutorialClass extends Application {
+public class mariasTester extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         LensGameMain lensGameMain = new LensGameMain(stage);
