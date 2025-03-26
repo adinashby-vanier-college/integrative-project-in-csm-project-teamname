@@ -1,9 +1,32 @@
 package Model;
 
 public class Substance {
-    private String moleculeName;
+    private static final Substance instance = new Substance(); // Singleton instance
 
-    public void Substance(String moleculeName){
-        this.moleculeName = moleculeName;
+    private int substanceNb1;
+    private int substanceNb2;
+
+    // Private constructor to prevent external instantiation
+    private Substance() {}
+
+    // Public method to access the singleton instance
+    public static Substance getInstance() {
+        return instance;
+    }
+
+    public void setSubstanceNb1(int substanceNb) {
+        this.substanceNb1 = substanceNb;
+    }
+
+    public void setSubstanceNb2(int substanceNb) {
+        this.substanceNb2 = substanceNb;
+    }
+
+    public int getSubstanceNb1() {
+        return this.substanceNb1;
+    }
+
+    public int getSubstanceNb2() {
+        return this.substanceNb2;
     }
 }
