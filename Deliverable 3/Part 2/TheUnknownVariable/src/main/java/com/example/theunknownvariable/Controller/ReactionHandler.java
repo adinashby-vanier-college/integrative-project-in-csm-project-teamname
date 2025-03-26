@@ -1,6 +1,7 @@
 package com.example.theunknownvariable.Controller;
 
-import Model.Substance;
+
+import com.example.theunknownvariable.Model.Substance;
 import com.example.theunknownvariable.UI.ChemUI;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;

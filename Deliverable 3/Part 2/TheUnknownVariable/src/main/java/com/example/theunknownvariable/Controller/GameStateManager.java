@@ -20,11 +20,11 @@ public class GameStateManager {
 
     //Check if clue is unlocked
     public void unlockClue1() {
-        clue3Unlocked = true;
+        clue1Unlocked = true;
     }
     //Check if clue is unlocked
     public void unlockClue2() {
-        clue3Unlocked = true;
+        clue2Unlocked = true;
     }
     //Check if clue is unlocked
     public void unlockClue3() {
@@ -32,16 +32,16 @@ public class GameStateManager {
     }
     //Check if clue is unlocked
     public void unlockClue4() {
-        clue3Unlocked = true;
+        clue4Unlocked = true;
     }
 
     //Return if clue is unlocked
     public boolean isClue1Unlocked() {
-        return clue3Unlocked;
+        return clue1Unlocked;
     }
     //Return if clue is unlocked
     public boolean isClue2Unlocked() {
-        return clue3Unlocked;
+        return clue2Unlocked;
     }
     //Return if clue is unlocked
     public boolean isClue3Unlocked() {
@@ -49,7 +49,7 @@ public class GameStateManager {
     }
     //Return if clue is unlocked
     public boolean isClue4Unlocked() {
-        return clue3Unlocked;
+        return clue4Unlocked;
     }
 
 }

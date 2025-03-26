@@ -1,6 +1,5 @@
 package com.example.theunknownvariable.Controller;
 
-import Model.Substance;
 import com.example.theunknownvariable.UI.Clues;
 import com.example.theunknownvariable.UI.MainPage;
 import com.example.theunknownvariable.UI.ChemUI;

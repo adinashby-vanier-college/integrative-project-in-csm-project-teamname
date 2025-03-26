@@ -1,10 +1,12 @@
 package com.example.theunknownvariable.UI;
 
-import Model.Substance;
+
 import com.example.theunknownvariable.Controller.EnthalpyGraph;
-import Model.Tubes;
+
 import com.example.theunknownvariable.Controller.GameStateManager;
 import com.example.theunknownvariable.Controller.ReactionHandler;
+import com.example.theunknownvariable.Model.Substance;
+import com.example.theunknownvariable.Model.Tubes;
 import javafx.animation.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -462,8 +464,7 @@ public class ChemUI {
             }
             if (rightAnsNb==3){
                 GameStateManager.getInstance().unlockClue3();
-                ChemUI object = new ChemUI(stage);
-                object.displayImage(gameScene,"clueScene.png",800,5,true);
+                displayImage(gameScene,"clueScene.png",800,5,true);
             }
             if (wrongAnsNb==3){
                 displayImage(gameScene,"gameOver.png",800,5,true);
