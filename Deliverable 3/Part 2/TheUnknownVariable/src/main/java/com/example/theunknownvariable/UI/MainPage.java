@@ -2,7 +2,6 @@ package com.example.theunknownvariable.UI;
 
 import com.example.theunknownvariable.GameUI;
 import com.example.theunknownvariable.Controller.LensGameMain;
-import com.example.theunknownvariable.UserInterface;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -72,7 +71,7 @@ public class MainPage {
         });
         //Switch to game 2
         g2Button.setOnAction(event->{
-            UserInterface projectileMotion = new UserInterface(stage);
+            UserInterface2 projectileMotion = new UserInterface2(stage);
             Scene scene = projectileMotion.displayInstructions();
             switchScenes(scene);
         });
