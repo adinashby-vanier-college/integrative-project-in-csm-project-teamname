@@ -51,13 +51,13 @@ public class Rays {
     //Draft second pair line behaviour
     private void calculateConvergence() {
         if (objectX <= SLIDER_MIN) {
-            convergenceX = retinaX - 100; // Start further behind the retina
+            convergenceX = retinaX - 100; // start behind
         } else if (objectX <= 900) {
-            // Linearly move towards the retina until objectX reaches 900
+            // in front of retina
             double t = (objectX - SLIDER_MIN) / (900.0 - SLIDER_MIN);
             convergenceX = (retinaX - 100) * (1 - t) + retinaX * t;
         } else if (objectX <= SLIDER_MAX) {
-            // Linearly move away from retina starting at 900
+            // behind retina
             double t = (objectX - 900.0) / (SLIDER_MAX - 900.0);
             double frontConvergenceX = retinaX + 20;
             convergenceX = retinaX * (1 - t) + frontConvergenceX * t;

@@ -26,6 +26,10 @@ public class LensGameMain{
     private static Scene lensGameScene;
     private static Scene lensGameInstructionsScene;
     private static Stage stage;
+    public static boolean game1access = true;
+    public static boolean game1clue = false;
+    private static int attempts = 0;
+    private static Label attemptsLabel = new Label("attempts: 0/3");;
 
     public LensGameMain(Stage stage){
         this.stage = stage;
@@ -77,7 +81,7 @@ public class LensGameMain{
         hintButton.setOnAction(event -> {
             Stage hintStage = new Stage();
             hintStage.setScene(getHintScene());
-            hintStage.setTitle("LensUI Game Hint");
+            hintStage.setTitle("Lens Game Hint");
             hintStage.showAndWait();
         });
         hintButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
@@ -172,10 +176,10 @@ public class LensGameMain{
         return  prescriptionLensRect;
     }
     public HBox getTopContainer(){
-        Button addLensButton = new Button("Add LensUI");
-        addLensButton.getStylesheets().add(
-                getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
-        );
+        attemptsLabel.setStyle("-fx-font-family: \"Times New Roman\";\n" +
+                "    -fx-font-size: 20px;\n" +
+               // "    -fx-font-weight: bold;\n" +
+                "    -fx-text-fill: rgb(241, 226, 221);");
         Label answerLabel = new Label("Enter eye prescription:");
         answerLabel.getStylesheets().add(
                 getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
@@ -189,8 +193,19 @@ public class LensGameMain{
                 answerTextField.setText(oldText);  // Revert to old text if invalid input
             }
         });
+        Button addLensButton = new Button("Add Lens");
+        addLensButton.setOnAction(event -> {
+            double answerValue = Double.parseDouble(answerTextField.getText());
+            addLens(answerValue);
+            answerChecker(answerValue);
 
-        HBox box = new HBox(20, answerLabel, answerTextField, addLensButton);
+        });
+        addLensButton.getStylesheets().add(
+                getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
+        );
+        HBox addNattempt = new HBox(5,addLensButton,attemptsLabel);
+        addNattempt.setAlignment(Pos.CENTER);
+        HBox box = new HBox(20, answerLabel, answerTextField, addNattempt);
         box.setAlignment(Pos.CENTER);
         return box;
 
@@ -278,6 +293,66 @@ public class LensGameMain{
         lensGameInstructionsScene = new Scene(root,1366,768);
         return lensGameInstructionsScene;
     }
+
+
+    public void addLens(Double powerAns){
+        if (powerAns<0){
+            addConvergingLens();
+        }else{
+            addDivergingLens();
+        }
+
+    }
+    public void addConvergingLens(){
+
+    }
+    public void addDivergingLens(){
+
+    }
+
+    public void answerChecker(Double powerAns) {
+        Double lowerLimit = -1 / 0.245;
+        Double upperLimit = -1 / 0.335;
+
+        if (powerAns >= upperLimit && powerAns <= lowerLimit) {
+            success();
+        } else {
+            updateAttempts();
+        }
+    }
+
+    public void updateAttempts(){
+        attempts++;
+        attemptsLabel.setText("attempts: "+attempts+"/3");
+        if (attempts == 3) {
+            failure();
+            game1access = false;
+            game1clue = false;
+        }
+    }
+    public void success(){
+        game1access = false;
+        game1clue = true;
+        MainPage mainPage = new MainPage(stage);
+        Scene scene = mainPage.displayMainPage();
+        switchScenes(scene);
+    }
+    public void failure(){
+        game1access = false;
+        game1clue = false;
+        MainPage mainPage = new MainPage(stage);
+        Scene scene = mainPage.displayMainPage();
+        switchScenes(scene);
+    }
+
+    public static boolean isGame1access() {
+        return game1access;
+    }
+
+    public static boolean isGame1clue() {
+        return game1clue;
+    }
+
     public void switchScenes(Scene scene) {
         // Switch to the specified scene
         stage.setScene(scene);
