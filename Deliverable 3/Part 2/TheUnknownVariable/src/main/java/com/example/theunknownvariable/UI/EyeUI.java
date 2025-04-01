@@ -1,5 +1,6 @@
 package com.example.theunknownvariable.UI;
 
+import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -19,8 +20,10 @@ public class EyeUI {
         ImageView iv = new ImageView(i);
         iv.setPreserveRatio(true);
         iv.setFitWidth(250);
+        VBox vBox = new VBox(iv);
+        vBox.setPadding(new Insets(10,0,0,0));
 
-        return new VBox(iv);
+        return vBox;
 
     }
 

@@ -80,7 +80,7 @@ public class RulerMarker {
     }
 
 //--------------MARKER------------------
-    public static Button markerButton = new Button("Add near point");
+    public static Button markerButton = new Button("Get object distance");
     public static VBox markerButtonContainer = new VBox(markerButton);
     public static HBox markerContainer = new HBox();
 

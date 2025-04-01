@@ -53,10 +53,10 @@ public class TestObject {
         movingCircle.setCenterX(LINE_LENGTH / 2);
         movingCircle.setCenterY(LINE_Y);
 
-        rays = new Rays(positionSlider.getValue(), LINE_Y);
+        rays = new Rays(positionSlider.getValue(), (LINE_Y+86));
 
         positionSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            movingCircle.setTranslateX(newValue.doubleValue() - ((LINE_LENGTH / 2) + 100));
+            movingCircle.setTranslateX(newValue.doubleValue() - ((LINE_LENGTH / 2) + 80));
             rays.updateRays(newValue.doubleValue());
         });
 
