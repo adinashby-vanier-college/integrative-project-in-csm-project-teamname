@@ -78,17 +78,17 @@ public class Clues {
 
         // Labels
         if (GameStateManager.getInstance().isClue1Unlocked()) {
-            game3Clue.setText("Maria's Clue");
+            game1Clue.setText("Maria's Clue");
         }
         if (GameStateManager.getInstance().isClue2Unlocked()) {
-            game3Clue.setText("Meghry's Clue");
+            game2Clue.setText("Meghry's Clue");
         }
         if (GameStateManager.getInstance().isClue3Unlocked()) {
             game3Clue.setText("Based on\nthe 3 solutions,\nthe killer\nworks in a\nfield" +
                     " related\nto tech,\nguns, or\ninvestigation\nof crime.");
         }
         if (GameStateManager.getInstance().isClue4Unlocked()) {
-            game3Clue.setText("Sara's clue");
+            game4Clue.setText("Sara's clue");
         }
         VBox gameLabel1 = new VBox(game1Clue);
         gameLabel1.setAlignment(Pos.CENTER);

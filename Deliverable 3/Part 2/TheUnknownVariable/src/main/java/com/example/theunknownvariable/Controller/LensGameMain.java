@@ -1,8 +1,5 @@
 package com.example.theunknownvariable.Controller;
-import com.example.theunknownvariable.UI.RulerMarker;
-import com.example.theunknownvariable.UI.TestObject;
-import com.example.theunknownvariable.UI.EyeUI;
-import com.example.theunknownvariable.UI.MainPage;
+import com.example.theunknownvariable.UI.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -356,6 +353,10 @@ public class LensGameMain{
     public void success(){
         game1access = false;
         game1clue = true;
+        GameStateManager.getInstance().unlockClue1();
+
+//        ChemUI chemUIojbect2 = new ChemUI(stage);
+//        chemUIojbect2.displayImage(buildLensGameScene(),"rightScenario.png",300,2,false);
         MainPage mainPage = new MainPage(stage);
         Scene scene = mainPage.displayMainPage();
         switchScenes(scene);
@@ -363,6 +364,8 @@ public class LensGameMain{
     public void failure(){
         game1access = false;
         game1clue = false;
+//        ChemUI chemUiObject = new ChemUI(stage);
+//        chemUiObject.displayImage(buildLensGameScene(), "wrongScenario.png",300,2,false);
         MainPage mainPage = new MainPage(stage);
         Scene scene = mainPage.displayMainPage();
         switchScenes(scene);
