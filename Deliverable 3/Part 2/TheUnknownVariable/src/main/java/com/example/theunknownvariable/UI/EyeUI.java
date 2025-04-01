@@ -5,6 +5,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class EyeUI {
+    static final double eyeX = 260;
+    static final double retinaX = 230;
+
 
     public static void main(String[] args) {
 

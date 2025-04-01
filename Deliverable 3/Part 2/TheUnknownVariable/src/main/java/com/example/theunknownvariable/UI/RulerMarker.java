@@ -92,7 +92,7 @@ public class RulerMarker {
         markerButtonContainer.setPadding(new Insets(0,60,0,0));
         return  markerButtonContainer;
     }
-    public static Label currentPosLabel = new Label("0.6");
+    public static Label currentPosLabel = new Label(" . ");
     public static Double markerX = 0.0;
     public static Double markerY = 0.0;
     public static StackPane markerPane = new StackPane();
@@ -114,7 +114,7 @@ public class RulerMarker {
 
     public void updateMarker(Double x, Double val){
         String formattedValue = String.format("%.1f", posTOcm(x));
-        currentPosLabel.setText(formattedValue);
+        currentPosLabel.setText(formattedValue + "cm");
         markerX = val;
         markerPane.setLayoutX(markerX);
         markerContainer.requestLayout();

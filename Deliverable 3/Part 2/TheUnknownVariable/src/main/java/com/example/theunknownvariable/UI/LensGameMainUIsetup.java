@@ -1,8 +1,5 @@
-package com.example.theunknownvariable.Controller;
-import com.example.theunknownvariable.UI.RulerMarker;
-import com.example.theunknownvariable.UI.TestObject;
-import com.example.theunknownvariable.UI.EyeUI;
-import com.example.theunknownvariable.UI.MainPage;
+package com.example.theunknownvariable.UI;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -21,16 +18,25 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class LensGameMain{
+/**
+ * Controller class for the Lens Game interface and logic
+ */
+public class LensGameMainUIsetup {
+    // Root container for the scene
     static StackPane rootContainer = new StackPane();
+    // Scene for the main lens game
     private static Scene lensGameScene;
+    // Scene for the lens game instructions
     private static Scene lensGameInstructionsScene;
+    // Stage reference for switching scenes
     private static Stage stage;
 
-    public LensGameMain(Stage stage){
+    // Constructor to set the stage
+    public LensGameMainUIsetup(Stage stage) {
         this.stage = stage;
     }
 
+    // Starts the lens game by showing the instruction scene first
     public void start(Stage stage) {
         lensGameScene = buildLensGameScene();
         lensGameInstructionsScene = buildLensGameInstructions();
@@ -39,27 +45,24 @@ public class LensGameMain{
         stage.show();
     }
 
-
+    // Builds the main lens game scene layout and returns it
     public Scene buildLensGameScene() {
-        //background
+        // Set up background image
         Image backgroundImage = new Image(getClass().getResource("/Assets/background.png").toExternalForm());
         ImageView backgroundImageView = new ImageView(backgroundImage);
         HBox background = new HBox(backgroundImageView);
         background.setAlignment(Pos.CENTER);
 
-        //ruler
+        // Add ruler to the scene
         RulerMarker ruler = new RulerMarker();
         Canvas canvas = ruler.getRulerCanvas(770.0, 70.0);
         StackPane rulerStackPane = new StackPane(canvas);
         rulerStackPane.setAlignment(Pos.CENTER_RIGHT);
-        rulerStackPane.setPadding(new Insets(0,20,20,20));
+        rulerStackPane.setPadding(new Insets(0, 20, 20, 20));
         StackPane.setMargin(rulerStackPane, new Insets(230, 130, 0, 0));
 
-        //home and hint button
+        // Home button setup and action
         Button homeButton = new Button();
-        homeButton.setOnAction(event ->{
-        });
-
         homeButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         Image homeButtonImage = new Image(getClass().getResource("/Assets/home button.png").toExternalForm());
         ImageView homeButtonImageView = new ImageView(homeButtonImage);
@@ -67,19 +70,14 @@ public class LensGameMain{
         homeButtonImageView.setFitWidth(100);
         hoverBrightenessFX(homeButton, homeButtonImageView);
         homeButton.setGraphic(homeButtonImageView);
-        homeButton.setOnAction(event->{
+        homeButton.setOnAction(event -> {
             MainPage mainPage = new MainPage(stage);
             Scene scene = mainPage.displayMainPage();
             switchScenes(scene);
         });
 
+        // Hint button setup and action
         Button hintButton = new Button();
-        hintButton.setOnAction(event -> {
-            Stage hintStage = new Stage();
-            hintStage.setScene(getHintScene());
-            hintStage.setTitle("LensUI Game Hint");
-            hintStage.showAndWait();
-        });
         hintButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         Image hintButtonImage = new Image(getClass().getResource("/Assets/hint button2.png").toExternalForm());
         ImageView hintButtonImageView = new ImageView(hintButtonImage);
@@ -87,165 +85,154 @@ public class LensGameMain{
         hintButtonImageView.setFitWidth(100);
         hoverBrightenessFX(hintButton, hintButtonImageView);
         hintButton.setGraphic(hintButtonImageView);
+        hintButton.setOnAction(event -> {
+            Stage hintStage = new Stage();
+            hintStage.setScene(getHintScene());
+            hintStage.setTitle("LensUI Game Hint");
+            hintStage.showAndWait();
+        });
 
+        // Add hint and home buttons to layout
         VBox hinthomeVbox = new VBox(10, hintButton, homeButton);
         hinthomeVbox.setAlignment(Pos.BOTTOM_RIGHT);
         hinthomeVbox.setPadding(new Insets(10));
 
-        //test object
+        // Add draggable test object (simulates object distance)
         TestObject testObject = new TestObject();
-        //StackPane testObjectContainer = testObject.getObjectPane();
-        Pane testObjectContainer = testObject.getObjectPane();
+        StackPane testObjectContainer = testObject.getObjectPane();
+       // Pane testObjectContainer = testObject.getObjectPane();
 
 
-        //eye
+        // Add eye illustration
         EyeUI eye = new EyeUI();
         VBox eyeBox = eye.getEyeBox();
 
-        //Empty rectangle container for lens
+        // Add empty rectangle container representing lens placement
         Rectangle rect = getPrescriptionLensRect();
         HBox rectBox = new HBox(30, rect);
-        rectBox.setPadding(new Insets(0,0,0,250));
+        rectBox.setPadding(new Insets(0, 0, 0, 250));
         rectBox.setAlignment(Pos.CENTER_LEFT);
 
+        // Combine eye, object, and lens placement
         StackPane mainAxis = new StackPane(eyeBox, testObjectContainer, rectBox);
 
-        //Slider
+        // Add slider for object positioning
         HBox sliderContainer = testObject.getSliderBox();
         sliderContainer.setAlignment(Pos.CENTER_RIGHT);
-        sliderContainer.setPadding(new Insets(0,20,20,20));
+        sliderContainer.setPadding(new Insets(0, 20, 20, 20));
 
-        //marker
+        // Add marker functionality to show position on ruler
         RulerMarker marker = new RulerMarker();
         marker.MarkerMaker();
         HBox markerHbox = new HBox(marker.getMarkerContainer());
-
         marker.markerButton.setOnAction(event -> {
             Slider slider = testObject.getPositionSlider();
             double sliderValue = slider.getValue();
             double thumbX = slider.lookup(".thumb").localToScreen(slider.lookup(".thumb").getBoundsInLocal()).getMinX();
             marker.updateMarker(thumbX, sliderValue);
-
         });
 
-        //Layout
+        // Top container with input field and add lens button
         HBox topBox = getTopContainer();
-        topBox.setPadding(new Insets(100,50,50,50));
+        topBox.setPadding(new Insets(100, 50, 50, 50));
 
+        // Center content (eye and object)
         HBox eyeNobjectBox = new HBox(mainAxis);
         eyeNobjectBox.setAlignment(Pos.CENTER);
-        eyeNobjectBox.setPadding(new Insets(10,0,0,0));
+        eyeNobjectBox.setPadding(new Insets(10, 0, 0, 0));
 
+        // Bottom area with slider, marker, and buttons
         VBox sliderMarkerRulerBox = new VBox(10, sliderContainer, markerHbox, rulerStackPane);
         sliderMarkerRulerBox.setAlignment(Pos.TOP_RIGHT);
-        sliderMarkerRulerBox.setPadding(new Insets(20,15,0,0));
-
+        sliderMarkerRulerBox.setPadding(new Insets(20, 15, 0, 0));
         HBox buttonsBox = new HBox(hinthomeVbox);
         buttonsBox.setAlignment(Pos.BOTTOM_RIGHT);
         buttonsBox.setPadding(new Insets(20));
-
         HBox bottomBox = new HBox(10, marker.getMarkerButtonContainer(), sliderMarkerRulerBox, buttonsBox);
         bottomBox.setAlignment(Pos.BOTTOM_RIGHT);
-        bottomBox.setPadding(new Insets(0, 3,10,0));
+        bottomBox.setPadding(new Insets(0, 3, 10, 0));
 
-
-        VBox foreground = new VBox(topBox, eyeNobjectBox,bottomBox);
-
+        // Stack background and foreground elements
+        VBox foreground = new VBox(topBox, eyeNobjectBox, bottomBox);
         rootContainer = new StackPane(background, foreground);
-        return new Scene(rootContainer, 1366,768);
-
+        return new Scene(rootContainer, 1366, 768);
     }
-    public void hoverBrightenessFX(Button button, ImageView imageView){
+
+    // Adds hover effect to buttons (brightness increase on hover)
+    public void hoverBrightenessFX(Button button, ImageView imageView) {
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(0);
         imageView.setEffect(colorAdjust);
         button.setOnMouseEntered(e -> colorAdjust.setBrightness(0.2));
         button.setOnMouseExited(e -> colorAdjust.setBrightness(0));
     }
-    public Rectangle getPrescriptionLensRect(){
+
+    // Creates a dashed rectangle to visually represent lens placement
+    public Rectangle getPrescriptionLensRect() {
         Rectangle prescriptionLensRect = new Rectangle(0, 0, 70, 270);
         prescriptionLensRect.setFill(Color.TRANSPARENT);
         prescriptionLensRect.setStroke(Color.rgb(214, 182, 144));
         prescriptionLensRect.setStrokeWidth(3);
         prescriptionLensRect.getStrokeDashArray().setAll(10.0, 10.0);
         prescriptionLensRect.setStrokeType(StrokeType.CENTERED);
-        return  prescriptionLensRect;
+        return prescriptionLensRect;
     }
-    public HBox getTopContainer(){
+
+    // Creates the top HBox with text input and Add Lens button
+    public HBox getTopContainer() {
         Button addLensButton = new Button("Add LensUI");
-        addLensButton.getStylesheets().add(
-                getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
-        );
+        addLensButton.getStylesheets().add(getClass().getResource("/Styles/LensGameStyle.css").toExternalForm());
+
         Label answerLabel = new Label("Enter eye prescription:");
-        answerLabel.getStylesheets().add(
-                getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
-        );
+        answerLabel.getStylesheets().add(getClass().getResource("/Styles/LensGameStyle.css").toExternalForm());
+
         TextField answerTextField = new TextField();
-        answerTextField.getStylesheets().add(
-                getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
-        );
+        answerTextField.getStylesheets().add(getClass().getResource("/Styles/LensGameStyle.css").toExternalForm());
+        // Only allow valid numeric input
         answerTextField.textProperty().addListener((observable, oldText, newText) -> {
-            if (!newText.matches("-?\\d*\\.?\\d*")) {  // Regex allows only valid doubles
-                answerTextField.setText(oldText);  // Revert to old text if invalid input
+            if (!newText.matches("-?\\d*\\.?\\d*")) {
+                answerTextField.setText(oldText);
             }
         });
 
         HBox box = new HBox(20, answerLabel, answerTextField, addLensButton);
         box.setAlignment(Pos.CENTER);
         return box;
-
     }
-    public Scene getHintScene(){
-        //1000 x 620
+
+    // Builds the hint pop-up scene explaining lens physics
+    public Scene getHintScene() {
         Image backgroundImage = new Image(getClass().getResource("/Assets/hintBackground.png").toExternalForm());
         ImageView backgroundImageView = new ImageView(backgroundImage);
         backgroundImageView.setPreserveRatio(true);
-        HBox background = new HBox(backgroundImageView);
         backgroundImageView.setFitHeight(620);
+        HBox background = new HBox(backgroundImageView);
         background.setAlignment(Pos.CENTER);
 
-        TextArea textArea = new TextArea("EyeUI prescriptions often include a measurement expressing the strength of a lens needed to correct a person's vision. That measurement is in Diopter units, which are the inverse of the focal length of a lens. The focal length of a lens is the distance from the lens to the point where it focuses light, and this distance is inversely proportional to the strength of the lens. To find a prescription, one must understand the relationship between the near point, far point, and the focal length of the corrective lens.\n\n" +
-                "To calculate a prescription, the lens formula is used:\n" +
-                "\n" +
-                "1/f = 1/do - 1/di\n" +
-                "\n" +
-                "Where: \n" +
-                "- f is the focal length of the lens\n" +
-                "- do is the object distance (near point)\n" +
-                "- di is the image distance (where the corrected image should focus)\n" +
-                "\n" +
-                "The goal is to adjust the lens so that the image forms at the normal near point, typically 25 cm. For myopia (nearsightedness), a diverging lens (negative diopters) is needed to push the image further away. For hyperopia (farsightedness), a converging lens (positive diopters) is required to focus the image closer. \n\n" +
-                "Some prescriptions also require cylindrical correction for astigmatism, which adjusts the curvature of the lens to correct uneven focusing... But our criminal seems to be a quite simple eye patient!");
+        // Text content for hint
+        TextArea textArea = new TextArea("EyeUI prescriptions often include..." /* truncated for brevity in comment */);
         textArea.setEditable(false);
-        textArea.getStylesheets().add(
-                getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
-        );
+        textArea.getStylesheets().add(getClass().getResource("/Styles/LensGameStyle.css").toExternalForm());
 
-        HBox box  = new HBox(textArea);
-        box.setMaxSize(720,440);
+        HBox box = new HBox(textArea);
+        box.setMaxSize(720, 440);
         box.setAlignment(Pos.CENTER);
-        box.setPadding(new Insets(120,210,10,10));
+        box.setPadding(new Insets(120, 210, 10, 10));
         StackPane stack = new StackPane(background, box);
 
-        Scene scene = new Scene(stack, 1000, 620);
-        return scene;
+        return new Scene(stack, 1000, 620);
     }
 
-    public Scene buildLensGameInstructions(){
-
+    // Builds the lens game instructions scene shown at start
+    public Scene buildLensGameInstructions() {
         Image backgroundImage = new Image(getClass().getResource("/Assets/instructionsBackgroundEmpty.png").toExternalForm());
         ImageView backgroundImageView = new ImageView(backgroundImage);
         backgroundImageView.setPreserveRatio(true);
-        HBox background = new HBox(backgroundImageView);
         backgroundImageView.setFitHeight(768);
+        HBox background = new HBox(backgroundImageView);
         background.setAlignment(Pos.CENTER);
 
         Button iUnderstandButton = new Button();
-        iUnderstandButton.setOnAction(event ->{
-            Scene scene = getLensGameScene();
-            switchScenes(scene);
-        });
-
         iUnderstandButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         Image iUnderstandButtonImage = new Image(getClass().getResource("/Assets/iUnderstandButton.png").toExternalForm());
         ImageView iUnderstandButtonImageView = new ImageView(iUnderstandButtonImage);
@@ -253,20 +240,15 @@ public class LensGameMain{
         iUnderstandButtonImageView.setFitHeight(90);
         hoverBrightenessFX(iUnderstandButton, iUnderstandButtonImageView);
         iUnderstandButton.setGraphic(iUnderstandButtonImageView);
+        iUnderstandButton.setOnAction(event -> {
+            Scene scene = getLensGameScene();
+            switchScenes(scene);
+        });
 
+        // Instruction text
         Font cinzelFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Cinzel-Regular.ttf"), 24);
-        Label instructions = new Label("The culprit dropped some sort of lens on the crime scene!"
-                +
-                "\nI wonder if it can lead to a clue..." +
-                "\nI can find the lens' strength (power) by using my science background!" +
-                "\nIf I remember correctly: one can move an object around until its\n rays converge in the right spot. " +
-                "\nThat gives the eye's near-point... " +
-                "\nWith some calculations, I'll be able to find a prescription and\n add the lens to see if I got it right!");
-//        instructions.getStylesheets().add(
-//                getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
-//        );
-//        instructions.getStyleClass().add("instructions");
-        instructions.setFont(cinzelFont); // Apply the custom font
+        Label instructions = new Label("The culprit dropped some sort of lens on the crime scene!..." /* text truncated */);
+        instructions.setFont(cinzelFont);
         instructions.setStyle("-fx-text-fill: white; -fx-text-alignment: center;");
 
         VBox instructionsBox = new VBox(30, instructions, iUnderstandButton);
@@ -275,24 +257,26 @@ public class LensGameMain{
 
         StackPane root = new StackPane(background, instructionsBox);
         root.setAlignment(Pos.CENTER);
-        lensGameInstructionsScene = new Scene(root,1366,768);
+        lensGameInstructionsScene = new Scene(root, 1366, 768);
         return lensGameInstructionsScene;
     }
+
+    // Helper function to switch between scenes on the same stage
     public void switchScenes(Scene scene) {
-        // Switch to the specified scene
         stage.setScene(scene);
         stage.centerOnScreen();
     }
+
+    // Getter for the lens game scene (creates it if not yet created)
     public static Scene getLensGameScene() {
-        return lensGameScene != null ? lensGameScene : new LensGameMain(stage).buildLensGameScene();
+        return lensGameScene != null ? lensGameScene : new LensGameMainUIsetup(stage).buildLensGameScene();
     }
+
+    // Getter for the instructions scene (creates it if not yet created)
     public static Scene getLensGameInstructionsScene() {
         if (lensGameInstructionsScene == null) {
-            lensGameInstructionsScene = new LensGameMain(stage).buildLensGameInstructions();
+            lensGameInstructionsScene = new LensGameMainUIsetup(stage).buildLensGameInstructions();
         }
         return lensGameInstructionsScene;
     }
-
-
-
 }

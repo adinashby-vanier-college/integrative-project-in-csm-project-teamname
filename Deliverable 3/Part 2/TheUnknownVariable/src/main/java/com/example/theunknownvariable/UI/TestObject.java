@@ -1,4 +1,5 @@
 package com.example.theunknownvariable.UI;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Slider;
@@ -20,25 +21,16 @@ public class TestObject {
     private static final double SLIDER_MAX = 1100;
     private static Circle movingCircle = new Circle(CIRCLE_RADIUS, Color.rgb(214,182,144));
     public static Slider positionSlider = new Slider(SLIDER_MIN, SLIDER_MAX, (LINE_LENGTH / 2)+100);
-
-
-
-    public Slider getPositionSlider(){
+//private Rays rays = new Rays();
+    private Rays rays;
+    public Slider getPositionSlider() {
         return positionSlider;
     }
-    public HBox getSliderBox(){
-        // Slider
-//        positionSlider.getStylesheets().add("C:\\Users\\maria\\IdeaProjects\\LensGameGUI\\src\\main\\resources\\Styles\\LensGameStyle.css");
-//        positionSlider.getStylesheets().add(
-//                new File("Styles/LensGameStyle.css").toString()
-//        );
 
-
-
+    public HBox getSliderBox() {
         positionSlider.getStylesheets().add(
                 getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
         );
-
 
         positionSlider.setMinWidth(770);
         positionSlider.setMaxWidth(770);
@@ -49,10 +41,11 @@ public class TestObject {
 
         return sliderbox;
     }
+
     public StackPane getObjectPane() {
         // Line
         Line line = new Line(0, LINE_Y, LINE_LENGTH, LINE_Y);
-        line.setStroke(Color.rgb(160,40,40));
+        line.setStroke(Color.rgb(160, 40, 40));
         line.setStrokeWidth(7);
         line.setStrokeLineCap(StrokeLineCap.ROUND);
 
@@ -60,14 +53,19 @@ public class TestObject {
         movingCircle.setCenterX(LINE_LENGTH / 2);
         movingCircle.setCenterY(LINE_Y);
 
-        positionSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            movingCircle.setTranslateX(newValue.doubleValue() - ((LINE_LENGTH / 2)+100));
-        });
+        rays = new Rays(positionSlider.getValue(), LINE_Y);
 
+        positionSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            movingCircle.setTranslateX(newValue.doubleValue() - ((LINE_LENGTH / 2) + 100));
+            rays.updateRays(newValue.doubleValue());
+        });
 
         // Layout
         StackPane layout = new StackPane(line, movingCircle);
         layout.setAlignment(Pos.CENTER);
+
+        // Add rays to the layout
+        layout.getChildren().add(rays.getRays());
         return layout;
     }
 }
