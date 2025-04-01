@@ -1,5 +1,6 @@
 package com.example.theunknownvariable.Controller;
 import com.example.theunknownvariable.UI.*;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -17,6 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class LensGameMain{
     static StackPane rootContainer = new StackPane();
@@ -35,13 +37,13 @@ public class LensGameMain{
         this.stage = stage;
     }
 
-    public void start(Stage stage) {
-        lensGameScene = buildLensGameScene();
-        lensGameInstructionsScene = buildLensGameInstructions();
-        stage.setScene(lensGameInstructionsScene);
-        stage.setTitle("LensUI Game");
-        stage.show();
-    }
+//    public void start(Stage stage) {
+//        lensGameScene = buildLensGameScene();
+//        lensGameInstructionsScene = buildLensGameInstructions();
+//        stage.setScene(lensGameInstructionsScene);
+//        stage.setTitle("LensUI Game");
+//        stage.show();
+//    }
 
 
     public Scene buildLensGameScene() {
@@ -162,7 +164,8 @@ public class LensGameMain{
         VBox foreground = new VBox(topBox, eyeNobjectBox,bottomBox);
 
         rootContainer = new StackPane(background, foreground);
-        return new Scene(rootContainer, 1366,768);
+        lensGameScene = new Scene(rootContainer, 1366,768);
+        return lensGameScene;
 
     }
     public void hoverBrightenessFX(Button button, ImageView imageView){
@@ -346,29 +349,24 @@ public class LensGameMain{
         attemptsLabel.setText("attempts: "+attempts+"/3");
         if (attempts == 3) {
             failure();
-            game1access = false;
-            game1clue = false;
+        }
+        else {
+            displayImage(lensGameScene, "wrongScenario.png",300,2,false);
         }
     }
     public void success(){
         game1access = false;
         game1clue = true;
         GameStateManager.getInstance().unlockClue1();
+        GameStateManager.getInstance().lockGame1();
 
-//        ChemUI chemUIojbect2 = new ChemUI(stage);
-//        chemUIojbect2.displayImage(buildLensGameScene(),"rightScenario.png",300,2,false);
-        MainPage mainPage = new MainPage(stage);
-        Scene scene = mainPage.displayMainPage();
-        switchScenes(scene);
+        displayImage(lensGameScene,"rightScenario.png",300,2,false);
     }
     public void failure(){
         game1access = false;
         game1clue = false;
-//        ChemUI chemUiObject = new ChemUI(stage);
-//        chemUiObject.displayImage(buildLensGameScene(), "wrongScenario.png",300,2,false);
-        MainPage mainPage = new MainPage(stage);
-        Scene scene = mainPage.displayMainPage();
-        switchScenes(scene);
+        GameStateManager.getInstance().lockGame1();
+        displayImage(lensGameScene,"gameOver.png",800,5,true);
     }
 
     public static boolean isGame1access() {
@@ -393,6 +391,46 @@ public class LensGameMain{
         return lensGameInstructionsScene;
     }
 
+
+
+
+
+
+
+
+    public void displayImage(Scene scene, String imageUrl,int width,int time,boolean flag) {
+        // Create image view
+        Image image = new Image(imageUrl);
+        ImageView imageView = new ImageView(image);
+
+        // Center the image
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(width);
+        imageView.setX((scene.getWidth() - imageView.getFitWidth()) / 2);
+        imageView.setY((scene.getHeight() - imageView.getFitHeight()) / 2);
+
+        // Create a container that will overlay everything
+        StackPane overlayPane = new StackPane();
+        overlayPane.setStyle("-fx-background-color: rgba(0,0,0,0.5);"); // Semi-transparent background
+        overlayPane.getChildren().add(imageView);
+
+        // Add to scene
+        if (scene.getRoot() instanceof Pane) {
+            Pane root = (Pane) scene.getRoot();
+            root.getChildren().add(overlayPane);
+
+            // Set up removal after 3 seconds
+            PauseTransition delay = new PauseTransition(Duration.seconds(time));
+            delay.setOnFinished(event -> {
+                root.getChildren().remove(overlayPane);
+                if (flag) {
+                    MainPage mainPage = new MainPage(stage);
+                    switchScenes(mainPage.displayMainPage());
+                }
+            });
+            delay.play();
+        }
+    }
 
 
 }
