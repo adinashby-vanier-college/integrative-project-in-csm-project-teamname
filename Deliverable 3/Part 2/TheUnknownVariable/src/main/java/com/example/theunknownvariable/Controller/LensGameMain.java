@@ -25,6 +25,9 @@ public class LensGameMain{
     static StackPane rootContainer = new StackPane();
     private static Scene lensGameScene;
     private static Scene lensGameInstructionsScene;
+    private HBox lensContainer = new HBox();
+    private LensUI currentLens = null;
+
     private static Stage stage;
     public static boolean game1access = true;
     public static boolean game1clue = false;
@@ -106,11 +109,17 @@ public class LensGameMain{
         EyeUI eye = new EyeUI();
         VBox eyeBox = eye.getEyeBox();
 
-        //Empty rectangle container for lens
+        //Rectangle container for lens
+        lensContainer.setScaleX(1.7);
+        lensContainer.setScaleY(1.7);
         Rectangle rect = getPrescriptionLensRect();
-        HBox rectBox = new HBox(30, rect);
-        rectBox.setPadding(new Insets(0,0,0,250));
+
+        StackPane rectBox = new StackPane(rect, lensContainer);
         rectBox.setAlignment(Pos.CENTER_LEFT);
+        rectBox.setPadding(new Insets(0, 0, 0, 250));
+        lensContainer.setAlignment(Pos.CENTER);
+        lensContainer.setPadding(new Insets(70,450,0,0));
+
 
         StackPane mainAxis = new StackPane(eyeBox, testObjectContainer, rectBox);
 
@@ -296,25 +305,39 @@ public class LensGameMain{
 
 
     public void addLens(Double powerAns){
-        if (powerAns<0){
-            addConvergingLens();
-        }else{
+        if (powerAns < 0){
             addDivergingLens();
+        } else {
+            addConvergingLens();
         }
-
     }
-    public void addConvergingLens(){
 
-    }
-    public void addDivergingLens(){
+    public void addConvergingLens() {
+        lensContainer.getChildren().clear();
+        currentLens = new LensUI("c");
 
+        if (currentLens.getLensContainer() == null) {
+           //debugging
+           System.out.println("Error: Lens container is null!");
+        } else {
+            lensContainer.getChildren().add(currentLens.getLensContainer());
+        }
     }
+
+
+    public void addDivergingLens() {
+        lensContainer.getChildren().clear(); // remove previous lens
+        currentLens = new LensUI("d");
+        lensContainer.getChildren().addAll(currentLens.getLensContainer());
+    }
+
+
 
     public void answerChecker(Double powerAns) {
         Double lowerLimit = -1 / 0.245;
         Double upperLimit = -1 / 0.335;
 
-        if (powerAns >= upperLimit && powerAns <= lowerLimit) {
+        if (powerAns <= upperLimit && powerAns >= lowerLimit) {
             success();
         } else {
             updateAttempts();
@@ -354,7 +377,6 @@ public class LensGameMain{
     }
 
     public void switchScenes(Scene scene) {
-        // Switch to the specified scene
         stage.setScene(scene);
         stage.centerOnScreen();
     }
