@@ -13,7 +13,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+//This class contains the interface of the main page, where games and clues are found
 public class MainPage {
+
+    //Buttons
     private Button g1Button;
     private Button g2Button;
     private Button g3Button;
@@ -21,11 +24,15 @@ public class MainPage {
     private Button menuButton;
     private Button cluesButton;
 
+    //Stage
     private Stage stage;
 
+    //Constructor
     public MainPage(Stage stage){
         this.stage = stage;
     }
+
+    //Scene of the interface
     public Scene displayMainPage(){
         //Buttons
         g1Button = buttonCustomization("g1");
@@ -63,7 +70,12 @@ public class MainPage {
         return new Scene(pane,1366,768);
     }
 
+    //Handles the intercation with interface's components
     public void eventHandling(){
+        /*
+        For each game, check if it game is unlocked (never completed before) and proceed
+        switch to the game scene
+         */
         //Switch to game 1
         g1Button.setOnAction(event->{
             if(!GameStateManager.getInstance().isGame1Locked()){
@@ -113,11 +125,14 @@ public class MainPage {
         });
     }
 
+    //Method that switch scenes
     public void switchScenes(Scene scene) {
         // Switch to the specified scene
         stage.setScene(scene);
         stage.centerOnScreen();
     }
+
+    //Customize buttons' style and effects
     public Button buttonCustomization(String button){
         Button empty = new Button();
         switch (button) {

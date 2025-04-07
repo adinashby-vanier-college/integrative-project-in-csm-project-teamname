@@ -14,8 +14,10 @@ public class GameStateManager {
     private boolean game3Locked = false;
     private boolean game4Locked = false;
 
+    //Singleton class that constantly looks for the games' progress (one instance through the game)
     private GameStateManager() {}
 
+    //Unique instance of the method - getter
     public static GameStateManager getInstance() {
         if (instance == null) {
             instance = new GameStateManager();
@@ -23,72 +25,58 @@ public class GameStateManager {
         return instance;
     }
 
-    //Check if clue is unlocked
+    //Check if clue is unlocked for each game
     public void unlockClue1() {
         clue1Unlocked = true;
     }
-    //Check if clue is unlocked
     public void unlockClue2() {
         clue2Unlocked = true;
     }
-    //Check if clue is unlocked
-    public void unlockClue3() {
-        clue3Unlocked = true;
-    }
-    //Check if clue is unlocked
+    public void unlockClue3() {clue3Unlocked = true;}
     public void unlockClue4() {
         clue4Unlocked = true;
     }
 
-    //Return if clue is unlocked
+    //Return if clue is unlocked for each game
     public boolean isClue1Unlocked() {
         return clue1Unlocked;
     }
-    //Return if clue is unlocked
     public boolean isClue2Unlocked() {
         return clue2Unlocked;
     }
-    //Return if clue is unlocked
     public boolean isClue3Unlocked() {
         return clue3Unlocked;
     }
-    //Return if clue is unlocked
     public boolean isClue4Unlocked() {
         return clue4Unlocked;
     }
 
 
 
-    //Check if game is unlocked
+    //Check if game is unlocked for each game
     public void lockGame1() {
         game1Locked = true;
     }
-    //Check if clue is unlocked
     public void lockGame2() {
         game2Locked = true;
     }
-    //Check if clue is unlocked
     public void lockGame3() {
         game3Locked = true;
     }
-    //Check if clue is unlocked
     public void lockGame4() {
         game4Locked = true;
     }
 
-    //Return if clue is unlocked
+    //Return if game is unlocked
     public boolean isGame1Locked() {
         return game1Locked;
     }
-    //Return if clue is unlocked
     public boolean isGame2Locked() {
         return game2Locked;
     }
-    //Return if clue is unlocked
     public boolean isGame3Locked() {
         return game3Locked;
     }
-    //Return if clue is unlocked
     public boolean isGame4Locked() {
         return game4Locked;
     }

@@ -37,7 +37,7 @@ public class SuspectUI extends StackPane {
         StackPane root = new StackPane();
         root.setPrefSize(1366, 768);
 
-        Image backgroundImage = new Image("/suspectBackground.png");
+        Image backgroundImage = new Image("/suspectBackground.jpg");
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(1390);
         backgroundView.setFitHeight(790);

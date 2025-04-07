@@ -28,7 +28,9 @@ import javafx.scene.media.Media;
 import java.io.File;
 import java.util.Random;
 
+//This class contains the interface of game 3 chemistry and basic actions related to the interface components
 public class ChemUI {
+
     //Buttons Variables
     private Button sub1Button;
     private Button sub2Button;
@@ -72,10 +74,12 @@ public class ChemUI {
     private Stage stage;
     private Scene gameScene;
 
+    //Constructor
     public ChemUI(Stage stage){
         this.stage = stage;
     }
 
+    //Customize buttons' style and effects
     public Button buttonCustomization(String button){
         //----------Buttons------------
         Button empty = new Button();
@@ -218,6 +222,8 @@ public class ChemUI {
         }
 
     }
+
+    //Interface of instructions scene
     public Scene displayInstructions(){
         //Background png
         Image background = new Image("instructionsBackground.png");
@@ -243,6 +249,7 @@ public class ChemUI {
 
     }
 
+    //Interface of hint window
     public Scene displayHint(){
         //Background png
         Image background = new Image("hintBackground.png");
@@ -256,6 +263,7 @@ public class ChemUI {
         return new Scene(stack,1000,620);
     }
 
+    //Interface of the chemistry game
     public Scene displayGame(){
 
         //Buttons
@@ -274,13 +282,16 @@ public class ChemUI {
         Image background = new Image("background.png");
         ImageView backgroundView = new ImageView(background);
 
-        //Tracking user's progress UI
+        //----------Tracking user's progress UI------------
+        //Right answer png
         ImageView rightAnsView = new ImageView(new Image("rightAnswers.png"));
         rightAnsView.setFitHeight(70);
         rightAnsView.setPreserveRatio(true);
+        //Wrong answer png
         ImageView wrongAnsView = new ImageView(new Image("wrongAnswers.png"));
         wrongAnsView.setFitHeight(76);
         wrongAnsView.setPreserveRatio(true);
+        //Labels
         rightAnswers = new Label("0/3");
         rightAnswers.setStyle("-fx-text-fill:white;-fx-font-size:19px;-fx-font-family:'Verdana';");
         wrongAnswers = new Label("0/3");
@@ -296,16 +307,15 @@ public class ChemUI {
         VBox sepVBox = new VBox(separator);
         sepVBox.setAlignment(Pos.CENTER);
 
-        // Initialize graph
+        //-------Initialization--------
+        //Initialize graph
         graph = new EnthalpyGraph();
-
         //Initialize clues scene
         clues = new Clues(stage);
-
-        // Initialize reaction handler and pass the graph
+        //Initialize reaction handler and pass the graph
         reactionHandler = new ReactionHandler(graph);
 
-        // Create ReactionHandler and set the becker
+        //Create ReactionHandler and set the becker
         becker = getBeckerImageView();
         reactionHandler = new ReactionHandler(graph);
         reactionHandler.setBecker(becker);
@@ -326,6 +336,7 @@ public class ChemUI {
 
         VBox tube1 = new VBox(displayTube1());
         tube1.setAlignment(Pos.BOTTOM_CENTER);
+
         HBox tubeGroup1 = new HBox(30,buttonGroup1, tube1);
         tubeGroup1.setAlignment(Pos.CENTER_RIGHT);
 
@@ -335,6 +346,7 @@ public class ChemUI {
 
         VBox tube2 = new VBox(displayTube2());
         tube2.setAlignment(Pos.BOTTOM_CENTER);
+
         HBox tubeGroup2 = new HBox(30, tube2,buttonGroup2);
         tubeGroup2.setAlignment(Pos.CENTER_LEFT);
 
@@ -366,7 +378,6 @@ public class ChemUI {
         VBox hintVBox = new VBox(hintButton,menuButton);
         hintVBox.setAlignment(Pos.CENTER_RIGHT);
 
-        //TryButton
 
         //Information layout (lower half)
         HBox graphInfo = new HBox(50,graphHBox,infoVBox);
@@ -386,8 +397,7 @@ public class ChemUI {
         return gameScene;
     }
 
-
-
+    //Interface of information boxes and labels
     public VBox displayInfo() {
         // Get existing labels from ReactionHandler (instead of creating new ones)
         Label formulaLabel = reactionHandler.getFormulaLabel();
@@ -398,8 +408,7 @@ public class ChemUI {
         return new VBox(20, formulaLabel, energyTypeLabel, factLabel);
     }
 
-
-
+    //Tube 1 appearance
     public ImageView displayTube1() {
         tube1ImageView = new ImageView(new Image("tubeFINAL.png"));
         tube1ImageView.setFitHeight(320);
@@ -407,6 +416,7 @@ public class ChemUI {
         return tube1ImageView;
     }
 
+    //Tube 2 appearance
     public ImageView displayTube2() {
         tube2ImageView = new ImageView(new Image("tubeFINAL.png"));
         tube2ImageView.setFitHeight(320);
@@ -415,15 +425,17 @@ public class ChemUI {
         return tube2ImageView;
     }
 
+    //Handling the events of the game interface's buttons
     public void eventHandling() {
-        // Switch to main page
+
+        //Menu button: switch to main page
         menuButton.setOnAction(event -> {
             MainPage mainPage = new MainPage(stage);
             Scene scene = mainPage.displayMainPage();
             switchScenes(scene);
         });
 
-        // Hint Button
+        //Hint button: display hint
         hintButton.setOnAction(event -> {
             Stage hintStage = new Stage();
             Scene scene = displayHint();
@@ -432,68 +444,75 @@ public class ChemUI {
             hintStage.showAndWait();
         });
 
-        // Group 1 Buttons
+        //Group 1 buttons for toggling effect
         handleButtonClick(sub1Button, 1, 0, true);
         handleButtonClick(sub2Button, 2, 0, true);
         handleButtonClick(sub3Button, 3, 0, true);
 
-        // Group 2 Buttons
+        //Group 2 buttons for toggling effect
         handleButtonClick(sub4Button, 0, 1, false);
         handleButtonClick(sub5Button, 0, 2, false);
         handleButtonClick(sub6Button, 0, 3, false);
 
-        // Mix Button
+        //Mix button: calls the method that handles the reaction
         mixButton.setOnAction(event -> {
-            reactionHandler.mix(); // This updates reactionNb
+            reactionHandler.mix();
             graph.plotReaction(reactionHandler.getReactionNb());
         });
 
-        // Try Button
+        //Try button: calls the reaction handler method and submit answer to game system
         tryButton.setOnAction(event ->{
-            reactionHandler.mix(); // This updates reactionNb
+            reactionHandler.mix();
             graph.plotReaction(reactionHandler.getReactionNb());
+            //Check if the reaction is correct
             if(reactionHandler.checkUserAnswer()==0){
                 rightAnsNb+=1;
                 rightAnswers.setText(rightAnsNb+"/3");
                 displayImage(gameScene,"rightScenario.png",300,2,false);
             }
+            //Check if the reaction is incorrect
             else if(reactionHandler.checkUserAnswer()==2){
                 displayImage(gameScene, "wrongScenario.png",300,2,false);
                 wrongAnsNb+=1;
                 wrongAnswers.setText(wrongAnsNb+"/3");
             }
+            //Check if user got all the good answers
             if (rightAnsNb==3){
                 GameStateManager.getInstance().unlockClue3();
+                GameStateManager.getInstance().lockGame3();
                 displayImage(gameScene,"clueScene.png",800,5,true);
             }
+            //Check if user used 3 wrong attempts
             if (wrongAnsNb==3){
+                GameStateManager.getInstance().lockGame3();
                 displayImage(gameScene,"gameOver.png",800,5,true);
             }
         });
     }
 
+    //Method to display image depending on outcome of the users' progress
     public void displayImage(Scene scene, String imageUrl,int width,int time,boolean flag) {
-        // Create image view
+        // Image view
         Image image = new Image(imageUrl);
         ImageView imageView = new ImageView(image);
 
-        // Center the image
+        //Center the image
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(width);
         imageView.setX((scene.getWidth() - imageView.getFitWidth()) / 2);
         imageView.setY((scene.getHeight() - imageView.getFitHeight()) / 2);
 
-        // Create a container that will overlay everything
+        //Container
         StackPane overlayPane = new StackPane();
         overlayPane.setStyle("-fx-background-color: rgba(0,0,0,0.5);"); // Semi-transparent background
         overlayPane.getChildren().add(imageView);
 
-        // Add to scene
+        //Add to scene
         if (scene.getRoot() instanceof Pane) {
             Pane root = (Pane) scene.getRoot();
             root.getChildren().add(overlayPane);
 
-            // Set up removal after 3 seconds
+            //Remove image after time ends
             PauseTransition delay = new PauseTransition(Duration.seconds(time));
             delay.setOnFinished(event -> {
                 root.getChildren().remove(overlayPane);

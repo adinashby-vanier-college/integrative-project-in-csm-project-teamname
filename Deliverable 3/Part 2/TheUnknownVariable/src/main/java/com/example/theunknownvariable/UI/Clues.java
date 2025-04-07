@@ -29,14 +29,17 @@ public class Clues {
 
     private Stage stage;
 
+    //Constructor
     public Clues(Stage stage) {
         this.stage = stage;
 
+        //Initialize clue labels
         game1Clue = new Label("Clue starts here");
         game2Clue = new Label("Clue starts here");
         game3Clue = new Label("Clue starts here");
         game4Clue = new Label("Clue starts here");
 
+        //CSS for labels
         String style = "-fx-alignment: center;-fx-font-family: 'Georgia';" +
                 "-fx-font-weight: bold;-fx-font-size: 23;";
 
@@ -44,7 +47,8 @@ public class Clues {
         game2Clue.setStyle(style);
         game3Clue.setStyle(style);
         game4Clue.setStyle(style);
-        // Ensure the text inside the label is centered
+
+        //Ensure the text inside the label is centered
         game1Clue.setTextAlignment(TextAlignment.CENTER);
         game1Clue.setAlignment(Pos.CENTER);
 
@@ -60,23 +64,24 @@ public class Clues {
 
     }
 
+    //Clues scene interface
     public Scene displayClues() {
-        // Buttons
+        //Buttons
         menuButton = getMenuButton();
         eventHandling();
 
-        // Background
+        //Background
         Image background = new Image("vintageBackground.jpg");
         ImageView backgroundView = new ImageView(background);
         backgroundView.setFitHeight(768);
         backgroundView.setPreserveRatio(true);
 
-        // -------- Layout --------
-        // Button
+        //-------- Layout --------
+        //Button
         VBox menuVBox = new VBox(menuButton);
         menuVBox.setAlignment(Pos.BOTTOM_RIGHT);
 
-        // Labels
+        //Labels: The clues' content
         if (GameStateManager.getInstance().isClue1Unlocked()) {
             game1Clue.setText("Based on the\nlens power,\nour killer seems\nto be myopic...");
         }
@@ -91,6 +96,8 @@ public class Clues {
         if (GameStateManager.getInstance().isClue4Unlocked()) {
             game4Clue.setText("Sara's clue");
         }
+
+        //Clues layout
         VBox gameLabel1 = new VBox(game1Clue);
         gameLabel1.setAlignment(Pos.CENTER);
         VBox gameLabel2 = new VBox(game2Clue);
@@ -100,15 +107,16 @@ public class Clues {
         VBox gameLabel4 = new VBox(game4Clue);
         gameLabel4.setAlignment(Pos.CENTER);
 
-        // HBox for clues
+        //HBox for clues
         HBox clueLabelsHBox = new HBox(108, gameLabel1, gameLabel2, gameLabel3, gameLabel4);
         clueLabelsHBox.setAlignment(Pos.CENTER);
 
-        // VBox wrapper to shift it lower
+        //VBox wrapper to shift it lower
         VBox clueContainer = new VBox(clueLabelsHBox);
         clueContainer.setAlignment(Pos.CENTER);
-        clueContainer.setTranslateY(100); // Moves it 50 pixels down
+        clueContainer.setTranslateY(100);
 
+        //Menu Button layout
         StackPane menuPosition = new StackPane(menuButton);
         menuPosition.setAlignment(Pos.BOTTOM_RIGHT);
 
@@ -116,6 +124,7 @@ public class Clues {
         return new Scene(pane, 1366, 768);
     }
 
+    //Button customization
     public Button getMenuButton(){
         //Home menu button
         Image menuImage = new Image("menu3.png");
@@ -129,6 +138,7 @@ public class Clues {
         return menuButton;
     }
 
+    //Handles switching scenes to menu page
     public void eventHandling(){
         //Switch to game 3
         menuButton.setOnAction(event->{
@@ -138,8 +148,9 @@ public class Clues {
         });
     }
 
+    //Method to switch scenes
     public void switchScenes(Scene scene) {
-        // Switch to the specified scene
+        //Switch to the specified scene
         stage.setScene(scene);
         stage.centerOnScreen();
     }
