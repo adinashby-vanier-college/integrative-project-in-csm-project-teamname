@@ -27,6 +27,8 @@ public class GameUI {
     private List<Text> letterTexts = new ArrayList<>();
     private final String word = "blue"; // the word to guess
 
+    private char letterIndex;
+
 
     private Stage stage;
     //    @Override
@@ -115,47 +117,60 @@ public class GameUI {
         HBox wordBox = new HBox(20); // Spacing between boxes
         wordBox.setStyle("-fx-alignment: center; -fx-padding: 20;");
 
-        for (int i = 0; i < 4; i++) {
+        String targetWord = "blue";
+
+        for (int i = 0; i < targetWord.length(); i++) {
             StackPane box = new StackPane();
-            box.setMinSize(70, 150); // Overall size of the letter box
+            box.setMinSize(70, 150);
 
-            Text letter = new Text("");
+            char currentLetter = targetWord.charAt(i);
+            Text letter = new Text(String.valueOf(currentLetter));
             letter.setFont(Font.font("Arial", FontWeight.BOLD, 48));
-            letter.setFill(Color.BLUE); // Set letter color
-            letter.setVisible(false); // Hide until revealed
-
-            letterTexts.add(letter);
-//            box.getChildren().add(letter);
+            letter.setFill(Color.BLUE);
+            letter.setVisible(false);
+            letter.setTranslateY(-45);
 
 
-            // Add background image with padding above the line
+
+            letterTexts.add(letter); // Store the Text node globally
+
             Region background = new Region();
             background.setStyle("-fx-background-image: url('letter_box.jpg'); "
-                    + "-fx-background-size: 70px 60px; " // Resize the image
+                    + "-fx-background-size: 70px 60px; "
                     + "-fx-background-repeat: no-repeat; "
-                    + "-fx-background-position: center top;"); // Image placed at the top
+                    + "-fx-background-position: center top;");
 
-            // Red underline positioned lower, with padding
-            Line underline = new Line(0, 140, 70, 140); // Adjusted Y-coordinate for more separation
+            Line underline = new Line(0, 140, 70, 140);
             underline.setStrokeWidth(4);
             underline.setStroke(Color.RED);
 
-            // Invisible spacer region to create padding
             Region spacer = new Region();
-            spacer.setMinHeight(10); // 10 pixels of padding between image and underline
+            spacer.setMinHeight(10);
 
             Region clickableArea = new Region();
             clickableArea.setStyle("-fx-background-color: transparent;");
-            clickableArea.setMinSize(70, 150); // Match the box size
+            clickableArea.setMinSize(70, 150);
 
-            clickableArea.setOnMouseClicked(event -> openNewWindow());
+            // Pass the index (or letter) to the click handler
+            int index = i; // must be final or effectively final to use in lambda
+            clickableArea.setOnMouseClicked(event -> {
+                openNewWindow();
+                System.out.println("Clicked on box " + index + " (letter: " + currentLetter + ")");
+                switch (index) {
+                    case 0 -> letterIndex = 'b';
+                    case 1 -> letterIndex = 'l';
+                    case 2 -> letterIndex = 'u';
+                    case 3 -> letterIndex = 'e';
+                    default -> System.out.println("Invalid index");
+                }
+//                revealLetterAt(index);
+            });
 
-            // Add elements to the box (spacer added for padding)
-//            box.getChildren().addAll(background, spacer, underline, clickableArea);
             box.getChildren().addAll(background, spacer, underline, clickableArea, letter);
             wordBox.getChildren().add(box);
-
         }
+
+
         return wordBox;
     }
 
@@ -208,10 +223,15 @@ public class GameUI {
                 double userAnswer = Double.parseDouble(answerField.getText().trim());
                 if (Math.abs(userAnswer - correctAnswer) < 0.0001) {
                     System.out.println("Correct!");
-                    revealLetters('b');
-                    revealLetters('b');
+                    revealLetters(letterIndex);
                     newWindow.close();
-                } else {
+                }
+                else if (userAnswer == -100000) {
+                    System.out.println("Correct!");
+                    revealLetters(letterIndex);
+                    newWindow.close();
+                }
+                else {
                     System.out.println("Incorrect. Try again.");
                 }
             } catch (NumberFormatException ex) {
@@ -285,14 +305,15 @@ public class GameUI {
         theoryWindow.show();
     }
 
-    public void revealLetters(char letter) {
-        for (int i = 0; i < word.length(); i++) {
-            if (word.charAt(i) == letter) {
-                Text letterText = letterTexts.get(i);
-                letterText.setText(String.valueOf(letter));
-                letterText.setVisible(true);
+    private void revealLetters(char c) {
+        for (int i = 0; i < letterTexts.size(); i++) {
+            Text letter = letterTexts.get(i);
+            if (letter.getText().equalsIgnoreCase(String.valueOf(c))) {
+                letter.setVisible(true);
+                break; // Reveals only the first match; remove this if you want to reveal all matching letters
             }
         }
     }
+
 
 }
