@@ -1,8 +1,6 @@
 package com.example.theunknownvariable.Controller;
-import com.example.theunknownvariable.UI.RulerMarker;
-import com.example.theunknownvariable.UI.TestObject;
-import com.example.theunknownvariable.UI.EyeUI;
-import com.example.theunknownvariable.UI.MainPage;
+import com.example.theunknownvariable.UI.*;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -12,6 +10,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -19,24 +18,32 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class LensGameMain{
     static StackPane rootContainer = new StackPane();
     private static Scene lensGameScene;
     private static Scene lensGameInstructionsScene;
+    private HBox lensContainer = new HBox();
+    private LensUI currentLens = null;
+
     private static Stage stage;
+    public static boolean game1access = true;
+    public static boolean game1clue = false;
+    private static int attempts = 0;
+    private static Label attemptsLabel = new Label("attempts: 0/3");;
 
     public LensGameMain(Stage stage){
         this.stage = stage;
     }
 
-    public void start(Stage stage) {
-        lensGameScene = buildLensGameScene();
-        lensGameInstructionsScene = buildLensGameInstructions();
-        stage.setScene(lensGameInstructionsScene);
-        stage.setTitle("LensUI Game");
-        stage.show();
-    }
+//    public void start(Stage stage) {
+//        lensGameScene = buildLensGameScene();
+//        lensGameInstructionsScene = buildLensGameInstructions();
+//        stage.setScene(lensGameInstructionsScene);
+//        stage.setTitle("LensUI Game");
+//        stage.show();
+//    }
 
 
     public Scene buildLensGameScene() {
@@ -76,7 +83,7 @@ public class LensGameMain{
         hintButton.setOnAction(event -> {
             Stage hintStage = new Stage();
             hintStage.setScene(getHintScene());
-            hintStage.setTitle("LensUI Game Hint");
+            hintStage.setTitle("Lens Game Hint");
             hintStage.showAndWait();
         });
         hintButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
@@ -93,17 +100,25 @@ public class LensGameMain{
 
         //test object
         TestObject testObject = new TestObject();
-        StackPane testObjectContainer = testObject.getObjectPane();
+        //StackPane testObjectContainer = testObject.getObjectPane();
+        Pane testObjectContainer = testObject.getObjectPane();
+
 
         //eye
         EyeUI eye = new EyeUI();
         VBox eyeBox = eye.getEyeBox();
 
-        //Empty rectangle container for lens
+        //Rectangle container for lens
+        lensContainer.setScaleX(1.7);
+        lensContainer.setScaleY(1.7);
         Rectangle rect = getPrescriptionLensRect();
-        HBox rectBox = new HBox(30, rect);
-        rectBox.setPadding(new Insets(0,0,0,250));
+
+        StackPane rectBox = new StackPane(rect, lensContainer);
         rectBox.setAlignment(Pos.CENTER_LEFT);
+        rectBox.setPadding(new Insets(0, 0, 0, 250));
+        lensContainer.setAlignment(Pos.CENTER);
+        lensContainer.setPadding(new Insets(70,450,0,0));
+
 
         StackPane mainAxis = new StackPane(eyeBox, testObjectContainer, rectBox);
 
@@ -149,7 +164,8 @@ public class LensGameMain{
         VBox foreground = new VBox(topBox, eyeNobjectBox,bottomBox);
 
         rootContainer = new StackPane(background, foreground);
-        return new Scene(rootContainer, 1366,768);
+        lensGameScene = new Scene(rootContainer, 1366,768);
+        return lensGameScene;
 
     }
     public void hoverBrightenessFX(Button button, ImageView imageView){
@@ -169,10 +185,10 @@ public class LensGameMain{
         return  prescriptionLensRect;
     }
     public HBox getTopContainer(){
-        Button addLensButton = new Button("Add LensUI");
-        addLensButton.getStylesheets().add(
-                getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
-        );
+        attemptsLabel.setStyle("-fx-font-family: \"Times New Roman\";\n" +
+                "    -fx-font-size: 20px;\n" +
+               // "    -fx-font-weight: bold;\n" +
+                "    -fx-text-fill: rgb(241, 226, 221);");
         Label answerLabel = new Label("Enter eye prescription:");
         answerLabel.getStylesheets().add(
                 getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
@@ -186,8 +202,19 @@ public class LensGameMain{
                 answerTextField.setText(oldText);  // Revert to old text if invalid input
             }
         });
+        Button addLensButton = new Button("Add Lens");
+        addLensButton.setOnAction(event -> {
+            double answerValue = Double.parseDouble(answerTextField.getText());
+            addLens(answerValue);
+            answerChecker(answerValue);
 
-        HBox box = new HBox(20, answerLabel, answerTextField, addLensButton);
+        });
+        addLensButton.getStylesheets().add(
+                getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
+        );
+        HBox addNattempt = new HBox(5,addLensButton,attemptsLabel);
+        addNattempt.setAlignment(Pos.CENTER);
+        HBox box = new HBox(20, answerLabel, answerTextField, addNattempt);
         box.setAlignment(Pos.CENTER);
         return box;
 
@@ -275,8 +302,82 @@ public class LensGameMain{
         lensGameInstructionsScene = new Scene(root,1366,768);
         return lensGameInstructionsScene;
     }
+
+
+    public void addLens(Double powerAns){
+        if (powerAns < 0){
+            addDivergingLens();
+        } else {
+            addConvergingLens();
+        }
+    }
+
+    public void addConvergingLens() {
+        lensContainer.getChildren().clear();
+        currentLens = new LensUI("c");
+
+        if (currentLens.getLensContainer() == null) {
+           //debugging
+           System.out.println("Error: Lens container is null!");
+        } else {
+            lensContainer.getChildren().add(currentLens.getLensContainer());
+        }
+    }
+
+
+    public void addDivergingLens() {
+        lensContainer.getChildren().clear(); // remove previous lens
+        currentLens = new LensUI("d");
+        lensContainer.getChildren().addAll(currentLens.getLensContainer());
+    }
+
+
+
+    public void answerChecker(Double powerAns) {
+        Double lowerLimit = -1 / 0.245;
+        Double upperLimit = -1 / 0.335;
+
+        if (powerAns <= upperLimit && powerAns >= lowerLimit) {
+            success();
+        } else {
+            updateAttempts();
+        }
+    }
+
+    public void updateAttempts(){
+        attempts++;
+        attemptsLabel.setText("attempts: "+attempts+"/3");
+        if (attempts == 3) {
+            failure();
+        }
+        else {
+            displayImage(lensGameScene, "wrongScenario.png",300,2,false);
+        }
+    }
+    public void success(){
+        game1access = false;
+        game1clue = true;
+        GameStateManager.getInstance().unlockClue1();
+        GameStateManager.getInstance().lockGame1();
+
+        displayImage(lensGameScene,"rightScenario.png",300,2,false);
+    }
+    public void failure(){
+        game1access = false;
+        game1clue = false;
+        GameStateManager.getInstance().lockGame1();
+        displayImage(lensGameScene,"gameOver.png",800,5,true);
+    }
+
+    public static boolean isGame1access() {
+        return game1access;
+    }
+
+    public static boolean isGame1clue() {
+        return game1clue;
+    }
+
     public void switchScenes(Scene scene) {
-        // Switch to the specified scene
         stage.setScene(scene);
         stage.centerOnScreen();
     }
@@ -290,6 +391,46 @@ public class LensGameMain{
         return lensGameInstructionsScene;
     }
 
+
+
+
+
+
+
+
+    public void displayImage(Scene scene, String imageUrl,int width,int time,boolean flag) {
+        // Create image view
+        Image image = new Image(imageUrl);
+        ImageView imageView = new ImageView(image);
+
+        // Center the image
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(width);
+        imageView.setX((scene.getWidth() - imageView.getFitWidth()) / 2);
+        imageView.setY((scene.getHeight() - imageView.getFitHeight()) / 2);
+
+        // Create a container that will overlay everything
+        StackPane overlayPane = new StackPane();
+        overlayPane.setStyle("-fx-background-color: rgba(0,0,0,0.5);"); // Semi-transparent background
+        overlayPane.getChildren().add(imageView);
+
+        // Add to scene
+        if (scene.getRoot() instanceof Pane) {
+            Pane root = (Pane) scene.getRoot();
+            root.getChildren().add(overlayPane);
+
+            // Set up removal after 3 seconds
+            PauseTransition delay = new PauseTransition(Duration.seconds(time));
+            delay.setOnFinished(event -> {
+                root.getChildren().remove(overlayPane);
+                if (flag) {
+                    MainPage mainPage = new MainPage(stage);
+                    switchScenes(mainPage.displayMainPage());
+                }
+            });
+            delay.play();
+        }
+    }
 
 
 }

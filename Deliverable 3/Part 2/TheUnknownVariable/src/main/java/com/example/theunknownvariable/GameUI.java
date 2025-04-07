@@ -1,5 +1,6 @@
 package com.example.theunknownvariable;// GameUI.java
 // GameUI.java
+import com.example.theunknownvariable.UI.Hangman;
 import com.example.theunknownvariable.UI.MainPage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

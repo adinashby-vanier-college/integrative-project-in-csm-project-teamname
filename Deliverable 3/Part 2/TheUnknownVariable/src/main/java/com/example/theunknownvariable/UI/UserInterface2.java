@@ -25,7 +25,7 @@ public class UserInterface2 extends StackPane {
     private Pane root;
     private Slider heightSlider;
     private Button menuButton, instructionsButton, playButton, submitButton, theoryButton;
-    private ImageView gunView, bulletView, paperView;
+    private ImageView gunView, bulletView, paperView, Tmotion;
     private int incorrectAttempts = 0; // Counter for incorrect attempts
     private TextField heightInput;
 
@@ -42,6 +42,10 @@ public class UserInterface2 extends StackPane {
 
         ImageView backgroundView = createImageView("/background.png", SCREEN_WIDTH, SCREEN_HEIGHT, false);
         root.getChildren().add(backgroundView);
+
+        Tmotion = createImageView("tmotion.png", 450, 100, true);
+        Tmotion.setLayoutX(SCREEN_WIDTH / 3);
+        Tmotion.setLayoutY(30);
 
         gunView = createImageView("/gun.png", 155, 155, true);
         gunView.setLayoutX(150);
@@ -88,7 +92,7 @@ public class UserInterface2 extends StackPane {
         vboxBottomRight.setLayoutY(SCREEN_HEIGHT - 250);
         vboxBottomRight.setAlignment(Pos.CENTER);
 
-        root.getChildren().addAll(heightSlider, gunView, targetView, lineView, vboxCenter, vboxBottomRight);
+        root.getChildren().addAll(heightSlider, gunView, targetView, lineView, vboxCenter, vboxBottomRight, Tmotion);
         getChildren().add(root);
 
     }

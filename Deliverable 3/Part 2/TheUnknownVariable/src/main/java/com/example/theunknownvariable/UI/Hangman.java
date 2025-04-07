@@ -1,4 +1,4 @@
-package com.example.theunknownvariable;
+package com.example.theunknownvariable.UI;
 // Hangman.java
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;

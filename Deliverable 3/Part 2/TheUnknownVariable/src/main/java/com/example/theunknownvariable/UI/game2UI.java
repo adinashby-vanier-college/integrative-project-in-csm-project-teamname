@@ -47,9 +47,9 @@ public class game2UI {
 
         // Load background image
         ImageView background = new ImageView(new Image(getClass().getResourceAsStream("/game2B.png")));
-        background.setFitWidth(850);
-        background.setFitHeight(650);
-        background.setPreserveRatio(false);
+        background.setFitWidth(640);
+        background.setFitHeight(440);
+        background.setPreserveRatio(true);
 
         VBox content = new VBox(20);
         content.setStyle("-fx-padding: 40px; -fx-alignment: center;");
@@ -85,7 +85,7 @@ public class game2UI {
         for (int i = 0; i < 4; i++) {
             buttons[i] = new RadioButton();
             buttons[i].setToggleGroup(optionsGroup);
-            buttons[i].setStyle("-fx-font-size: 16px; -fx-text-fill: #713939;");
+            buttons[i].setStyle("-fx-font-size: 16px; -fx-text-fill: #713939; -fx-font-weight: bold;");
         }
 
         return buttons;
