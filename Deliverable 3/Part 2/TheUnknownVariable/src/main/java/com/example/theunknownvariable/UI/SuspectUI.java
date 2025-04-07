@@ -1,12 +1,11 @@
-package com.example.theunknownvariable;
+package com.example.theunknownvariable.UI;
 
-import com.example.theunknownvariable.UI.HomePage;
+import com.example.theunknownvariable.Controller.SuspectReader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;

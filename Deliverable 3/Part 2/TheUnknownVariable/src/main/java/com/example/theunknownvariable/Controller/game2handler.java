@@ -8,33 +8,25 @@ public class game2handler {
     private boolean quizCompleted = false;
     private game2 quizData;
 
-    /**
-     * Initializes the quiz data and loads the first question.
-     */
+     //Initializes the quiz data and loads the first question.
     public game2handler() {
         quizData = new game2();
         quizData.loadQuestion(currentQuestionIndex);
     }
 
-    /**
-     * Retrieves the text of the current question.
-     */
+
+     //Retrieves the text of the current question.
     public String getQuestionText() {
         return quizData.getQuestionText();
     }
 
-    /**
-     * Retrieves the answer options for the current question.
-     */
+     //Retrieves the answer options for the current question.
     public String[] getOptions() {
         return quizData.getOptions();
     }
 
-    /**
-     * Checks if the selected answer is correct.
-     * @param selectedIndex The index of the selected answer.
-     * @return True if the answer is correct, otherwise false.
-     */
+
+     //Checks if the selected answer is correct.
     public boolean checkAnswer(int selectedIndex) {
         if (selectedIndex == quizData.getCorrectAnswerIndex()) {
             correctAnswersCount++;
@@ -43,10 +35,7 @@ public class game2handler {
         return false;
     }
 
-    /**
-     * Moves to the next question if available.
-     * @return True if there is another question, otherwise false.
-     */
+     //Moves to the next question if available.
     public boolean nextQuestion() {
         if (currentQuestionIndex < game2.QUESTIONS.length - 1) {
             currentQuestionIndex++;
@@ -58,23 +47,19 @@ public class game2handler {
         }
     }
 
-    /**
-     * Retrieves the number of correctly answered questions.
-     */
+
+     //Retrieves the number of correctly answered questions.
     public int getCorrectAnswersCount() {
         return correctAnswersCount;
     }
 
-    /**
-     * Checks if the quiz is completed.
-     */
+
+     //Checks if the quiz is completed.
     public boolean isQuizCompleted() {
         return quizCompleted;
     }
 
-    /**
-     * Retrieves the total number of questions in the quiz.
-     */
+     //Retrieves the total number of questions in the quiz.
     public int getTotalQuestions() {
         return game2.QUESTIONS.length;
     }
