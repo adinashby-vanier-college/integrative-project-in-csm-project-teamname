@@ -30,8 +30,6 @@ public class MathProblem {
         }
     }
 
-    // Optional: method to create and return a sample problem
-
     public static MathProblem generateMathProblem() {
         double[][] matrix = new double[3][3];
         Random random = new Random();
