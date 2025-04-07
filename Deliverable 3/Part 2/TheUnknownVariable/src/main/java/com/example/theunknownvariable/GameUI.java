@@ -7,11 +7,14 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import com.example.theunknownvariable.Model.MathProblem;
+
 
 public class GameUI {
 
@@ -169,28 +172,69 @@ public class GameUI {
         Stage newWindow = new Stage();
         newWindow.setTitle("Question Window");
 
+        // Sample matrix (3x3 for example)
+        MathProblem problem = MathProblem.generateMathProblem();
+        double[][] matrix = problem.getMatrix();
+
+        double correctAnswer = problem.calculateDeterminant();
+
         // Create a VBox layout for the content
-        VBox content = new VBox();
+        VBox content = new VBox(20);
         content.setStyle(
                 "-fx-background-image: url('background_game.png'); " +
                         "-fx-background-size: cover; "
         );
-        content.setPrefSize(1000, 620); // Set size of the window layout
+        content.setPrefSize(1000, 620);
         content.setPadding(new Insets(10));
-        content.setAlignment(Pos.CENTER); // Center align content
+        content.setAlignment(Pos.CENTER);
 
-        // Add the "Question 1" text
-        Label questionLabel = new Label("Question 1");
-        questionLabel.setStyle("-fx-text-fill: white; -fx-font-size: 36px; -fx-font-weight: bold;");
+        // Label for the question
+        Label questionLabel = new Label("What is the determinant of this matrix?");
+        questionLabel.setStyle("-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;");
 
-        // Add elements to the content layout
-        content.getChildren().add(questionLabel);
+        // Display the matrix as a GridPane
+        GridPane matrixGrid = new GridPane();
+        matrixGrid.setHgap(15);
+        matrixGrid.setVgap(15);
+        matrixGrid.setAlignment(Pos.CENTER);
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                Label cell = new Label(String.valueOf(matrix[i][j]));
+                cell.setStyle("-fx-text-fill: white; -fx-font-size: 24px;");
+                matrixGrid.add(cell, j, i);
+            }
+        }
 
-        // Create and set the scene
+        // TextField for user input
+        TextField answerField = new TextField();
+        answerField.setPromptText("Enter the determinant");
+        answerField.setMaxWidth(200);
+
+        // Button to submit the answer
+        Button submitButton = new Button("Submit");
+        submitButton.setOnAction(e -> {
+            try {
+                double userAnswer = Double.parseDouble(answerField.getText().trim());
+                if (Math.abs(userAnswer - correctAnswer) < 0.0001) {
+                    System.out.println("Correct!");
+                    newWindow.close();
+                } else {
+                    System.out.println("Incorrect. Try again.");
+                }
+            } catch (NumberFormatException ex) {
+                System.out.println("Please enter a valid number.");
+            }
+        });
+
+        // Add all elements to the layout
+        content.getChildren().addAll(questionLabel, matrixGrid, answerField, submitButton);
+
+        // Create and show the scene
         Scene scene = new Scene(content, 1000, 620);
         newWindow.setScene(scene);
         newWindow.show();
     }
+
 
 
     private VBox createBottomOptions() {
