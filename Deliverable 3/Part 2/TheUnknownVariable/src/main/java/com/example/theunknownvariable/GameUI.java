@@ -12,11 +12,21 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import com.example.theunknownvariable.Model.MathProblem;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class GameUI {
+
+    private List<Text> letterTexts = new ArrayList<>();
+    private final String word = "blue"; // the word to guess
+
 
     private Stage stage;
     //    @Override
@@ -91,7 +101,7 @@ public class GameUI {
         // Word Section (Right)
         HBox wordBox = createWordBoxes();
         root.setRight(wordBox);
-        BorderPane.setMargin(wordBox, new Insets(350, 50, 0, 20)); // Adjusted margin to balance layout
+        BorderPane.setMargin(wordBox, new Insets(350, 200, 0, 20)); // Adjusted margin to balance layout
 
         // Bottom Options
         VBox bottomOptions = createBottomOptions();
@@ -101,43 +111,22 @@ public class GameUI {
         return root;
     }
 
-
-//        // Main Pane
-//        BorderPane root = new BorderPane();
-//        root.setStyle("-fx-background-image: url('background_game.png'); -fx-background-size: cover;");
-//
-//        // Hangman Section
-//        Pane hangmanPane = new Pane();
-//        Hangman hangman = new Hangman(hangmanPane);
-//        root.setLeft(hangmanPane);
-//        BorderPane.setMargin(hangmanPane, new Insets(50));
-//
-//        // Word Section (Right)
-//        HBox wordBox = createWordBoxes();
-//        root.setRight(wordBox);
-//        BorderPane.setMargin(wordBox, new Insets(350, 50, 0, 20)); // Adjusted margin to balance layout
-//
-//
-//        // Bottom Options
-//        VBox bottomOptions = createBottomOptions();
-//        root.setBottom(bottomOptions);
-//        BorderPane.setMargin(bottomOptions, new Insets(0, 50, 200, 20)); // Reduced bottom margin
-//
-//
-//        // Main Scene
-//        Scene scene = new Scene(root, 1366, 768);
-//        primaryStage.setTitle("Hangman Game");
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
-//    }
-
     private HBox createWordBoxes() {
         HBox wordBox = new HBox(20); // Spacing between boxes
         wordBox.setStyle("-fx-alignment: center; -fx-padding: 20;");
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 4; i++) {
             StackPane box = new StackPane();
             box.setMinSize(70, 150); // Overall size of the letter box
+
+            Text letter = new Text("");
+            letter.setFont(Font.font("Arial", FontWeight.BOLD, 48));
+            letter.setFill(Color.BLUE); // Set letter color
+            letter.setVisible(false); // Hide until revealed
+
+            letterTexts.add(letter);
+//            box.getChildren().add(letter);
+
 
             // Add background image with padding above the line
             Region background = new Region();
@@ -162,8 +151,10 @@ public class GameUI {
             clickableArea.setOnMouseClicked(event -> openNewWindow());
 
             // Add elements to the box (spacer added for padding)
-            box.getChildren().addAll(background, spacer, underline, clickableArea);
+//            box.getChildren().addAll(background, spacer, underline, clickableArea);
+            box.getChildren().addAll(background, spacer, underline, clickableArea, letter);
             wordBox.getChildren().add(box);
+
         }
         return wordBox;
     }
@@ -217,6 +208,8 @@ public class GameUI {
                 double userAnswer = Double.parseDouble(answerField.getText().trim());
                 if (Math.abs(userAnswer - correctAnswer) < 0.0001) {
                     System.out.println("Correct!");
+                    revealLetters('b');
+                    revealLetters('b');
                     newWindow.close();
                 } else {
                     System.out.println("Incorrect. Try again.");
@@ -291,4 +284,15 @@ public class GameUI {
         theoryWindow.setScene(scene);
         theoryWindow.show();
     }
+
+    public void revealLetters(char letter) {
+        for (int i = 0; i < word.length(); i++) {
+            if (word.charAt(i) == letter) {
+                Text letterText = letterTexts.get(i);
+                letterText.setText(String.valueOf(letter));
+                letterText.setVisible(true);
+            }
+        }
+    }
+
 }
