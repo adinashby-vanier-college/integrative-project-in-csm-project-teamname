@@ -44,26 +44,22 @@ public class ProjectileHandler2 {
         paperView.setDisable(true);
     }
 
-    /**
-     * Starts the projectile motion animation when the play button is clicked.
-     */
+
+     //Starts the projectile motion animation when the play button is clicked.
     public void startProjectileMotion() {
         disableControls();
         initializeBulletPosition();
         setupProjectileMotion();
     }
 
-    /**
-     * Disables the height slider and play button while the animation runs.
-     */
+
+     //Disables the height slider and play button while the animation runs.
     private void disableControls() {
         heightSlider.setDisable(true);
         playButton.setDisable(true);
     }
 
-    /**
-     * Initializes the bullet's position at the gun's location.
-     */
+     //Initializes the bullet's position at the gun's location.
     private void initializeBulletPosition() {
         bulletView.setLayoutX(gunView.getLayoutX() + 130);
         bulletView.setLayoutY(gunView.getLayoutY() + 20);
@@ -73,9 +69,7 @@ public class ProjectileHandler2 {
         vy = -VELOCITY * Math.sin(ANGLE);
     }
 
-    /**
-     * Sets up and starts the projectile animation.
-     */
+    //Sets up and starts the projectile animation.
     private void setupProjectileMotion() {
         animation = new Timeline(new KeyFrame(Duration.seconds(TIME_STEP), event -> {
             updateBulletPosition();
@@ -85,9 +79,8 @@ public class ProjectileHandler2 {
         animation.play();
     }
 
-    /**
-     * Updates the bullet's position using physics equations.
-     */
+
+     //Updates the bullet's position using physics equations.
     private void updateBulletPosition() {
         vy += GRAVITY * TIME_STEP;
         bulletPosition.updatePosition(vx * TIME_STEP, vy * TIME_STEP);
@@ -95,9 +88,7 @@ public class ProjectileHandler2 {
         bulletView.setLayoutY(bulletPosition.getY());
     }
 
-    /**
-     * Checks if the bullet hits the target or goes out of bounds.
-     */
+      //Checks if the bullet hits the target or goes out of bounds.
     private void checkCollision() {
         if (isBulletHittingTarget()) {
             animation.stop();
@@ -109,9 +100,8 @@ public class ProjectileHandler2 {
         }
     }
 
-    /**
-     * Determines if the bullet has hit the target.
-     */
+
+     //Determines if the bullet has hit the target.
     private boolean isBulletHittingTarget() {
         double bulletX = bulletPosition.getX();
         double bulletY = bulletPosition.getY();
@@ -119,16 +109,13 @@ public class ProjectileHandler2 {
                 (bulletY + 27 >= TARGET_Y + 90 && bulletY + 25 <= TARGET_Y + 93);
     }
 
-    /**
-     * Checks if the bullet has gone out of the screen bounds.
-     */
+
+     //Checks if the bullet has gone out of the screen bounds.
     private boolean isBulletOutOfBounds() {
         return bulletPosition.getY() >= 768 || bulletPosition.getX() >= 1230;
     }
 
-    /**
-     * Changes the paper image to indicate that the target has been hit.
-     */
+     //Changes the paper image to indicate that the target has been hit.
     private void updatePaperView() {
         root.getChildren().remove(paperView);
         paperView.setImage(new Image("/paper2.png"));
@@ -136,9 +123,7 @@ public class ProjectileHandler2 {
         paperView.setDisable(false);
     }
 
-    /**
-     * Starts a timer to clean up the bullet and re-enable controls after a delay.
-     */
+     //Starts a timer to clean up the bullet and re-enable controls after a delay.
     private void startCleanupTimer() {
         Timeline cleanup = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
             root.getChildren().remove(bulletView);
@@ -152,9 +137,7 @@ public class ProjectileHandler2 {
         setupPaperHoverEffects();
     }
 
-    /**
-     * Sets up the event to open the quiz when clicking the paper.
-     */
+     //Sets up the event to open the quiz when clicking the paper.
     private void setupPaperClickEvent() {
         paperView.setOnMouseClicked(event -> {
             if (hasPlayedGame) {
@@ -166,35 +149,27 @@ public class ProjectileHandler2 {
         });
     }
 
-    /**
-     * Adds hover effects to the paper image.
-     */
+     //Adds hover effects to the paper image.
     private void setupPaperHoverEffects() {
         paperView.setOnMouseEntered(event -> onImageHover());
         paperView.setOnMouseExited(event -> onImageExit());
     }
 
-    /**
-     * Changes the appearance of the paper when hovered over.
-     */
+     //Changes the appearance of the paper when hovered over.
     private void onImageHover() {
         paperView.setOpacity(0.7);
         paperView.setScaleX(1.1);
         paperView.setScaleY(1.1);
     }
 
-    /**
-     * Restores the paper’s appearance when the cursor leaves.
-     */
+      //Restores the paper’s appearance when the cursor leaves.
     private void onImageExit() {
         paperView.setOpacity(1.0);
         paperView.setScaleX(1.0);
         paperView.setScaleY(1.0);
     }
 
-    /**
-     * Opens the Game 2 quiz UI.
-     */
+     //Opens the Game 2 quiz UI.
     private void openGame2Quiz() {
         game.showQuiz();
     }
