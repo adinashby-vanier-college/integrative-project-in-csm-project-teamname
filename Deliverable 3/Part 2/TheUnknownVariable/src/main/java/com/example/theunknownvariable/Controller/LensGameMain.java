@@ -225,7 +225,7 @@ public class LensGameMain{
         ImageView backgroundImageView = new ImageView(backgroundImage);
         backgroundImageView.setPreserveRatio(true);
         HBox background = new HBox(backgroundImageView);
-        backgroundImageView.setFitHeight(620);
+        backgroundImageView.setFitHeight(625);
         background.setAlignment(Pos.CENTER);
 
         TextArea textArea = new TextArea("EyeUI prescriptions often include a measurement expressing the strength of a lens needed to correct a person's vision. That measurement is in Diopter units, which are the inverse of the focal length of a lens. The focal length of a lens is the distance from the lens to the point where it focuses light, and this distance is inversely proportional to the strength of the lens. To find a prescription, one must understand the relationship between the near point, far point, and the focal length of the corrective lens.\n\n" +
@@ -360,13 +360,30 @@ public class LensGameMain{
         GameStateManager.getInstance().unlockClue1();
         GameStateManager.getInstance().lockGame1();
 
-        displayImage(lensGameScene,"rightScenario.png",300,2,false);
+        displayImage(lensGameScene,"clueScene.png",800,5,false);
+//
+//        MainPage mainPage = new MainPage(stage);
+//        Scene scene = mainPage.displayMainPage();
+
+        // wait
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished(event -> {
+                MainPage mainPage = new MainPage(stage);
+                switchScenes(mainPage.displayMainPage());
+
+        });
+        delay.play();
+
+//        switchScenes(scene);
     }
     public void failure(){
         game1access = false;
         game1clue = false;
         GameStateManager.getInstance().lockGame1();
         displayImage(lensGameScene,"gameOver.png",800,5,true);
+
+//        displayImage(lensGameScene,"gameOver.png",800,5,true);
     }
 
     public static boolean isGame1access() {
@@ -399,27 +416,22 @@ public class LensGameMain{
 
 
     public void displayImage(Scene scene, String imageUrl,int width,int time,boolean flag) {
-        // Create image view
         Image image = new Image(imageUrl);
         ImageView imageView = new ImageView(image);
 
-        // Center the image
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(width);
         imageView.setX((scene.getWidth() - imageView.getFitWidth()) / 2);
         imageView.setY((scene.getHeight() - imageView.getFitHeight()) / 2);
 
-        // Create a container that will overlay everything
         StackPane overlayPane = new StackPane();
-        overlayPane.setStyle("-fx-background-color: rgba(0,0,0,0.5);"); // Semi-transparent background
+        overlayPane.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
         overlayPane.getChildren().add(imageView);
 
-        // Add to scene
         if (scene.getRoot() instanceof Pane) {
             Pane root = (Pane) scene.getRoot();
             root.getChildren().add(overlayPane);
 
-            // Set up removal after 3 seconds
             PauseTransition delay = new PauseTransition(Duration.seconds(time));
             delay.setOnFinished(event -> {
                 root.getChildren().remove(overlayPane);

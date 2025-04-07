@@ -78,7 +78,7 @@ public class Clues {
 
         // Labels
         if (GameStateManager.getInstance().isClue1Unlocked()) {
-            game1Clue.setText("Maria's Clue");
+            game1Clue.setText("Based on the\nlens power,\nour killer seems\nto be myopic...");
         }
         if (GameStateManager.getInstance().isClue2Unlocked()) {
             game2Clue.setText("They are\n neither the\n tallest nor the\n shortest in\n the room.\n" +
