@@ -9,21 +9,13 @@ public class Point2 {
         this.y = y;
     }
 
-    // Getter and Setter methods for x and y
+    // Getter methods for x and y
     public double getX() {
         return x;
     }
 
-    public void setX(double x) {
-        this.x = x;
-    }
-
     public double getY() {
         return y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
     }
 
     // Method to update position

@@ -81,7 +81,8 @@ public class Clues {
             game1Clue.setText("Maria's Clue");
         }
         if (GameStateManager.getInstance().isClue2Unlocked()) {
-            game2Clue.setText("Meghry's Clue");
+            game2Clue.setText("They are\n neither the\n tallest nor the\n shortest in\n the room.\n" +
+                    " Their shadow,\n cast at dawn,\n stretched over a\n meter and a half.");
         }
         if (GameStateManager.getInstance().isClue3Unlocked()) {
             game3Clue.setText("Based on\nthe 3 solutions,\nthe killer\nworks in a\nfield" +

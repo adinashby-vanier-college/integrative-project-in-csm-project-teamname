@@ -6,9 +6,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -16,7 +18,11 @@ public class SuspectUI extends StackPane {
 
     private static final int NUM_SUSPECTS = 6;
     private static final String[] SUSPECT_NAMES = {
-            "Anita", "Lea", "Mohammad", "Picasso", "Sara", "Suspect"
+            "Anita Bath", "Lea Mio", "Mohammed", "Picasso", "Sara", "Suspect Name"
+    };
+    private static final String[] SUSPECT_NAMESB = {
+            "Anita Bath", "Lea Mio", "Mohammed Abu Bakr", "Pablo Diego José Francisco de Paula Juan Nepomuceno " +
+            "Crispín Crispiniano María de los Remedios de la Santísima Trinidad Ruiz Picasso", "Sara", "Suspect Name"
     };
     private static final String[] SUSPECT_IMAGES = {
             "/Anita.png", "/Lea.png",
@@ -34,9 +40,9 @@ public class SuspectUI extends StackPane {
 
         Image backgroundImage = new Image("/suspectBackground.png");
         ImageView backgroundView = new ImageView(backgroundImage);
-        backgroundView.setFitWidth(1366);
-        backgroundView.setFitHeight(768);
-        backgroundView.setPreserveRatio(false);
+        backgroundView.setFitWidth(1390);
+        backgroundView.setFitHeight(790);
+        backgroundView.setPreserveRatio(true);
 
         GridPane suspectGrid = new GridPane();
         suspectGrid.setHgap(80);
@@ -85,14 +91,13 @@ public class SuspectUI extends StackPane {
             ));
 
             int finalI = i;
-            suspectCard.setOnMouseClicked(event -> showSuspectInfo(SUSPECT_NAMES[finalI]));
+            suspectCard.setOnMouseClicked(event -> showSuspectInfo(SUSPECT_NAMESB[finalI]));
 
             int row = i / 3;
             int col = i % 3;
             suspectGrid.add(suspectCard, col, row);
         }
 
-        // Add the menu button in the bottom right corner
         menuButton = getMenuButton();
         StackPane.setAlignment(menuButton, Pos.BOTTOM_RIGHT);
         StackPane.setMargin(menuButton, new Insets(0, 20, 20, 0));
@@ -136,27 +141,25 @@ public class SuspectUI extends StackPane {
         popupStage.setTitle(suspectName + " Info");
 
         Label infoLabel = new Label(suspectDetails);
-        infoLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: black; -fx-padding: 10px;");
-
-//        ScrollPane scrollPane = new ScrollPane(infoLabel);
-//        scrollPane.setFitToWidth(true);
-//        scrollPane.setPrefSize(380, 280);
-
-
-        infoLabel.setStyle("-fx-font-family: \"Times New Roman\";\n" +
-//                "    -fx-alignment: center;" +
-                "    -fx-font-size: 20px;\n" +
-//                "    -fx-font-weight: bold;\n" +
-                "    -fx-text-fill: rgb(241, 226, 221);" +
-                "    -fx-padding: 15px;");
-        infoLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        infoLabel.setStyle(
+                "-fx-font-family: 'Times New Roman';" +
+                        "-fx-font-size: 20px;" +
+                        "-fx-text-fill: #2d2b2a;" +
+                        "-fx-padding: 15px;" +
+                        "-fx-font-weight: bold;"
+        );
+        infoLabel.setTextAlignment(TextAlignment.CENTER);
+        infoLabel.setWrapText(true);
 
         VBox infoBox = new VBox(infoLabel);
         infoBox.setAlignment(Pos.CENTER);
         infoBox.setPadding(new Insets(20));
 
-        Image backgroundImage = new Image(getClass().getResource("/Assets/background.png").toExternalForm());
+
+        Image backgroundImage = new Image("/suspect2Background.png");
         ImageView backgroundImageView = new ImageView(backgroundImage);
+        backgroundImageView.setFitWidth(400);
+        backgroundImageView.setFitHeight(400);
         backgroundImageView.setPreserveRatio(true);
         HBox background = new HBox(backgroundImageView);
         background.setAlignment(Pos.CENTER);
