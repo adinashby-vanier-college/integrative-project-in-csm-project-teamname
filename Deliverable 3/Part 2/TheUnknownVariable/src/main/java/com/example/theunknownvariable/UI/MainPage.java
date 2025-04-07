@@ -1,5 +1,6 @@
 package com.example.theunknownvariable.UI;
 
+import com.example.theunknownvariable.Controller.GameStateManager;
 import com.example.theunknownvariable.GameUI;
 import com.example.theunknownvariable.Controller.LensGameMain;
 import javafx.geometry.Pos;
@@ -65,27 +66,36 @@ public class MainPage {
     public void eventHandling(){
         //Switch to game 1
         g1Button.setOnAction(event->{
-            LensGameMain lensGameMain = new LensGameMain(stage);
-            Scene scene = lensGameMain.getLensGameInstructionsScene();
-            switchScenes(scene);
+            if(!GameStateManager.getInstance().isGame1Locked()){
+                LensGameMain lensGameMain = new LensGameMain(stage);
+                Scene scene = lensGameMain.getLensGameInstructionsScene();
+                switchScenes(scene);
+            }
+
         });
         //Switch to game 2
         g2Button.setOnAction(event->{
-            UserInterface2 projectileMotion = new UserInterface2(stage);
-            Scene scene = projectileMotion.displayInstructions();
-            switchScenes(scene);
+            if(!GameStateManager.getInstance().isGame2Locked()) {
+                UserInterface2 projectileMotion = new UserInterface2(stage);
+                Scene scene = projectileMotion.displayInstructions();
+                switchScenes(scene);
+            }
         });
         //Switch to game 3
         g3Button.setOnAction(event->{
-            ChemUI chemGame = new ChemUI(stage);
-            Scene scene = chemGame.displayInstructions();
-            switchScenes(scene);
+            if(!GameStateManager.getInstance().isGame3Locked()) {
+                ChemUI chemGame = new ChemUI(stage);
+                Scene scene = chemGame.displayInstructions();
+                switchScenes(scene);
+            }
         });
         //Switch to game 4
         g4Button.setOnAction(event->{
-            GameUI mathGame = new GameUI(stage);
-            Scene scene = mathGame.displayMathGame(stage);
-            switchScenes(scene);
+            if(!GameStateManager.getInstance().isGame4Locked()) {
+                GameUI mathGame = new GameUI(stage);
+                Scene scene = mathGame.displayMathGame(stage);
+                switchScenes(scene);
+            }
         });
 
         //Switch to clue scene
