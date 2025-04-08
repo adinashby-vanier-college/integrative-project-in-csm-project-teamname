@@ -1,5 +1,6 @@
 package com.example.theunknownvariable.UI;
 
+import com.example.theunknownvariable.Controller.GameStateManager;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -55,13 +56,13 @@ public class HomePage {
         return new Scene(pane,1366,768);
     }
     public void eventHandling(){
-        //Switch to game 3
+
         menuButton.setOnAction(event->{
             MainPage mainPage = new MainPage(stage);
             Scene scene = mainPage.displayMainPage();
             switchScenes(scene);
         });
-        //Switch to game 3
+
         suspectsButton.setOnAction(event->{
             SuspectUI viewList = new SuspectUI(stage); // Use the StackPane-based view
             Scene scene = new Scene(viewList, 1366, 768);
@@ -123,16 +124,35 @@ public class HomePage {
                 return quitButton;
             }
             case "accuse" -> {
-                //Button 3: Sodium Chloride
-                Image accuseImage = new Image("accuse.png");
-                ImageView accuse = new ImageView(accuseImage);
-                accuse.setFitWidth(250);
-                accuse.setPreserveRatio(true);
-                accuseButton = new Button("", accuse);
-                accuseButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
-                accuseButton.setOnMouseEntered(e -> accuse.setOpacity(0.8));
-                accuseButton.setOnMouseExited(e -> accuse.setOpacity(1.0));
-                return accuseButton;
+                if(GameStateManager.getInstance().isGame1Locked() &&
+                        GameStateManager.getInstance().isGame2Locked() &&
+                        GameStateManager.getInstance().isGame3Locked() &&
+                        GameStateManager.getInstance().isGame4Locked()){
+                    Image accuseImage = new Image("accuseFolder.jpeg");
+                    ImageView accuse = new ImageView(accuseImage);
+                    accuse.setFitWidth(250);
+                    accuse.setPreserveRatio(true);
+                    accuseButton = new Button("", accuse);
+                    accuseButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+                    accuseButton.setOnMouseEntered(e -> accuse.setOpacity(0.8));
+                    accuseButton.setOnMouseExited(e -> accuse.setOpacity(1.0));
+                    accuseButton.setOnAction(actionEvent -> {
+                        SuspectUI viewList = new SuspectUI(stage);
+                        Scene scene = new Scene(viewList, 1366, 768);
+                        switchScenes(scene);
+                    });
+                    return accuseButton;
+                }else {
+                    Image accuseImage = new Image("accuse.png");
+                    ImageView accuse = new ImageView(accuseImage);
+                    accuse.setFitWidth(250);
+                    accuse.setPreserveRatio(true);
+                    accuseButton = new Button("", accuse);
+                    accuseButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+                    accuseButton.setOnMouseEntered(e -> accuse.setOpacity(0.8));
+                    accuseButton.setOnMouseExited(e -> accuse.setOpacity(1.0));
+                    return accuseButton;
+                }
             }
             default -> {
                 return empty;

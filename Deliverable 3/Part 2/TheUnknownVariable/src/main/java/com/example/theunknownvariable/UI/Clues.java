@@ -92,7 +92,8 @@ public class Clues {
                     " related\nto tech,\nguns, or\ninvestigation\nof crime.");
         }
         if (GameStateManager.getInstance().isClue4Unlocked()) {
-            game4Clue.setText("Sara's clue");
+            game4Clue.setText("Based on\n the word\n \"blue\", we\ncan assume that\n the killer\n has" +
+                    " blue eyes.");
         }
 
         //Clues layout
