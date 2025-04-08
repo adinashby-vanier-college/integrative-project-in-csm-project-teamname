@@ -137,7 +137,7 @@ public class HomePage {
                     accuseButton.setOnMouseEntered(e -> accuse.setOpacity(0.8));
                     accuseButton.setOnMouseExited(e -> accuse.setOpacity(1.0));
                     accuseButton.setOnAction(actionEvent -> {
-                        SuspectUI viewList = new SuspectUI(stage);
+                        AccuseUI viewList = new AccuseUI(stage);
                         Scene scene = new Scene(viewList, 1366, 768);
                         switchScenes(scene);
                     });
