@@ -330,34 +330,34 @@ public class MathGameUI {
         }
     }
 
-    public void displayImage(Scene scene, String imageUrl,int width,int time,boolean flag) {
-        Image image = new Image(imageUrl);
-        ImageView imageView = new ImageView(image);
-
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(width);
-        StackPane.setAlignment(imageView, Pos.CENTER);
-
-
-        StackPane overlayPane = new StackPane();
-        overlayPane.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
-        overlayPane.getChildren().add(imageView);
-
-        if (scene.getRoot() instanceof Pane) {
-            Pane root = (Pane) scene.getRoot();
-            root.getChildren().add(overlayPane);
-
-            PauseTransition delay = new PauseTransition(Duration.seconds(time));
-            delay.setOnFinished(event -> {
-                root.getChildren().remove(overlayPane);
-                if (flag) {
-                    MainPage mainPage = new MainPage(stage);
-                    switchScenes(mainPage.displayMainPage());
-                }
-            });
-            delay.play();
-        }
-    }
+//    public void displayImage(Scene scene, String imageUrl,int width,int time,boolean flag) {
+//        Image image = new Image(imageUrl);
+//        ImageView imageView = new ImageView(image);
+//
+//        imageView.setPreserveRatio(true);
+//        imageView.setFitWidth(width);
+//        StackPane.setAlignment(imageView, Pos.CENTER);
+//
+//
+//        StackPane overlayPane2 = new StackPane();
+//        overlayPane2.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
+//        overlayPane2.getChildren().add(imageView);
+//
+//        if (scene.getRoot() instanceof Pane) {
+//            Pane root = (Pane) scene.getRoot();
+//            root.getChildren().add(overlayPane2);
+//
+//            PauseTransition delay = new PauseTransition(Duration.seconds(time));
+//            delay.setOnFinished(event -> {
+//                root.getChildren().remove(overlayPane2);
+//                if (flag) {
+//                    MainPage mainPage = new MainPage(stage);
+//                    switchScenes(mainPage.displayMainPage());
+//                }
+//            });
+//            delay.play();
+//        }
+//    }
 
     public void success(){
         game4access = false;
@@ -365,7 +365,8 @@ public class MathGameUI {
         GameStateManager.getInstance().unlockClue4();
         GameStateManager.getInstance().lockGame4();
 
-        displayImage(mainGameScene,"clueScene.png",800,5,true);
+        ChemUI object = new ChemUI(stage);
+        object.displayImage(mainGameScene,"clueScene.png",800,5,true);
 //
 //        MainPage mainPage = new MainPage(stage);
 //        Scene scene = mainPage.displayMainPage();
@@ -385,7 +386,8 @@ public class MathGameUI {
         game4access = false;
         game4clue = false;
         GameStateManager.getInstance().lockGame4();
-        displayImage(mainGameScene,"gameOver.png",800,5,true);
+        ChemUI object = new ChemUI(stage);
+        object.displayImage(mainGameScene,"gameOver.png",800,5,true);
 
     }
 
