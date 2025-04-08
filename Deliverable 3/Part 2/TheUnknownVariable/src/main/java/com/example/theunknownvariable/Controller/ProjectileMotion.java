@@ -1,4 +1,4 @@
-package com.example.theunknownvariable;
+package com.example.theunknownvariable.Controller;
 import com.example.theunknownvariable.UI.UserInterface2;
 import javafx.application.Application;
 import javafx.scene.Scene;

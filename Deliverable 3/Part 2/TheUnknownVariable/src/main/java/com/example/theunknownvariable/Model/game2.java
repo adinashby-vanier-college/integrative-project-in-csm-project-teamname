@@ -26,9 +26,8 @@ public class game2 {
     // Index of correct answers in the OPTIONS array
     public static final int[] CORRECT_ANSWERS = {1, 2, 1, 0, 2};
 
-    /**
-     * Loads a question and its corresponding options and answer index.
-     */
+
+     //Loads a question and its corresponding options and answer index.
     public void loadQuestion(int questionIndex) {
         if (questionIndex < QUESTIONS.length) {
             questionText = QUESTIONS[questionIndex];
@@ -37,23 +36,18 @@ public class game2 {
         }
     }
 
-    /**
-     * Retrieves the current question text. Returns the question text.
-     */
+
+     //Retrieves the current question text. Returns the question text.
     public String getQuestionText() {
         return questionText;
     }
 
-    /**
-     * Retrieves the answer choices for the current question. Returns an array of answer choices.
-     */
+     //Retrieves the answer choices for the current question. Returns an array of answer choices.
     public String[] getOptions() {
         return options;
     }
 
-    /**
-     * Retrieves the index of the correct answer for the current question. Returns the correct answer index.
-     */
+     //Retrieves the index of the correct answer for the current question. Returns the correct answer index.
     public int getCorrectAnswerIndex() {
         return correctAnswerIndex;
     }

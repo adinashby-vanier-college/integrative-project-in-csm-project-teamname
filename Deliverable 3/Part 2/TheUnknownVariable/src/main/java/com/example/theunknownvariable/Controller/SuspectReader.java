@@ -1,4 +1,4 @@
-package com.example.theunknownvariable;
+package com.example.theunknownvariable.Controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;

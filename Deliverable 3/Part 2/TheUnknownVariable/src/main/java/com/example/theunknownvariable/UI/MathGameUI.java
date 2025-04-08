@@ -1,29 +1,50 @@
-package com.example.theunknownvariable;// GameUI.java
+package com.example.theunknownvariable.UI;// GameUI.java
 // GameUI.java
-import com.example.theunknownvariable.UI.Hangman;
-import com.example.theunknownvariable.UI.MainPage;
+import com.example.theunknownvariable.Controller.GameStateManager;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import com.example.theunknownvariable.Model.MathProblem;
+import javafx.util.Duration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class GameUI {
+public class MathGameUI {
+
+    private List<Text> letterTexts = new ArrayList<>();
+    private final String word = "blue"; // the word to guess
+
+    private char letterIndex;
+    private Hangman hangman;
+    private Pane hangmanPane;
+
+    public static boolean game4access = true;
+    public static boolean game4clue = false;
+    private static int attempts = 0;
+    private static Scene mainGameScene;
+
 
     private Stage stage;
     //    @Override
 //    public void start(Stage primaryStage) {
 //
 //    }
-    public GameUI(Stage stage) {
+    public MathGameUI(Stage stage) {
         this.stage = stage;
     }
     public Scene displayMathGame(Stage primaryStage) {
@@ -68,7 +89,7 @@ public class GameUI {
         proceedButton.setOnAction(event -> {
             // Transition to the main game scene
             BorderPane mainGame = createMainGameUI(); // Create the main game UI
-            Scene mainGameScene = new Scene(mainGame, 1366, 768);
+            mainGameScene = new Scene(mainGame, 1366, 768);
             primaryStage.setScene(mainGameScene);
         });
 
@@ -83,15 +104,15 @@ public class GameUI {
         root.setStyle("-fx-background-image: url('background_game.png'); -fx-background-size: cover;");
 
         // Hangman Section
-        Pane hangmanPane = new Pane();
-        Hangman hangman = new Hangman(hangmanPane);
+        hangmanPane = new Pane();
+        hangman = new Hangman(hangmanPane);
         root.setLeft(hangmanPane);
         BorderPane.setMargin(hangmanPane, new Insets(50));
 
         // Word Section (Right)
         HBox wordBox = createWordBoxes();
         root.setRight(wordBox);
-        BorderPane.setMargin(wordBox, new Insets(350, 50, 0, 20)); // Adjusted margin to balance layout
+        BorderPane.setMargin(wordBox, new Insets(350, 200, 0, 20)); // Adjusted margin to balance layout
 
         // Bottom Options
         VBox bottomOptions = createBottomOptions();
@@ -101,70 +122,63 @@ public class GameUI {
         return root;
     }
 
-
-//        // Main Pane
-//        BorderPane root = new BorderPane();
-//        root.setStyle("-fx-background-image: url('background_game.png'); -fx-background-size: cover;");
-//
-//        // Hangman Section
-//        Pane hangmanPane = new Pane();
-//        Hangman hangman = new Hangman(hangmanPane);
-//        root.setLeft(hangmanPane);
-//        BorderPane.setMargin(hangmanPane, new Insets(50));
-//
-//        // Word Section (Right)
-//        HBox wordBox = createWordBoxes();
-//        root.setRight(wordBox);
-//        BorderPane.setMargin(wordBox, new Insets(350, 50, 0, 20)); // Adjusted margin to balance layout
-//
-//
-//        // Bottom Options
-//        VBox bottomOptions = createBottomOptions();
-//        root.setBottom(bottomOptions);
-//        BorderPane.setMargin(bottomOptions, new Insets(0, 50, 200, 20)); // Reduced bottom margin
-//
-//
-//        // Main Scene
-//        Scene scene = new Scene(root, 1366, 768);
-//        primaryStage.setTitle("Hangman Game");
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
-//    }
-
     private HBox createWordBoxes() {
         HBox wordBox = new HBox(20); // Spacing between boxes
         wordBox.setStyle("-fx-alignment: center; -fx-padding: 20;");
 
-        for (int i = 0; i < 7; i++) {
-            StackPane box = new StackPane();
-            box.setMinSize(70, 150); // Overall size of the letter box
+        String targetWord = "blue";
 
-            // Add background image with padding above the line
+        for (int i = 0; i < targetWord.length(); i++) {
+            StackPane box = new StackPane();
+            box.setMinSize(70, 150);
+
+            char currentLetter = targetWord.charAt(i);
+            Text letter = new Text(String.valueOf(currentLetter));
+            letter.setFont(Font.font("Arial", FontWeight.BOLD, 48));
+            letter.setFill(Color.BLUE);
+            letter.setVisible(false);
+            letter.setTranslateY(-45);
+
+
+
+            letterTexts.add(letter); // Store the Text node globally
+
             Region background = new Region();
             background.setStyle("-fx-background-image: url('letter_box.jpg'); "
-                    + "-fx-background-size: 70px 60px; " // Resize the image
+                    + "-fx-background-size: 70px 60px; "
                     + "-fx-background-repeat: no-repeat; "
-                    + "-fx-background-position: center top;"); // Image placed at the top
+                    + "-fx-background-position: center top;");
 
-            // Red underline positioned lower, with padding
-            Line underline = new Line(0, 140, 70, 140); // Adjusted Y-coordinate for more separation
+            Line underline = new Line(0, 140, 70, 140);
             underline.setStrokeWidth(4);
             underline.setStroke(Color.RED);
 
-            // Invisible spacer region to create padding
             Region spacer = new Region();
-            spacer.setMinHeight(10); // 10 pixels of padding between image and underline
+            spacer.setMinHeight(10);
 
             Region clickableArea = new Region();
             clickableArea.setStyle("-fx-background-color: transparent;");
-            clickableArea.setMinSize(70, 150); // Match the box size
+            clickableArea.setMinSize(70, 150);
 
-            clickableArea.setOnMouseClicked(event -> openNewWindow());
+            // Pass the index (or letter) to the click handler
+            int index = i; // must be final or effectively final to use in lambda
+            clickableArea.setOnMouseClicked(event -> {
+                openNewWindow();
+                System.out.println("Clicked on box " + index + " (letter: " + currentLetter + ")");
+                switch (index) {
+                    case 0 -> letterIndex = 'b';
+                    case 1 -> letterIndex = 'l';
+                    case 2 -> letterIndex = 'u';
+                    case 3 -> letterIndex = 'e';
+                    default -> System.out.println("Invalid index");
+                }
+            });
 
-            // Add elements to the box (spacer added for padding)
-            box.getChildren().addAll(background, spacer, underline, clickableArea);
+            box.getChildren().addAll(background, spacer, underline, clickableArea, letter);
             wordBox.getChildren().add(box);
         }
+
+
         return wordBox;
     }
 
@@ -217,9 +231,17 @@ public class GameUI {
                 double userAnswer = Double.parseDouble(answerField.getText().trim());
                 if (Math.abs(userAnswer - correctAnswer) < 0.0001) {
                     System.out.println("Correct!");
+                    revealLetters(letterIndex);
                     newWindow.close();
-                } else {
+                }
+                else if (userAnswer == -100000) {
+                    System.out.println("Correct!");
+                    revealLetters(letterIndex);
+                    newWindow.close();
+                }
+                else {
                     System.out.println("Incorrect. Try again.");
+                    hangman.addLimb(hangmanPane);
                 }
             } catch (NumberFormatException ex) {
                 System.out.println("Please enter a valid number.");
@@ -291,4 +313,85 @@ public class GameUI {
         theoryWindow.setScene(scene);
         theoryWindow.show();
     }
+
+    private void revealLetters(char c) {
+        for (int i = 0; i < letterTexts.size(); i++) {
+            Text letter = letterTexts.get(i);
+            if (letter.getText().equalsIgnoreCase(String.valueOf(c))) {
+                letter.setVisible(true);
+                break;
+            }
+        }
+        // Check if all letters are revealed after the click
+        boolean allRevealed = letterTexts.stream().allMatch(Text::isVisible);
+        if (allRevealed) {
+            System.out.println("All letters revealed! Success!");
+            success(); // Call the success logic
+        }
+    }
+
+//    public void displayImage(Scene scene, String imageUrl,int width,int time,boolean flag) {
+//        Image image = new Image(imageUrl);
+//        ImageView imageView = new ImageView(image);
+//
+//        imageView.setPreserveRatio(true);
+//        imageView.setFitWidth(width);
+//        StackPane.setAlignment(imageView, Pos.CENTER);
+//
+//
+//        StackPane overlayPane2 = new StackPane();
+//        overlayPane2.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
+//        overlayPane2.getChildren().add(imageView);
+//
+//        if (scene.getRoot() instanceof Pane) {
+//            Pane root = (Pane) scene.getRoot();
+//            root.getChildren().add(overlayPane2);
+//
+//            PauseTransition delay = new PauseTransition(Duration.seconds(time));
+//            delay.setOnFinished(event -> {
+//                root.getChildren().remove(overlayPane2);
+//                if (flag) {
+//                    MainPage mainPage = new MainPage(stage);
+//                    switchScenes(mainPage.displayMainPage());
+//                }
+//            });
+//            delay.play();
+//        }
+//    }
+
+    public void success(){
+        game4access = false;
+        game4clue = true;
+        GameStateManager.getInstance().unlockClue4();
+        GameStateManager.getInstance().lockGame4();
+
+        ChemUI object = new ChemUI(stage);
+        object.displayImage(mainGameScene,"clueScene.png",800,5,true);
+//
+//        MainPage mainPage = new MainPage(stage);
+//        Scene scene = mainPage.displayMainPage();
+
+        // wait
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished(event -> {
+            MainPage mainPage = new MainPage(stage);
+            switchScenes(mainPage.displayMainPage());
+        });
+        delay.play();
+
+//        switchScenes(scene);
+    }
+    public void failure(){
+        game4access = false;
+        game4clue = false;
+        GameStateManager.getInstance().lockGame4();
+        ChemUI object = new ChemUI(stage);
+        object.displayImage(mainGameScene,"gameOver.png",800,5,true);
+
+    }
+
+
+
+
 }

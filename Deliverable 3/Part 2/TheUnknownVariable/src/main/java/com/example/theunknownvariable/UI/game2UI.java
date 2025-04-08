@@ -32,16 +32,12 @@ public class game2UI {
         loadQuestion();
     }
 
-    /**
-     * Displays the quiz window.
-     */
+     //Displays the quiz window.
     public void showQuiz() {
         quizStage.showAndWait();
     }
 
-    /**
-     * Creates the root layout with background and quiz content.
-     */
+     //Creates the root layout with background and quiz content.
     private StackPane createRootLayout() {
         StackPane root = new StackPane();
 
@@ -66,18 +62,14 @@ public class game2UI {
         return root;
     }
 
-    /**
-     * Creates and styles the question label.
-     */
+     //Creates and styles the question label.
     private Label createQuestionLabel() {
         Label label = new Label();
         label.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #713939;");
         return label;
     }
 
-    /**
-     * Creates radio buttons for answer options.
-     */
+     //Creates radio buttons for answer options.
     private RadioButton[] createOptionButtons() {
         RadioButton[] buttons = new RadioButton[4];
         optionsGroup = new ToggleGroup();
@@ -91,9 +83,7 @@ public class game2UI {
         return buttons;
     }
 
-    /**
-     * Creates the submit button with an image.
-     */
+     //Creates the submit button with an image.
     private Button createSubmitButton() {
         ImageView submitImage = new ImageView(new Image(getClass().getResourceAsStream("/Submit.png")));
         submitImage.setFitWidth(150);
@@ -107,18 +97,15 @@ public class game2UI {
         return button;
     }
 
-    /**
-     * Creates a feedback label for answer validation.
-     */
+
+    //Creates a feedback label for answer validation.
     private Label createFeedbackLabel() {
         Label label = new Label();
         label.setStyle("-fx-font-size: 14px; -fx-text-fill: #713939;");
         return label;
     }
 
-    /**
-     * Loads the current question and options into the UI.
-     */
+     //Loads the current question and options into the UI.
     private void loadQuestion() {
         questionLabel.setText(controller.getQuestionText());
 
@@ -131,9 +118,7 @@ public class game2UI {
         optionsGroup.selectToggle(null);
     }
 
-    /**
-     * Handles answer submission and transitions to the next question or final result.
-     */
+     //Handles answer submission and transitions to the next question or final result.
     private void handleAnswer() {
         RadioButton selected = (RadioButton) optionsGroup.getSelectedToggle();
         if (selected == null) {
@@ -156,9 +141,7 @@ public class game2UI {
         }
     }
 
-    /**
-     * Determines the selected answer's index.
-     */
+    //Determines the selected answer's index.
     private int getSelectedAnswerIndex(RadioButton selected) {
         for (int i = 0; i < 4; i++) {
             if (optionButtons[i] == selected) {
@@ -168,9 +151,7 @@ public class game2UI {
         return -1;
     }
 
-    /**
-     * Displays the final quiz results and provides a clue if enough answers are correct.
-     */
+     //Displays the final quiz results and provides a clue if enough answers are correct.
     public void showFinalResult() {
         VBox resultLayout = new VBox(20);
         resultLayout.setStyle("-fx-padding: 40px; -fx-alignment: center; -fx-background-color: #D1C5AB;");
