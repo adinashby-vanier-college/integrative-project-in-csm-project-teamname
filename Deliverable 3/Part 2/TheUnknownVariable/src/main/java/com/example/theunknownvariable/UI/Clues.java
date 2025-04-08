@@ -34,10 +34,10 @@ public class Clues {
         this.stage = stage;
 
         //Initialize clue labels
-        game1Clue = new Label("Clue starts here");
-        game2Clue = new Label("Clue starts here");
-        game3Clue = new Label("Clue starts here");
-        game4Clue = new Label("Clue starts here");
+        game1Clue = new Label("");
+        game2Clue = new Label("");
+        game3Clue = new Label("");
+        game4Clue = new Label("");
 
         //CSS for labels
         String style = "-fx-alignment: center;-fx-font-family: 'Georgia';" +
