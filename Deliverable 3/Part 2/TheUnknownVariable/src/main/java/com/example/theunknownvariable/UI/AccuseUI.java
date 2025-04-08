@@ -96,12 +96,17 @@ public class AccuseUI extends StackPane {
             int col = i % 3;
             suspectGrid.add(suspectCard, col, row);
         }
-
+        Label accuseLabel = new Label("Who is the culprit?");
+        accuseLabel.setStyle("-fx-font-family: \"Times New Roman\";\n" +
+                "    -fx-font-size: 37px;\n" +
+                "    -fx-font-weight: bold;\n" +
+                "    -fx-text-fill: rgb(22,42,51);");
         menuButton = getMenuButton();
         StackPane.setAlignment(menuButton, Pos.BOTTOM_RIGHT);
+        StackPane.setAlignment(accuseLabel, Pos.TOP_CENTER); StackPane.setMargin(accuseLabel, new Insets(13,0,0,20));
         StackPane.setMargin(menuButton, new Insets(0, 20, 20, 0));
 
-        root.getChildren().addAll(backgroundView, suspectGrid, menuButton);
+        root.getChildren().addAll(backgroundView, suspectGrid, menuButton, accuseLabel);
         getChildren().add(root);
     }
 
@@ -138,9 +143,43 @@ public class AccuseUI extends StackPane {
         popupStage.setTitle("Accusing " + suspectName);
 
         Label areyousureLabel = new Label("Are you sure...?");
+        areyousureLabel.setStyle("-fx-font-family: \"Times New Roman\";\n" +
+                "    -fx-font-size: 23px;\n" +
+                "    -fx-font-weight: bold;\n" +
+                "    -fx-text-fill: rgb(22,42,51)");
         areyousureLabel.setTextAlignment(TextAlignment.CENTER);
 
-        VBox areyousureVBox = new VBox(areyousureLabel);
+        Button yesButton = new Button("Yes!");
+        yesButton.setStyle("-fx-background-color: rgb(178,219,238);\n" +
+                "    -fx-text-fill: rgb(22,42,51);\n" +
+                "    -fx-font-family: \"Times New Roman\";\n" +
+                "    -fx-font-size: 20px;\n" +
+                "    -fx-pref-width: 100px;\n" +
+                "    -fx-pref-height: 50px;\n" +
+                "    -fx-border-color: rgb(22,42,51);\n" +
+                "    -fx-border-width: 3px;\n" +
+                "    -fx-border-radius: 5px;\n" +
+                "    -fx-background-radius: 5px;");
+        yesButton.setOnAction(actionEvent -> {
+            Stage verdictstage = new Stage();
+            verdictstage.initModality(Modality.APPLICATION_MODAL);
+            verdictstage.setTitle("verdict");
+            Label verdictLabel = new Label("to be continued...");
+            verdictLabel.setStyle("-fx-font-family: \"Times New Roman\";\n" +
+                    "    -fx-font-size: 20px;\n" +
+                    "    -fx-font-weight: bold;\n" +
+                    "    -fx-text-fill: rgb(22,42,51)");
+            HBox verdictBox = new HBox(verdictLabel);
+            verdictBox.setAlignment(Pos.CENTER);
+            verdictBox.setPadding(new Insets(10));
+            Scene verdictScene = new Scene(verdictBox, 300, 300);
+
+            verdictstage.setScene(verdictScene);
+            verdictstage.showAndWait();
+        });
+
+
+        VBox areyousureVBox = new VBox(30,areyousureLabel,yesButton);
         areyousureVBox.setAlignment(Pos.CENTER);
         areyousureVBox.setPadding(new Insets(20));
 
