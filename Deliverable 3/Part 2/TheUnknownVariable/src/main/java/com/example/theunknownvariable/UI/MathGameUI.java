@@ -25,6 +25,9 @@ import java.util.List;
 
 
 public class MathGameUI {
+    // Add custom font
+    Font cinzelFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Cinzel-Regular.ttf"), 24);
+    Font cinzelFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Cinzel-Regular.ttf"), 45);
 
     private List<Text> letterTexts = new ArrayList<>();
     private final String word = "blue"; // the word to guess
@@ -32,6 +35,7 @@ public class MathGameUI {
     private char letterIndex;
     private Hangman hangman;
     private Pane hangmanPane;
+    private int noOfErrors = 0;
 
     public static boolean game4access = true;
     public static boolean game4clue = false;
@@ -61,9 +65,6 @@ public class MathGameUI {
         layout.setStyle("-fx-alignment: center; " +
                 "-fx-background-image: url('math_instructions.png'); " +
                 "-fx-background-size: cover;"); // Background image for the instructions screen
-
-        // Add custom font
-        Font cinzelFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Cinzel-Regular.ttf"), 24);
 
         // Add instructions text
         Label instructions = new Label("Welcome to the Hangman Game!\n\n"
@@ -135,8 +136,8 @@ public class MathGameUI {
 
             char currentLetter = targetWord.charAt(i);
             Text letter = new Text(String.valueOf(currentLetter));
-            letter.setFont(Font.font("Arial", FontWeight.BOLD, 48));
-            letter.setFill(Color.BLUE);
+            letter.setFont(cinzelFont2);
+            letter.setFill(Color.BLACK);
             letter.setVisible(false);
             letter.setTranslateY(-45);
 
@@ -203,6 +204,9 @@ public class MathGameUI {
         content.setPadding(new Insets(10));
         content.setAlignment(Pos.CENTER);
 
+        StackPane popupRoot = new StackPane(content); // So overlays can be centered
+        Scene scene = new Scene(popupRoot, 1000, 620);
+
         // Label for the question
         Label questionLabel = new Label("What is the determinant of this matrix?");
         questionLabel.setStyle("-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;");
@@ -242,7 +246,13 @@ public class MathGameUI {
                 }
                 else {
                     System.out.println("Incorrect. Try again.");
+                    noOfErrors++;
                     hangman.addLimb(hangmanPane);
+                    if (noOfErrors >= 6) {
+                        failure();
+                        newWindow.close();
+                    }
+                    displayImage(scene, "wrongScenario.png",300,2,false);
                 }
             } catch (NumberFormatException ex) {
                 System.out.println("Please enter a valid number.");
@@ -253,7 +263,7 @@ public class MathGameUI {
         content.getChildren().addAll(questionLabel, matrixGrid, answerField, submitButton);
 
         // Create and show the scene
-        Scene scene = new Scene(content, 1000, 620);
+//        Scene scene = new Scene(content, 1000, 620);
         newWindow.setScene(scene);
         newWindow.show();
     }
