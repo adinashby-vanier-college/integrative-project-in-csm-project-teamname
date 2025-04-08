@@ -1,11 +1,15 @@
 package com.example.theunknownvariable.UI;// GameUI.java
 // GameUI.java
+import com.example.theunknownvariable.Controller.GameStateManager;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -14,6 +18,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import com.example.theunknownvariable.Model.MathProblem;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +32,11 @@ public class MathGameUI {
     private char letterIndex;
     private Hangman hangman;
     private Pane hangmanPane;
+
+    public static boolean game4access = true;
+    public static boolean game4clue = false;
+    private static int attempts = 0;
+    private static Scene mainGameScene;
 
 
     private Stage stage;
@@ -79,7 +89,7 @@ public class MathGameUI {
         proceedButton.setOnAction(event -> {
             // Transition to the main game scene
             BorderPane mainGame = createMainGameUI(); // Create the main game UI
-            Scene mainGameScene = new Scene(mainGame, 1366, 768);
+            mainGameScene = new Scene(mainGame, 1366, 768);
             primaryStage.setScene(mainGameScene);
         });
 
@@ -162,7 +172,6 @@ public class MathGameUI {
                     case 3 -> letterIndex = 'e';
                     default -> System.out.println("Invalid index");
                 }
-//                revealLetterAt(index);
             });
 
             box.getChildren().addAll(background, spacer, underline, clickableArea, letter);
@@ -310,10 +319,77 @@ public class MathGameUI {
             Text letter = letterTexts.get(i);
             if (letter.getText().equalsIgnoreCase(String.valueOf(c))) {
                 letter.setVisible(true);
-                break; // Reveals only the first match; remove this if you want to reveal all matching letters
+                break;
             }
         }
+        // Check if all letters are revealed after the click
+        boolean allRevealed = letterTexts.stream().allMatch(Text::isVisible);
+        if (allRevealed) {
+            System.out.println("All letters revealed! Success!");
+            success(); // Call the success logic
+        }
     }
+
+    public void displayImage(Scene scene, String imageUrl,int width,int time,boolean flag) {
+        Image image = new Image(imageUrl);
+        ImageView imageView = new ImageView(image);
+
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(width);
+        StackPane.setAlignment(imageView, Pos.CENTER);
+
+
+        StackPane overlayPane = new StackPane();
+        overlayPane.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
+        overlayPane.getChildren().add(imageView);
+
+        if (scene.getRoot() instanceof Pane) {
+            Pane root = (Pane) scene.getRoot();
+            root.getChildren().add(overlayPane);
+
+            PauseTransition delay = new PauseTransition(Duration.seconds(time));
+            delay.setOnFinished(event -> {
+                root.getChildren().remove(overlayPane);
+                if (flag) {
+                    MainPage mainPage = new MainPage(stage);
+                    switchScenes(mainPage.displayMainPage());
+                }
+            });
+            delay.play();
+        }
+    }
+
+    public void success(){
+        game4access = false;
+        game4clue = true;
+        GameStateManager.getInstance().unlockClue4();
+        GameStateManager.getInstance().lockGame4();
+
+        displayImage(mainGameScene,"clueScene.png",800,5,true);
+//
+//        MainPage mainPage = new MainPage(stage);
+//        Scene scene = mainPage.displayMainPage();
+
+        // wait
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished(event -> {
+            MainPage mainPage = new MainPage(stage);
+            switchScenes(mainPage.displayMainPage());
+        });
+        delay.play();
+
+//        switchScenes(scene);
+    }
+    public void failure(){
+        game4access = false;
+        game4clue = false;
+        GameStateManager.getInstance().lockGame4();
+        displayImage(mainGameScene,"gameOver.png",800,5,true);
+
+    }
+
+
 
 
 }

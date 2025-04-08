@@ -43,7 +43,6 @@ public class MathProblem {
         return new MathProblem(matrix);
     }
 
-
     // Getter (if needed)
     public double[][] getMatrix() {
         return matrix;
