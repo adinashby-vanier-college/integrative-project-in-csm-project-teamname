@@ -9,38 +9,41 @@ public class EnthalpyGraph {
     private LineChart<Number, Number> lineChart;
     private XYChart.Series<Number, Number> series;
     private int reactionNb;
+    private NumberAxis yAxis;
 
     public EnthalpyGraph() {
-        series = new XYChart.Series<>(); // Initialize series to prevent null pointer exceptions
+        //Initialize series
+        series = new XYChart.Series<>();
+        yAxis = new NumberAxis();
     }
 
     public HBox displayGraph(int reactionNb){
         this.reactionNb = reactionNb;
         // Create the x and y axes
-        final NumberAxis xAxis = new NumberAxis(0, 4, 0.5); // Adjusted range for better spacing
-        final NumberAxis yAxis = new NumberAxis(-250, 250, 50); // Ensure proper scaling
+        final NumberAxis xAxis = new NumberAxis(0, 4, 0.5);
+        this.yAxis = new NumberAxis(-250, 250, 50);
         xAxis.setLabel("Time (s)");
         yAxis.setLabel("Energy (kJ/mol)");
         xAxis.lookup(".axis-label").setStyle("-fx-text-fill: #e8ceb0;");
         yAxis.lookup(".axis-label").setStyle("-fx-text-fill: #e8ceb0;");
 
-        // Change the axis and title colors to #e8ceb0
-        String axisStyle = "-fx-tick-label-fill: #e8ceb0;" +   // Numbers color
-                "-fx-font-size: 14px;" +            // Font size
-                "-fx-font-family: 'Courier New';" + // Mystery font
-                "-fx-font-weight: bold;";           // Bold text
+        // Axis and title CSS
+        String axisStyle = "-fx-tick-label-fill: #e8ceb0;" +
+                "-fx-font-size: 14px;" +
+                "-fx-font-family: 'Courier New';" +
+                "-fx-font-weight: bold;";
 
         xAxis.setStyle(axisStyle);
         yAxis.setStyle(axisStyle);
         lineChart = new LineChart<>(xAxis, yAxis);
 
-        // Change chart title color
+        // Chart title CSS
         lineChart.lookup(".chart-title").setStyle("-fx-text-fill: #e8ceb0;");
 
-        // Remove the legend
+        // Remove legend
         lineChart.setLegendVisible(false);
 
-        // Remove white grid lines and make them darker
+        // Graph grid lines CSS
         lineChart.setStyle("-fx-background-color: transparent;");
         lineChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
         lineChart.lookup(".chart-vertical-grid-lines").setStyle("-fx-stroke: #555555;");
@@ -51,32 +54,49 @@ public class EnthalpyGraph {
         series.setName("Energy");
         lineChart.getData().add(series);
 
-        //Plot reaction
+        // Plot reaction
         plotReaction(reactionNb);
 
-        //Adjust size
-        lineChart.setPrefSize(600, 800); // Adjust width and height as needed
+        // Adjust size of graph
+        lineChart.setPrefSize(600, 800);
 
         // Wrap in HBox
         HBox chartHBox = new HBox(lineChart);
-        chartHBox.setPrefWidth(600);  // Adjust width
-        chartHBox.setPrefHeight(800); // Adjust height
+        chartHBox.setPrefWidth(600);
+        chartHBox.setPrefHeight(800);
 
         return chartHBox;
     }
 
+    // Get the current reaction to plot graph
     public void updateReactionNb(int reactionNb){
         this.reactionNb = reactionNb;
         plotReaction(reactionNb);
     }
+
+    //Return current reaction
     public int getReactionNb(){
         return reactionNb;
     }
 
+    // Plot graph depending on reaction user initiated
     public void plotReaction(int reactionNb) {
-        series.getData().clear(); // Clear previous data
+        //Clear previous data
+        series.getData().clear();
 
-        // Simulate data for different reactions
+        // Reset to default range for most reactions
+        yAxis.setLowerBound(-250);
+        yAxis.setUpperBound(250);
+        yAxis.setTickUnit(50);
+
+        // Special case for reaction 6 (thermite reaction)
+        if (reactionNb == 6) {
+            yAxis.setLowerBound(-500);
+            yAxis.setUpperBound(500);
+            yAxis.setTickUnit(100);
+        }
+
+        // Show data for different reactions
         switch (reactionNb) {
             case 1:
                 plotReaction1();
@@ -112,11 +132,11 @@ public class EnthalpyGraph {
     private void plotReaction1() {
         // Reactants
         series.getData().add(new XYChart.Data<>(0, 0)); // Start
-        series.getData().add(new XYChart.Data<>(1, 50)); // Reactants energy (estimated)
+        series.getData().add(new XYChart.Data<>(1, 50)); // Reactants energy
         // Activation energy
-        series.getData().add(new XYChart.Data<>(2, 150)); // Peak (estimated activation energy)
+        series.getData().add(new XYChart.Data<>(2, 150)); // Peak
         // Products
-        series.getData().add(new XYChart.Data<>(3, -100)); // Products energy (estimated)
+        series.getData().add(new XYChart.Data<>(3, -100)); // Products energy
         series.getData().add(new XYChart.Data<>(4, -100)); // End
     }
 
@@ -124,11 +144,11 @@ public class EnthalpyGraph {
     private void plotReaction2() {
         // Reactants
         series.getData().add(new XYChart.Data<>(0, 0)); // Start
-        series.getData().add(new XYChart.Data<>(1, 50)); // Reactants energy (estimated)
+        series.getData().add(new XYChart.Data<>(1, 50)); // Reactants energy
         // Activation energy
-        series.getData().add(new XYChart.Data<>(2, 150)); // Peak (estimated activation energy)
+        series.getData().add(new XYChart.Data<>(2, 150)); // Peak
         // Products
-        series.getData().add(new XYChart.Data<>(3, -50)); // Products energy (estimated)
+        series.getData().add(new XYChart.Data<>(3, -50)); // Products energy
         series.getData().add(new XYChart.Data<>(4, -50)); // End
     }
 
@@ -136,11 +156,11 @@ public class EnthalpyGraph {
     private void plotReaction3() {
         // Reactants
         series.getData().add(new XYChart.Data<>(0, 0)); // Start
-        series.getData().add(new XYChart.Data<>(1, 0)); // Reactants energy (estimated)
+        series.getData().add(new XYChart.Data<>(1, 0)); // Reactants energy
         // Activation energy
-        series.getData().add(new XYChart.Data<>(2, 0)); // Peak (estimated activation energy)
+        series.getData().add(new XYChart.Data<>(2, 0)); // Peak
         // Products
-        series.getData().add(new XYChart.Data<>(3, 0)); // Products energy (estimated)
+        series.getData().add(new XYChart.Data<>(3, 0)); // Products energy
         series.getData().add(new XYChart.Data<>(4, 0)); // End
     }
 
@@ -148,11 +168,11 @@ public class EnthalpyGraph {
     private void plotReaction4() {
         // Reactants
         series.getData().add(new XYChart.Data<>(0, 0)); // Start
-        series.getData().add(new XYChart.Data<>(1, 100)); // Reactants energy (estimated)
+        series.getData().add(new XYChart.Data<>(1, 100)); // Reactants energy
         // Activation energy
-        series.getData().add(new XYChart.Data<>(2, 200)); // Peak (estimated activation energy)
+        series.getData().add(new XYChart.Data<>(2, 200)); // Peak
         // Products
-        series.getData().add(new XYChart.Data<>(3, -150)); // Products energy (estimated)
+        series.getData().add(new XYChart.Data<>(3, -150)); // Products energy
         series.getData().add(new XYChart.Data<>(4, -150)); // End
     }
 
@@ -160,23 +180,20 @@ public class EnthalpyGraph {
     private void plotReaction5() {
         // Reactants
         series.getData().add(new XYChart.Data<>(0, 0)); // Start
-        series.getData().add(new XYChart.Data<>(1, 80)); // Reactants energy (estimated)
+        series.getData().add(new XYChart.Data<>(1, 80)); // Reactants energy
         // Activation energy
-        series.getData().add(new XYChart.Data<>(2, 160)); // Peak (estimated activation energy)
+        series.getData().add(new XYChart.Data<>(2, 160)); // Peak
         // Products
-        series.getData().add(new XYChart.Data<>(3, -120)); // Products energy (estimated)
+        series.getData().add(new XYChart.Data<>(3, -120)); // Products energy
         series.getData().add(new XYChart.Data<>(4, -120)); // End
     }
 
-    // Case 6: Aluminium and iron oxide reaction (thermite reaction)
     private void plotReaction6() {
-        // Reactants
+        // Plot data points
         series.getData().add(new XYChart.Data<>(0, 0)); // Start
-        series.getData().add(new XYChart.Data<>(1, 200)); // Reactants energy (estimated)
-        // Activation energy
-        series.getData().add(new XYChart.Data<>(2, 500)); // Peak (estimated activation energy)
-        // Products
-        series.getData().add(new XYChart.Data<>(3, -400)); // Products energy (estimated)
+        series.getData().add(new XYChart.Data<>(1, 200)); // Reactants energy
+        series.getData().add(new XYChart.Data<>(2, 500)); // Activation energy peak
+        series.getData().add(new XYChart.Data<>(3, -400)); // Products energy
         series.getData().add(new XYChart.Data<>(4, -400)); // End
     }
 
@@ -184,11 +201,11 @@ public class EnthalpyGraph {
     private void plotReaction7() {
         // Reactants
         series.getData().add(new XYChart.Data<>(0, 0)); // Start
-        series.getData().add(new XYChart.Data<>(1, 10)); // Reactants energy (estimated)
+        series.getData().add(new XYChart.Data<>(1, 10)); // Reactants energy
         // Activation energy
-        series.getData().add(new XYChart.Data<>(2, 30)); // Peak (estimated activation energy)
+        series.getData().add(new XYChart.Data<>(2, 30)); // Peak
         // Products
-        series.getData().add(new XYChart.Data<>(3, -10)); // Products energy (estimated)
+        series.getData().add(new XYChart.Data<>(3, -10)); // Products energy
         series.getData().add(new XYChart.Data<>(4, -10)); // End
     }
 
@@ -196,11 +213,11 @@ public class EnthalpyGraph {
     private void plotReaction8() {
         // Reactants
         series.getData().add(new XYChart.Data<>(0, 0)); // Start
-        series.getData().add(new XYChart.Data<>(1, 20)); // Reactants energy (estimated)
+        series.getData().add(new XYChart.Data<>(1, 20)); // Reactants energy
         // Activation energy
-        series.getData().add(new XYChart.Data<>(2, 50)); // Peak (estimated activation energy)
+        series.getData().add(new XYChart.Data<>(2, 50)); // Peak
         // Products
-        series.getData().add(new XYChart.Data<>(3, -20)); // Products energy (estimated)
+        series.getData().add(new XYChart.Data<>(3, -20)); // Products energy
         series.getData().add(new XYChart.Data<>(4, -20)); // End
     }
 
@@ -208,11 +225,11 @@ public class EnthalpyGraph {
     private void plotReaction9() {
         // Reactants
         series.getData().add(new XYChart.Data<>(0, 0)); // Start
-        series.getData().add(new XYChart.Data<>(1, 30)); // Reactants energy (estimated)
+        series.getData().add(new XYChart.Data<>(1, 30)); // Reactants energy
         // Activation energy
-        series.getData().add(new XYChart.Data<>(2, 70)); // Peak (estimated activation energy)
+        series.getData().add(new XYChart.Data<>(2, 70)); // Peak
         // Products
-        series.getData().add(new XYChart.Data<>(3, -30)); // Products energy (estimated)
+        series.getData().add(new XYChart.Data<>(3, -30)); // Products energy
         series.getData().add(new XYChart.Data<>(4, -30)); // End
     }
 

@@ -52,7 +52,6 @@ public class GameStateManager {
     }
 
 
-
     //Check if game is unlocked for each game
     public void lockGame1() {
         game1Locked = true;

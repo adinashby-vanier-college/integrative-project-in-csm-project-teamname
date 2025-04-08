@@ -6,27 +6,17 @@ import com.example.theunknownvariable.Controller.EnthalpyGraph;
 import com.example.theunknownvariable.Controller.GameStateManager;
 import com.example.theunknownvariable.Controller.ReactionHandler;
 import com.example.theunknownvariable.Model.Substance;
-import com.example.theunknownvariable.Model.Tubes;
 import javafx.animation.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.media.MediaView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.Media;
-import java.io.File;
-import java.util.Random;
 
 //This class contains the interface of game 3 chemistry and basic actions related to the interface components
 public class ChemUI {
@@ -49,11 +39,8 @@ public class ChemUI {
     private Label wrongAnswers;
     private int rightAnsNb=0;
     private int wrongAnsNb=0;
-    private Clues clues;
 
     //Tubes and becker
-    private Tubes tube1;
-    private Tubes tube2;
     private ImageView tube1ImageView;
     private ImageView tube2ImageView;
     private ImageView becker;
@@ -62,16 +49,12 @@ public class ChemUI {
     private EnthalpyGraph graph;
     private ReactionHandler reactionHandler;
 
-    //Tube number (left and right)
-    private int tube1nb;
-    private int tube2nb;
-
     //Button groups
     private Button selectedButtonGroup1 = null;
     private Button selectedButtonGroup2 = null;
 
     //Stage and scene
-    private Stage stage;
+    private final Stage stage;
     private Scene gameScene;
 
     //Constructor
@@ -311,7 +294,7 @@ public class ChemUI {
         //Initialize graph
         graph = new EnthalpyGraph();
         //Initialize clues scene
-        clues = new Clues(stage);
+        Clues clues = new Clues(stage);
         //Initialize reaction handler and pass the graph
         reactionHandler = new ReactionHandler(graph);
 
@@ -560,12 +543,11 @@ public class ChemUI {
 
     private void updateTubeImage(int newTube1, int newTube2) {
         if (newTube1 != 0) {
-            tube1nb = newTube1;
-            tube1ImageView.setImage(new Image("tubeFINAL" + tube1nb + ".png"));
+            //Tube number (left and right)
+            tube1ImageView.setImage(new Image("tubeFINAL" + newTube1 + ".png"));
         }
         if (newTube2 != 0) {
-            tube2nb = newTube2;
-            tube2ImageView.setImage(new Image("tubeFINAL" + (tube2nb+3) + ".png"));
+            tube2ImageView.setImage(new Image("tubeFINAL" + (newTube2 +3) + ".png"));
         }
     }
 
