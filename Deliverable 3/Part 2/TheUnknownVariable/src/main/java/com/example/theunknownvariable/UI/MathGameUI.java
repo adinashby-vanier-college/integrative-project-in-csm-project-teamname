@@ -89,7 +89,8 @@ public class MathGameUI {
         proceedButton.setOnAction(event -> {
             // Transition to the main game scene
             BorderPane mainGame = createMainGameUI(); // Create the main game UI
-            mainGameScene = new Scene(mainGame, 1366, 768);
+            StackPane layeredRoot = new StackPane(mainGame); // ✅ wraps your layout
+            mainGameScene = new Scene(layeredRoot, 1366, 768);
             primaryStage.setScene(mainGameScene);
         });
 
@@ -365,8 +366,8 @@ public class MathGameUI {
         GameStateManager.getInstance().unlockClue4();
         GameStateManager.getInstance().lockGame4();
 
-        ChemUI object = new ChemUI(stage);
-        object.displayImage(mainGameScene,"clueScene.png",800,5,true);
+//        ChemUI object = new ChemUI(stage);
+        displayImage(mainGameScene,"clueScene.png",800,5,true);
 //
 //        MainPage mainPage = new MainPage(stage);
 //        Scene scene = mainPage.displayMainPage();
@@ -386,10 +387,42 @@ public class MathGameUI {
         game4access = false;
         game4clue = false;
         GameStateManager.getInstance().lockGame4();
-        ChemUI object = new ChemUI(stage);
-        object.displayImage(mainGameScene,"gameOver.png",800,5,true);
+//        ChemUI object = new ChemUI(stage);
+        displayImage(mainGameScene,"gameOver.png",800,5,true);
 
     }
+
+    //Method to display image depending on outcome of the users' progress
+    public void displayImage(Scene scene, String imageUrl, int width, int time, boolean flag) {
+        // Load image
+        Image image = new Image(imageUrl);
+        ImageView imageView = new ImageView(image);
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(width);
+
+        // Overlay container
+        StackPane overlayPane = new StackPane();
+        overlayPane.setStyle("-fx-background-color: rgba(0,0,0,0.5);"); // Dark transparent background
+        overlayPane.getChildren().add(imageView);
+        StackPane.setAlignment(imageView, Pos.CENTER); // ✅ CENTER the image!
+
+        // Add to root
+        if (scene.getRoot() instanceof StackPane root) {
+            root.getChildren().add(overlayPane);
+
+            // Wait and remove
+            PauseTransition delay = new PauseTransition(Duration.seconds(time));
+            delay.setOnFinished(event -> {
+                root.getChildren().remove(overlayPane);
+                if (flag) {
+                    MainPage mainPage = new MainPage(stage);
+                    switchScenes(mainPage.displayMainPage());
+                }
+            });
+            delay.play();
+        }
+    }
+
 
 
 
