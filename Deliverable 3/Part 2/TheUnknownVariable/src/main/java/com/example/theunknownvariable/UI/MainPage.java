@@ -1,7 +1,6 @@
 package com.example.theunknownvariable.UI;
 
 import com.example.theunknownvariable.Controller.GameStateManager;
-import com.example.theunknownvariable.GameUI;
 import com.example.theunknownvariable.Controller.LensGameMain;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -104,7 +103,7 @@ public class MainPage {
         //Switch to game 4
         g4Button.setOnAction(event->{
             if(!GameStateManager.getInstance().isGame4Locked()) {
-                GameUI mathGame = new GameUI(stage);
+                MathGameUI mathGame = new MathGameUI(stage);
                 Scene scene = mathGame.displayMathGame(stage);
                 switchScenes(scene);
             }

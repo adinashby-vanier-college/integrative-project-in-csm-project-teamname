@@ -1,7 +1,5 @@
-package com.example.theunknownvariable;// GameUI.java
+package com.example.theunknownvariable.UI;// GameUI.java
 // GameUI.java
-import com.example.theunknownvariable.UI.Hangman;
-import com.example.theunknownvariable.UI.MainPage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,15 +17,16 @@ import com.example.theunknownvariable.Model.MathProblem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
-public class GameUI {
+public class MathGameUI {
 
     private List<Text> letterTexts = new ArrayList<>();
     private final String word = "blue"; // the word to guess
 
     private char letterIndex;
+    private Hangman hangman;
+    private Pane hangmanPane;
 
 
     private Stage stage;
@@ -35,7 +34,7 @@ public class GameUI {
 //    public void start(Stage primaryStage) {
 //
 //    }
-    public GameUI(Stage stage) {
+    public MathGameUI(Stage stage) {
         this.stage = stage;
     }
     public Scene displayMathGame(Stage primaryStage) {
@@ -95,8 +94,8 @@ public class GameUI {
         root.setStyle("-fx-background-image: url('background_game.png'); -fx-background-size: cover;");
 
         // Hangman Section
-        Pane hangmanPane = new Pane();
-        Hangman hangman = new Hangman(hangmanPane);
+        hangmanPane = new Pane();
+        hangman = new Hangman(hangmanPane);
         root.setLeft(hangmanPane);
         BorderPane.setMargin(hangmanPane, new Insets(50));
 
@@ -233,6 +232,7 @@ public class GameUI {
                 }
                 else {
                     System.out.println("Incorrect. Try again.");
+                    hangman.addLimb(hangmanPane);
                 }
             } catch (NumberFormatException ex) {
                 System.out.println("Please enter a valid number.");
