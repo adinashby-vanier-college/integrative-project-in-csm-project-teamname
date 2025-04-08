@@ -10,8 +10,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
@@ -34,10 +32,10 @@ public class Clues {
         this.stage = stage;
 
         //Initialize clue labels
-        game1Clue = new Label("");
-        game2Clue = new Label("");
-        game3Clue = new Label("");
-        game4Clue = new Label("");
+        game1Clue = new Label("Clue starts here");
+        game2Clue = new Label("Clue starts here");
+        game3Clue = new Label("Clue starts here");
+        game4Clue = new Label("Clue starts here");
 
         //CSS for labels
         String style = "-fx-alignment: center;-fx-font-family: 'Georgia';" +

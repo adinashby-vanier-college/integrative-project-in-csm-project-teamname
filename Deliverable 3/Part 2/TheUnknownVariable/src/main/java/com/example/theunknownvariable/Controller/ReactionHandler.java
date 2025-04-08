@@ -161,7 +161,7 @@ public class ReactionHandler {
             case 7 -> { // Sodium chloride and silver nitrate reaction (Precipitation)
                 formulaLabel.setText("NaCl + AgNO3 → NaNO3 + AgCl↓");
                 energyTypeLabel.setText("Slightly exothermic");
-                factLabel.setText("In photography, silver chloride darkens when exposed \nto light, capturing images on film");
+                factLabel.setText("In photography, silver chloride darkens when\n exposed to light, capturing images on film \nand revealing the unseen.");
             }
             case 8 -> { // Sodium chloride and hydrogen peroxide reaction
                 formulaLabel.setText("NaCl + H2O2 → Possible slow oxidation reactions");
