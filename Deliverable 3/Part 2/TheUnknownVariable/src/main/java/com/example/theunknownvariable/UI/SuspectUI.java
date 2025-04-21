@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 public class SuspectUI extends StackPane {
 
+    //Suspect names
     private static final int NUM_SUSPECTS = 6;
     private static final String[] SUSPECT_NAMES = {
             "Anita Bath", "Lea Mio", "Mohammed", "Picasso", "Sara", "Suspect Name"
@@ -29,20 +30,25 @@ public class SuspectUI extends StackPane {
             "/Sara.png", "/Suspect.png"
     };
 
+    //Stage
     private Stage stage;
     private Button menuButton;
 
+    //Constrcutor
     public SuspectUI(Stage stage) {
+        //Initialization
         this.stage = stage;
         StackPane root = new StackPane();
         root.setPrefSize(1366, 768);
 
+        //Background
         Image backgroundImage = new Image("/suspectBackground.jpg");
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(1390);
         backgroundView.setFitHeight(790);
         backgroundView.setPreserveRatio(true);
 
+        //Layout
         GridPane suspectGrid = new GridPane();
         suspectGrid.setHgap(80);
         suspectGrid.setVgap(60);

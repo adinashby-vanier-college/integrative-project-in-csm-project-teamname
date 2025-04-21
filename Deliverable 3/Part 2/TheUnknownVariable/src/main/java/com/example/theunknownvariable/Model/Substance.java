@@ -6,7 +6,7 @@ public class Substance {
     private int substanceNb1;
     private int substanceNb2;
 
-    // Private constructor to prevent external instantiation
+    // Constructor
     private Substance() {}
 
     // Public method to access the singleton instance
