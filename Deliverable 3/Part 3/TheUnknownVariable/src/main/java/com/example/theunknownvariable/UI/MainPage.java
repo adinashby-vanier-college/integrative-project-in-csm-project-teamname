@@ -1,7 +1,6 @@
 package com.example.theunknownvariable.UI;
 
-import com.example.theunknownvariable.Controller.GameStateManager;
-import com.example.theunknownvariable.Controller.LensGameMain;
+import com.example.theunknownvariable.Controller.*;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -95,8 +94,15 @@ public class MainPage {
         //Switch to game 3
         g3Button.setOnAction(event->{
             if(!GameStateManager.getInstance().isGame3Locked()) {
-                ChemUI chemGame = new ChemUI(stage);
-                Scene scene = chemGame.displayInstructions();
+                ChemUI view = new ChemUI(stage);
+                EnthalpyGraph graphController = new EnthalpyGraph(view);
+                ReactionHandler reactionController = new ReactionHandler(view,graphController);
+
+                ChemController controller = new ChemController(view,reactionController,graphController,stage);
+
+                view.initialize();
+
+                Scene scene = view.displayInstructions();
                 switchScenes(scene);
             }
         });

@@ -10,13 +10,10 @@ import javafx.stage.Stage;
 
 public class ReactionHandler {
 
+    private final ChemUI view;
+
     //Number that tracks reaction (1-9)
     private int reactionNb;
-
-    //Labels
-    private Label formulaLabel;
-    private Label energyTypeLabel;
-    private Label factLabel;
 
     private Stage stage;
 
@@ -25,34 +22,14 @@ public class ReactionHandler {
     boolean flag6 = false;
     boolean flag7 = false;
 
-    //Becker
-    private ImageView becker;
-
     //Graph
-    private EnthalpyGraph graph; // Store reference to graph
+    private EnthalpyGraph graph;
 
-    public ReactionHandler(EnthalpyGraph graph) {
+    public ReactionHandler(ChemUI view, EnthalpyGraph graph) {
+        this.view = view;
         this.graph = graph;
         this.reactionNb = 0;
 
-        // Initialize the labels once
-        this.formulaLabel = new Label("Formula");
-        this.energyTypeLabel = new Label("Energy Type");
-        this.factLabel = new Label("Fact");
-
-        // Apply styling to labels
-        String labelStyle = "-fx-background-color: #c2b19c;" +
-                "-fx-background-radius: 10;" +
-                "-fx-padding: 10 40;" +
-                "-fx-font-family: 'Courier New';" +
-                "-fx-text-fill: #2e2e2e;" +
-                "-fx-font-weight: bold;" +
-                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 5);" +
-                "-fx-pref-width: 630px;"+"-fx-alignment: center;";
-
-        formulaLabel.setStyle(labelStyle+"-fx-font-size: 20px;");
-        energyTypeLabel.setStyle(labelStyle+"-fx-font-size: 22px;");
-        factLabel.setStyle(labelStyle+"-fx-font-size: 18px;");
     }
 
 
@@ -95,33 +72,19 @@ public class ReactionHandler {
         updateLabels(reactionNb);
         updateBeckerImage(reactionNb);
     }
+
+    // Setter and getter for number of the reaction
     public void setReactionNb(int reactionNb){
         this.reactionNb = reactionNb;
     }
     public int getReactionNb(){
         return this.reactionNb;
     }
-    // Getters for existing labels
-    public Label getFormulaLabel() {
-        return formulaLabel;
-    }
-
-    public Label getEnergyTypeLabel() {
-        return energyTypeLabel;
-    }
-
-    public Label getFactLabel() {
-        return factLabel;
-    }
-    // Setter for the becker ImageView
-    public void setBecker(ImageView becker) {
-        this.becker = becker;
-    }
 
     private void updateBeckerImage(int reaction) {
-        if (reaction != 0 && becker != null) { // Check if becker is set
+        if (reaction != 0 && view.getBecker() != null) { // Check if becker is set
             this.reactionNb = reaction;
-            becker.setImage(new Image("becker" + reaction + ".png")); // Update the beaker
+            view.getBecker().setImage(new Image("becker" + reaction + ".png")); // Update the beaker
         }
     }
     public void updateLabels(int reaction) {
@@ -129,54 +92,54 @@ public class ReactionHandler {
 
         switch (reaction) {
             case 1 -> { // Luminol and silver nitrate reaction (Silver mirror test)
-                formulaLabel.setText("C8H7N3O2 + Ag(NH3)2 → Ag + C8H6N3O2 + NH4");
-                energyTypeLabel.setText("Slightly exothermic");
-                factLabel.setText("This reaction forms a reflective silver mirror,\noften used in forensic science!");
+                view.getFormulaLabel().setText("C8H7N3O2 + Ag(NH3)2 → Ag + C8H6N3O2 + NH4");
+                view.getEnergyTypeLabel().setText("Slightly exothermic");
+                view.getFactLabel().setText("This reaction forms a reflective silver mirror,\noften used in forensic science!");
             }
             case 2 -> { // Luminol and hydrogen peroxide reaction (Chemiluminescence)
-                formulaLabel.setText("C8H7N3O2 + H2O2 → catalyst → catalyst + light");
-                energyTypeLabel.setText("Exothermic");
-                factLabel.setText("This reaction produces a blue glow! It makes \nfireflies glow!");
+                view.getFormulaLabel().setText("C8H7N3O2 + H2O2 → catalyst → catalyst + light");
+                view.getEnergyTypeLabel().setText("Exothermic");
+                view.getFactLabel().setText("This reaction produces a blue glow! It makes \nfireflies glow!");
             }
             case 3 -> { // Luminol and iron oxide reaction
-                formulaLabel.setText("C8H7N3O2 + Fe2O3 → No reaction");
-                energyTypeLabel.setText("No energy released");
-                factLabel.setText("Weak surface absorption");
+                view.getFormulaLabel().setText("C8H7N3O2 + Fe2O3 → No reaction");
+                view.getEnergyTypeLabel().setText("No energy released");
+                view.getFactLabel().setText("Weak surface absorption");
             }
             case 4 -> { // Aluminium and silver nitrate reaction (Aluminium displacement)
-                formulaLabel.setText("Al + 3AgNO3 → Al(NO3)3 + 3Ag");
-                energyTypeLabel.setText("Exothermic");
-                factLabel.setText("Aluminium displaces silver from solution, \nforming shiny silver crystals!");
+                view.getFormulaLabel().setText("Al + 3AgNO3 → Al(NO3)3 + 3Ag");
+                view.getEnergyTypeLabel().setText("Exothermic");
+                view.getFactLabel().setText("Aluminium displaces silver from solution, \nforming shiny silver crystals!");
             }
             case 5 -> { // Aluminium and hydrogen peroxide reaction
-                formulaLabel.setText("2Al + 3H2O2 → 2Al(OH)3 + 3H2");
-                energyTypeLabel.setText("Exothermic");
-                factLabel.setText("This reaction releases hydrogen gas and heat, \nsometimes causing foaming.");
+                view.getFormulaLabel().setText("2Al + 3H2O2 → 2Al(OH)3 + 3H2");
+                view.getEnergyTypeLabel().setText("Exothermic");
+                view.getFactLabel().setText("This reaction releases hydrogen gas and heat, \nsometimes causing foaming.");
             }
             case 6 -> { // Aluminium and iron oxide reaction (Thermite reaction)
-                formulaLabel.setText("2Al + Fe2O3 → 2Fe + Al2O3");
-                energyTypeLabel.setText("Highly exothermic");
-                factLabel.setText("The thermite reaction produces molten iron, an \nincredibly hot liquid (1205°C-1370°C)...");
+                view.getFormulaLabel().setText("2Al + Fe2O3 → 2Fe + Al2O3");
+                view.getEnergyTypeLabel().setText("Highly exothermic");
+                view.getFactLabel().setText("The thermite reaction produces molten iron, an \nincredibly hot liquid (1205°C-1370°C)...");
             }
             case 7 -> { // Sodium chloride and silver nitrate reaction (Precipitation)
-                formulaLabel.setText("NaCl + AgNO3 → NaNO3 + AgCl↓");
-                energyTypeLabel.setText("Slightly exothermic");
-                factLabel.setText("In photography, silver chloride darkens when\n exposed to light, capturing images on film \nand revealing the unseen.");
+                view.getFormulaLabel().setText("NaCl + AgNO3 → NaNO3 + AgCl↓");
+                view.getEnergyTypeLabel().setText("Slightly exothermic");
+                view.getFactLabel().setText("In photography, silver chloride darkens when\n exposed to light, capturing images on film \nand revealing the unseen.");
             }
             case 8 -> { // Sodium chloride and hydrogen peroxide reaction
-                formulaLabel.setText("NaCl + H2O2 → Possible slow oxidation reactions");
-                energyTypeLabel.setText("Very slightly exothermic");
-                factLabel.setText("Hydrogen peroxide decomposes over time in the \npresence of chloride ions.");
+                view.getFormulaLabel().setText("NaCl + H2O2 → Possible slow oxidation reactions");
+                view.getEnergyTypeLabel().setText("Very slightly exothermic");
+                view.getFactLabel().setText("Hydrogen peroxide decomposes over time in the \npresence of chloride ions.");
             }
             case 9 -> { // Sodium chloride and iron oxide reaction (Salt corrosion)
-                formulaLabel.setText("Fe + O2 + H2O + NaCl → Fe2O3·xH2O (Rust)");
-                energyTypeLabel.setText("Slightly exothermic");
-                factLabel.setText("Saltwater speeds up rusting, damaging metals \nover time.");
+                view.getFormulaLabel().setText("Fe + O2 + H2O + NaCl → Fe2O3·xH2O (Rust)");
+                view.getEnergyTypeLabel().setText("Slightly exothermic");
+                view.getFactLabel().setText("Saltwater speeds up rusting, damaging metals \nover time.");
             }
             default -> { // Default case for no reaction
-                formulaLabel.setText("Formula");
-                energyTypeLabel.setText("Energy Type");
-                factLabel.setText("Fact");
+                view.getFormulaLabel().setText("Formula");
+                view.getEnergyTypeLabel().setText("Energy Type");
+                view.getFactLabel().setText("Fact");
             }
         }
     }

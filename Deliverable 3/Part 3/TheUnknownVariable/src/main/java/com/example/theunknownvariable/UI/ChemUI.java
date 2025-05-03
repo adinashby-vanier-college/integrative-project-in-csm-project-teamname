@@ -1,15 +1,13 @@
 package com.example.theunknownvariable.UI;
 
-
-import com.example.theunknownvariable.Controller.EnthalpyGraph;
-
-import com.example.theunknownvariable.Controller.GameStateManager;
-import com.example.theunknownvariable.Controller.ReactionHandler;
 import com.example.theunknownvariable.Model.Substance;
 import javafx.animation.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -34,6 +32,11 @@ public class ChemUI {
     private Button tryButton;
     private Button instructionsButton;
 
+    //Labels
+    private Label formulaLabel;
+    private Label energyTypeLabel;
+    private Label factLabel;
+
     //Tracking user's progress
     private Label rightAnswers;
     private Label wrongAnswers;
@@ -45,9 +48,11 @@ public class ChemUI {
     private ImageView tube2ImageView;
     private ImageView becker;
 
-    //Graph
-    private EnthalpyGraph graph;
-    private ReactionHandler reactionHandler;
+    //Graph components
+    private LineChart<Number, Number> lineChart;
+    private XYChart.Series<Number, Number> series;
+    private NumberAxis yAxis;
+
 
     //Button groups
     private Button selectedButtonGroup1 = null;
@@ -57,12 +62,47 @@ public class ChemUI {
     private final Stage stage;
     private Scene gameScene;
 
-    //Constructor
+    // Constructor
     public ChemUI(Stage stage){
         this.stage = stage;
+        // Buttons
+        this.sub1Button = buttonCustomization("luminol");
+        this.sub2Button = buttonCustomization("aluminium");
+        this.sub3Button = buttonCustomization("sc");
+        this.sub4Button = buttonCustomization("sn");
+        this.sub5Button = buttonCustomization("hp");
+        this.sub6Button = buttonCustomization("io");
+        this.mixButton = buttonCustomization("mix");
+        this.hintButton = buttonCustomization("hint");
+        this.menuButton = buttonCustomization("menu");
+        this.tryButton = buttonCustomization("try");
+        this.instructionsButton = buttonCustomization("understand");
+
+        // Labels
+        this.formulaLabel = new Label("Formula");
+        this.energyTypeLabel = new Label("Energy Type");
+        this.factLabel = new Label("Fact");
+
+        //Graph components
+        series = new XYChart.Series<>();
+        yAxis = new NumberAxis();
+
+        //Tubes view
+        this.tube1ImageView = new ImageView(new Image("tubeFINAL.png"));
+        this.tube2ImageView = new ImageView(new Image("tubeFINAL.png"));
+
+        //Becker
+        becker = new ImageView(new Image("beckerFINAL.png"));
     }
 
-    //Customize buttons' style and effects
+    // Initialization
+    public void initialize(){
+        labelCustomization();
+        displayInstructions();
+        displayGame();
+    }
+
+    // Customize buttons' style and effects
     public Button buttonCustomization(String button){
         //----------Buttons------------
         Button empty = new Button();
@@ -206,6 +246,49 @@ public class ChemUI {
 
     }
 
+    // Label Customization
+    public void labelCustomization(){
+        // Apply styling to labels
+        String labelStyle = "-fx-background-color: #c2b19c;" +
+                "-fx-background-radius: 10;" +
+                "-fx-padding: 10 40;" +
+                "-fx-font-family: 'Courier New';" +
+                "-fx-text-fill: #2e2e2e;" +
+                "-fx-font-weight: bold;" +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 5);" +
+                "-fx-pref-width: 630px;"+"-fx-alignment: center;";
+
+        formulaLabel.setStyle(labelStyle+"-fx-font-size: 20px;");
+        energyTypeLabel.setStyle(labelStyle+"-fx-font-size: 22px;");
+        factLabel.setStyle(labelStyle+"-fx-font-size: 18px;");
+    }
+
+    // Getters
+    public Button getSub1Button() {return sub1Button;}
+    public Button getSub2Button() {return sub2Button;}
+    public Button getSub3Button() {return sub3Button;}
+    public Button getSub4Button() {return sub4Button;}
+    public Button getSub5Button() {return sub5Button;}
+    public Button getSub6Button() {return sub6Button;}
+    public Button getInstructionsButton() {return instructionsButton;}
+    public Button getMenuButton() {return menuButton;}
+    public Button getHintButton() {return hintButton;}
+    public Button getMixButton() {return mixButton;}
+    public Button getTryButton() {return tryButton;}
+    public ImageView getBecker(){ return becker; }
+    public Label getRightAnswers() {return rightAnswers;}
+    public Label getWrongAnswers() {return wrongAnswers;}
+    public Scene getGameScene() {return gameScene;}
+    public Label getFormulaLabel() {return formulaLabel;}
+    public Label getEnergyTypeLabel() {
+        return energyTypeLabel;
+    }
+    public Label getFactLabel() {
+        return factLabel;
+    }
+    public ImageView getTube1ImageView() {return tube1ImageView;}
+    public ImageView getTube2ImageView() {return tube2ImageView;}
+
     //Interface of instructions scene
     public Scene displayInstructions(){
         //Background png
@@ -215,15 +298,8 @@ public class ChemUI {
         backgroundView.setPreserveRatio(true);
 
         //Button
-        instructionsButton = buttonCustomization("understand");
-        StackPane understandStack = new StackPane(instructionsButton);
+        StackPane understandStack = new StackPane(this.instructionsButton);
         understandStack.setAlignment(Pos.BOTTOM_CENTER);
-
-        //Switch to game 3
-        instructionsButton.setOnAction(event->{
-            Scene scene = displayGame();
-            switchScenes(scene);
-        });
 
         //Layout
         StackPane stack = new StackPane(backgroundView,understandStack);
@@ -248,18 +324,6 @@ public class ChemUI {
 
     //Interface of the chemistry game
     public Scene displayGame(){
-
-        //Buttons
-        sub1Button = buttonCustomization("luminol");
-        sub2Button = buttonCustomization("aluminium");
-        sub3Button = buttonCustomization("sc");
-        sub4Button = buttonCustomization("sn");
-        sub5Button = buttonCustomization("hp");
-        sub6Button = buttonCustomization("io");
-        mixButton = buttonCustomization("mix");
-        hintButton = buttonCustomization("hint");
-        menuButton = buttonCustomization("menu");
-        tryButton = buttonCustomization("try");
 
         //Background png
         Image background = new Image("background.png");
@@ -291,17 +355,11 @@ public class ChemUI {
         sepVBox.setAlignment(Pos.CENTER);
 
         //-------Initialization--------
-        //Initialize graph
-        graph = new EnthalpyGraph();
-        //Initialize clues scene
         Clues clues = new Clues(stage);
-        //Initialize reaction handler and pass the graph
-        reactionHandler = new ReactionHandler(graph);
-
+        displayTube1();
+        displayTube2();
         //Create ReactionHandler and set the becker
         becker = getBeckerImageView();
-        reactionHandler = new ReactionHandler(graph);
-        reactionHandler.setBecker(becker);
 
         //----------Layout-------------
 
@@ -344,8 +402,7 @@ public class ChemUI {
         VBox upperHalf = new VBox(substancesAndTools,tryStack);
 
         //Graph
-        graph = new EnthalpyGraph();
-        HBox graphHBox = graph.displayGraph(graph.getReactionNb());
+        HBox graphHBox = displayGraph();
         graphHBox.setAlignment(Pos.CENTER_RIGHT);
         graphHBox.setPadding(new Insets(0));
         Insets old = graphHBox.getPadding();
@@ -372,8 +429,6 @@ public class ChemUI {
         grid.add(infoHBox,0,1);
         grid.setVgap(10);
 
-        //Handling events
-        eventHandling();
 
         StackPane pane = new StackPane(backgroundView,grid);
         gameScene = new Scene(pane,1366,768);
@@ -382,18 +437,12 @@ public class ChemUI {
 
     //Interface of information boxes and labels
     public VBox displayInfo() {
-        // Get existing labels from ReactionHandler (instead of creating new ones)
-        Label formulaLabel = reactionHandler.getFormulaLabel();
-        Label energyTypeLabel = reactionHandler.getEnergyTypeLabel();
-        Label factLabel = reactionHandler.getFactLabel();
-
         // Layout
         return new VBox(20, formulaLabel, energyTypeLabel, factLabel);
     }
 
     //Tube 1 appearance
     public ImageView displayTube1() {
-        tube1ImageView = new ImageView(new Image("tubeFINAL.png"));
         tube1ImageView.setFitHeight(320);
         tube1ImageView.setPreserveRatio(true);
         return tube1ImageView;
@@ -401,76 +450,72 @@ public class ChemUI {
 
     //Tube 2 appearance
     public ImageView displayTube2() {
-        tube2ImageView = new ImageView(new Image("tubeFINAL.png"));
         tube2ImageView.setFitHeight(320);
         tube2ImageView.setPreserveRatio(true);
         tube2ImageView.setScaleX(-1);
         return tube2ImageView;
     }
 
-    //Handling the events of the game interface's buttons
-    public void eventHandling() {
+    public HBox displayGraph() {
+        // Create the x and y axes
+        final NumberAxis xAxis = new NumberAxis(0, 4, 0.5);
+        this.yAxis = new NumberAxis(-250, 250, 50);
+        xAxis.setLabel("Time (s)");
+        yAxis.setLabel("Energy (kJ/mol)");
+        xAxis.lookup(".axis-label").setStyle("-fx-text-fill: #e8ceb0;");
+        yAxis.lookup(".axis-label").setStyle("-fx-text-fill: #e8ceb0;");
 
-        //Menu button: switch to main page
-        menuButton.setOnAction(event -> {
-            MainPage mainPage = new MainPage(stage);
-            Scene scene = mainPage.displayMainPage();
-            switchScenes(scene);
-        });
+        // Axis and title CSS
+        String axisStyle = "-fx-tick-label-fill: #e8ceb0;" +
+                "-fx-font-size: 14px;" +
+                "-fx-font-family: 'Courier New';" +
+                "-fx-font-weight: bold;";
 
-        //Hint button: display hint
-        hintButton.setOnAction(event -> {
-            Stage hintStage = new Stage();
-            Scene scene = displayHint();
-            hintStage.setScene(scene);
-            hintStage.centerOnScreen();
-            hintStage.showAndWait();
-        });
+        xAxis.setStyle(axisStyle);
+        yAxis.setStyle(axisStyle);
+        lineChart = new LineChart<>(xAxis, yAxis);
 
-        //Group 1 buttons for toggling effect
-        handleButtonClick(sub1Button, 1, 0, true);
-        handleButtonClick(sub2Button, 2, 0, true);
-        handleButtonClick(sub3Button, 3, 0, true);
+        // Chart title CSS
+        lineChart.lookup(".chart-title").setStyle("-fx-text-fill: #e8ceb0;");
 
-        //Group 2 buttons for toggling effect
-        handleButtonClick(sub4Button, 0, 1, false);
-        handleButtonClick(sub5Button, 0, 2, false);
-        handleButtonClick(sub6Button, 0, 3, false);
+        // Remove legend
+        lineChart.setLegendVisible(false);
 
-        //Mix button: calls the method that handles the reaction
-        mixButton.setOnAction(event -> {
-            reactionHandler.mix();
-            graph.plotReaction(reactionHandler.getReactionNb());
-        });
+        // Graph grid lines CSS
+        lineChart.setStyle("-fx-background-color: transparent;");
+        lineChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
+        lineChart.lookup(".chart-vertical-grid-lines").setStyle("-fx-stroke: #555555;");
+        lineChart.lookup(".chart-horizontal-grid-lines").setStyle("-fx-stroke: #555555;");
 
-        //Try button: calls the reaction handler method and submit answer to game system
-        tryButton.setOnAction(event ->{
-            reactionHandler.mix();
-            graph.plotReaction(reactionHandler.getReactionNb());
-            //Check if the reaction is correct
-            if(reactionHandler.checkUserAnswer()==0){
-                rightAnsNb+=1;
-                rightAnswers.setText(rightAnsNb+"/3");
-                displayImage(gameScene,"rightScenario.png",300,2,false);
-            }
-            //Check if the reaction is incorrect
-            else if(reactionHandler.checkUserAnswer()==2){
-                displayImage(gameScene, "wrongScenario.png",300,2,false);
-                wrongAnsNb+=1;
-                wrongAnswers.setText(wrongAnsNb+"/3");
-            }
-            //Check if user got all the good answers
-            if (rightAnsNb==3){
-                GameStateManager.getInstance().unlockClue3();
-                GameStateManager.getInstance().lockGame3();
-                displayImage(gameScene,"clueScene.png",800,5,true);
-            }
-            //Check if user used 3 wrong attempts
-            if (wrongAnsNb==3){
-                GameStateManager.getInstance().lockGame3();
-                displayImage(gameScene,"gameOver.png",800,5,true);
-            }
-        });
+        // Add the data series
+        series = new XYChart.Series<>();
+        series.setName("Energy");
+        lineChart.getData().add(series);
+
+        // Adjust size of graph
+        lineChart.setPrefSize(600, 800);
+
+        // Wrap in HBox
+        HBox chartHBox = new HBox(lineChart);
+        chartHBox.setPrefWidth(600);
+        chartHBox.setPrefHeight(800);
+
+        return chartHBox;
+    }
+
+    public void clearData() {
+        // Clear previous data
+        series.getData().clear();
+    }
+
+    public void addDataPoint(double x, double y) {
+        series.getData().add(new XYChart.Data<>(x, y));
+    }
+
+    public void setYAxisRange(double lower, double upper, double tick) {
+        yAxis.setLowerBound(lower);
+        yAxis.setUpperBound(upper);
+        yAxis.setTickUnit(tick);
     }
 
     //Method to display image depending on outcome of the users' progress
@@ -508,58 +553,12 @@ public class ChemUI {
         }
     }
 
-    private void handleButtonClick(Button button, int newTube1, int newTube2, boolean isGroup1) {
-        button.setOnAction(event -> {
-            if (isGroup1) {
-                // Reset previous selection in Group 1
-                if (selectedButtonGroup1 != null) {
-                    selectedButtonGroup1.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
-                }
-                selectedButtonGroup1 = button;
-            } else {
-                // Reset previous selection in Group 2
-                if (selectedButtonGroup2 != null) {
-                    selectedButtonGroup2.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
-                }
-                selectedButtonGroup2 = button;
-            }
-
-            // Apply highlight effect to the selected button
-            button.setStyle("-fx-effect: dropshadow(gaussian, rgba(245, 245, 220, 0.8), 10, 0.5, 0, 0);" +
-                    "-fx-background-color: transparent; -fx-border-color: transparent;");
-
-            // Update tube images
-            updateTubeImage(newTube1, newTube2);
-
-            // Update the selected substance in the Substance instance
-            if (isGroup1) {
-                Substance.getInstance().setSubstanceNb1(newTube1);
-            } else {
-                Substance.getInstance().setSubstanceNb2(newTube2);
-            }
-        });
-    }
-
-
-    private void updateTubeImage(int newTube1, int newTube2) {
-        if (newTube1 != 0) {
-            //Tube number (left and right)
-            tube1ImageView.setImage(new Image("tubeFINAL" + newTube1 + ".png"));
-        }
-        if (newTube2 != 0) {
-            tube2ImageView.setImage(new Image("tubeFINAL" + (newTube2 +3) + ".png"));
-        }
-    }
-
     public ImageView getBeckerImageView(){
         //Becker image
-        Image initialBeckerImage = new Image("beckerFINAL.png");
-        becker = new ImageView(initialBeckerImage);
         becker.setFitWidth(200);
         becker.setPreserveRatio(true);
         return becker;
     }
-
 
     public void switchScenes(Scene scene) {
         // Switch to the specified scene

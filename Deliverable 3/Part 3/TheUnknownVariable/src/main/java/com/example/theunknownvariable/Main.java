@@ -1,15 +1,12 @@
-package com.example.theunknownvariable.Controller;
+package com.example.theunknownvariable;
 
-import com.example.theunknownvariable.UI.Clues;
-import com.example.theunknownvariable.UI.MainPage;
-import com.example.theunknownvariable.UI.ChemUI;
 import com.example.theunknownvariable.UI.HomePage;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-public class GameController extends Application {
+public class Main extends Application {
     @Override
 
     public void start(Stage stage) throws IOException {

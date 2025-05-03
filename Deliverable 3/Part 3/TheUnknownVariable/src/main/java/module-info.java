@@ -4,7 +4,7 @@ module com.example.theunknownvariable {
     requires java.desktop;
     requires javafx.media;
 
-
+    exports com.example.theunknownvariable;
     opens com.example.theunknownvariable to javafx.fxml;
     exports com.example.theunknownvariable.UI;
     opens com.example.theunknownvariable.UI to javafx.fxml;
