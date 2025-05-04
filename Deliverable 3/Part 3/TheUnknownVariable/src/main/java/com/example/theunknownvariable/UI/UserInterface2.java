@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class UserInterface2 extends StackPane {
+    // Constants for screen size and gun height limits
     private static final double SCREEN_WIDTH = 1367;
     private static final double SCREEN_HEIGHT = 768;
     private static final double MAX_GUN_HEIGHT = 320;
@@ -30,22 +31,24 @@ public class UserInterface2 extends StackPane {
     private int incorrectAttempts = 0;
     private TextField heightInput;
     private Label Answers;
-    private int AnsNb=0;
+    private int AnsNb = 0;
 
     public UserInterface2(Stage stage) {
         this.stage = stage;
-        initializeUI();
-        eventHandling();
-        initializeHandlers();
+        initializeUI();  // Initialize the UI elements
+        eventHandling(); // Set up event handlers
+        initializeHandlers(); // Set up game-specific handlers
     }
 
     private void initializeUI() {
-        root = new Pane();
+        root = new Pane();  // Create the root pane for the scene
         root.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
+        // Add background image to the UI
         ImageView backgroundView = createImageView("/background.png", SCREEN_WIDTH, SCREEN_HEIGHT, false);
         root.getChildren().add(backgroundView);
 
+        // Set up title with motion graphic and score label
         Tmotion = createImageView("tmotion.png", 450, 100, true);
         Answers = new Label("0/3");
         Answers.setStyle("-fx-text-fill:#D1C5AB;-fx-font-size:35px;-fx-font-family:'Verdana';");
@@ -54,7 +57,7 @@ public class UserInterface2 extends StackPane {
         Title.setLayoutX(SCREEN_WIDTH / 3);
         Title.setLayoutY(30);
 
-
+        // Set up gun and bullet images
         gunView = createImageView("/gun.png", 155, 155, true);
         gunView.setLayoutX(150);
         gunView.setLayoutY(MAX_GUN_HEIGHT);
@@ -63,6 +66,7 @@ public class UserInterface2 extends StackPane {
         bulletView.setLayoutX(gunView.getLayoutX());
         bulletView.setLayoutY(gunView.getLayoutY());
 
+        // Set up target and other background elements
         ImageView targetView = createImageView("/target.png", 180, 180, true);
         targetView.setLayoutX(1200);
         targetView.setLayoutY(180);
@@ -76,14 +80,17 @@ public class UserInterface2 extends StackPane {
         paperView.setLayoutY(SCREEN_HEIGHT - 260);
         root.getChildren().add(paperView);
 
+        // Create the height adjustment slider
         heightSlider = createSlider(MIN_GUN_HEIGHT, MAX_GUN_HEIGHT, MAX_GUN_HEIGHT);
         heightSlider.valueProperty().addListener((obs, oldVal, newVal) -> gunView.setLayoutY(newVal.doubleValue()));
 
+        // Create buttons for game actions
         playButton = createButton("/play.png", 170, 170);
         submitButton = createButton("/Submit.png", 170, 170);
         theoryButton = createButton("/theory.png", 120, 120);
         menuButton = createButton("/Menu.png", 120, 120);
 
+        // Create the text field for suspect height input with validation
         heightInput = new TextField();
         heightInput.setPromptText("Enter Suspect Height");
         heightInput.setPrefSize(200, 50);
@@ -97,6 +104,7 @@ public class UserInterface2 extends StackPane {
             }
         });
 
+        // Add buttons and text fields to the UI layout
         VBox vboxCenter = new VBox(10, playButton, heightInput, submitButton);
         vboxCenter.setAlignment(Pos.CENTER);
         vboxCenter.setLayoutX(SCREEN_WIDTH / 2 - 100);
@@ -107,11 +115,13 @@ public class UserInterface2 extends StackPane {
         vboxBottomRight.setLayoutY(SCREEN_HEIGHT - 250);
         vboxBottomRight.setAlignment(Pos.CENTER);
 
+        // Add all UI elements to the root pane
         root.getChildren().addAll(heightSlider, gunView, targetView, lineView, vboxCenter, vboxBottomRight, Title);
         getChildren().add(root);
     }
 
     private void eventHandling() {
+        // Set up event handlers for the menu and theory buttons
         menuButton.setOnAction(event -> switchScenes(new MainPage(stage).displayMainPage()));
         theoryButton.setOnAction(event -> showTheoryPopup());
     }
@@ -120,49 +130,57 @@ public class UserInterface2 extends StackPane {
         game2UI gameUI = new game2UI();
         ProjectileHandler2 projectileHandler = new ProjectileHandler2(root, gunView, bulletView, heightSlider, playButton, paperView, gameUI);
 
-        root.getChildren().remove(bulletView);
+        root.getChildren().remove(bulletView);  // Remove the bullet initially
 
+        // Event handler for the play button to start projectile motion
         playButton.setOnAction(event -> {
             projectileHandler.startProjectileMotion();
         });
 
+        // Event handler for the submit button to check suspect height and handle responses
         submitButton.setOnAction(event -> {
             String input = heightInput.getText();
 
             if (input.isEmpty()) {
-                return;
+                return;  // Do nothing if the input is empty
             }
 
             try {
+                // Parse the height input and check the value
                 double suspectHeight = Double.parseDouble(input);
 
                 if (suspectHeight >= 162 && suspectHeight <= 163) {
+                    // Correct height, unlock clue
                     GameStateManager.getInstance().unlockClue2();
                     GameStateManager.getInstance().lockGame2();
-                    AnsNb+=1;
-                    Answers.setText(AnsNb+"/3");
+                    AnsNb += 1;
+                    Answers.setText(AnsNb + "/3");
                     displayImage(getScene(), "clueScene.png", 800, 5, true);
                 } else {
+                    // Incorrect height, show wrong scenario image
                     displayImage(getScene(), "wrongScenario.png", 300, 2, false);
-                    AnsNb+=1;
-                    Answers.setText(AnsNb+"/3");
+                    AnsNb += 1;
+                    Answers.setText(AnsNb + "/3");
                     incorrectAttempts++;
                 }
 
+                // If 3 incorrect attempts, lock the game and display game over
                 if (incorrectAttempts == 3) {
                     GameStateManager.getInstance().lockGame2();
-                    AnsNb+=1;
-                    Answers.setText(AnsNb+"/3");
+                    AnsNb += 1;
+                    Answers.setText(AnsNb + "/3");
                     displayImage(getScene(), "gameOver.png", 800, 5, true);
                 }
 
             } catch (NumberFormatException e) {
+                // Handle invalid input format
                 displayImage(getScene(), "invalidInput.png", 300, 2, false);
             }
         });
     }
 
     private void showTheoryPopup() {
+        // Display a popup with game theory explanation
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.setTitle("Theory Explanation");
@@ -175,6 +193,7 @@ public class UserInterface2 extends StackPane {
         popupStage.showAndWait();
     }
 
+    // Helper method to create ImageViews
     public static ImageView createImageView(String path, double width, double height, boolean preserveRatio) {
         ImageView imageView = new ImageView(new Image(path));
         imageView.setFitWidth(width);
@@ -183,6 +202,7 @@ public class UserInterface2 extends StackPane {
         return imageView;
     }
 
+    // Helper method to create buttons
     private Button createButton(String imagePath, double width, double height) {
         ImageView imageView = createImageView(imagePath, width, height, true);
         Button button = new Button("", imageView);
@@ -192,6 +212,7 @@ public class UserInterface2 extends StackPane {
         return button;
     }
 
+    // Helper method to create the height slider
     private Slider createSlider(double min, double max, double value) {
         Slider slider = new Slider(min, max, value);
         slider.setLayoutX(80);
@@ -203,12 +224,14 @@ public class UserInterface2 extends StackPane {
         return slider;
     }
 
+    // Display instructions screen
     public Scene displayInstructions() {
         Image background = new Image("instructionsBackgroundg2.png");
         ImageView backgroundView = new ImageView(background);
         backgroundView.setFitHeight(768);
         backgroundView.setPreserveRatio(true);
 
+        // Create button to continue from instructions screen
         Image understand = new Image("instructionsButton.png");
         ImageView understandV = new ImageView(understand);
         understandV.setFitWidth(250);
@@ -218,24 +241,28 @@ public class UserInterface2 extends StackPane {
         instructionsButton.setOnMouseEntered(e -> understandV.setOpacity(0.8));
         instructionsButton.setOnMouseExited(e -> understandV.setOpacity(1.0));
 
-        StackPane understandStack = new StackPane(instructionsButton);
-        understandStack.setAlignment(Pos.BOTTOM_CENTER);
-
+        // Event handler to go back to the game scene
         instructionsButton.setOnAction(event -> {
             UserInterface2 view = new UserInterface2(stage);
             Scene scene = new Scene(view, 1366, 768);
             switchScenes(scene);
         });
 
+        // Create layout with the background and button
+        StackPane understandStack = new StackPane(instructionsButton);
+        understandStack.setAlignment(Pos.BOTTOM_CENTER);
+
         StackPane stack = new StackPane(backgroundView, understandStack);
         return new Scene(stack, 1366, 768);
     }
 
+    // Switch to another scene
     private void switchScenes(Scene scene) {
         stage.setScene(scene);
         stage.centerOnScreen();
     }
 
+    // Display image with overlay and optional delay
     public void displayImage(Scene scene, String imageUrl, int width, int time, boolean flag) {
         Image image = new Image(imageUrl);
         ImageView imageView = new ImageView(image);
@@ -249,10 +276,12 @@ public class UserInterface2 extends StackPane {
         overlayPane.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
         overlayPane.getChildren().add(imageView);
 
+        // If the scene has a root pane, add the overlay pane
         if (scene.getRoot() instanceof Pane) {
             Pane root = (Pane) scene.getRoot();
             root.getChildren().add(overlayPane);
 
+            // Delay before removing the overlay and possibly switching scenes
             PauseTransition delay = new PauseTransition(Duration.seconds(time));
             delay.setOnFinished(event -> {
                 root.getChildren().remove(overlayPane);
