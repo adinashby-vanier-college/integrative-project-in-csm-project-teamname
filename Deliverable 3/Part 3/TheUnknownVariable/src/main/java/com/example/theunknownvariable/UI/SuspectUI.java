@@ -1,5 +1,6 @@
 package com.example.theunknownvariable.UI;
 
+import com.example.theunknownvariable.Controller.HomePageController;
 import com.example.theunknownvariable.Controller.SuspectReader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -117,8 +118,8 @@ public class SuspectUI extends StackPane {
         menuButton.setOnMouseExited(e -> menu.setOpacity(1.0));
 
         menuButton.setOnAction(event -> {
-            HomePage homePage = new HomePage(stage);
-            Scene scene = homePage.displayHomePage();
+            HomePageController homePage = new HomePageController(stage);
+            Scene scene = homePage.getScene();
             switchScenes(scene);
         });
 
