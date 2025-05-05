@@ -10,6 +10,7 @@ public class EnthalpyGraph {
         this.view = view;
     }
 
+
     // Get the current reaction to plot graph
     public void updateReactionNb(int reactionNb) {
         this.reactionNb = reactionNb;
