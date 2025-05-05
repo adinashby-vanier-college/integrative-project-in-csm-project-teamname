@@ -190,8 +190,8 @@ public class LensGameController {
                 getClass().getResource("/Styles/LensGameStyle.css").toExternalForm()
         );
         answerTextField.textProperty().addListener((observable, oldText, newText) -> {
-            if (!newText.matches("-?\\d*\\.?\\d*")) {  // Regex allows only valid doubles
-                answerTextField.setText(oldText);  // Revert to old text if invalid input
+            if (!newText.matches("-?\\d*\\.?\\d*")) {
+                answerTextField.setText(oldText);
             }
         });
         Button addLensButton = new Button("Add Lens");
@@ -399,12 +399,6 @@ public class LensGameController {
         }
         return lensGameInstructionsScene;
     }
-
-
-
-
-
-
 
 
     public void displayImage(Scene scene, String imageUrl,int width,int time,boolean flag) {
