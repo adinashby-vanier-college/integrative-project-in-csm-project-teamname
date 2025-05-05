@@ -5,15 +5,12 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 
-import java.io.File;
-
-public class TestObject {
+public class TestObjectUI {
     private static final double LINE_LENGTH = 1200;
     private static final double LINE_Y = 50;
     private static final double CIRCLE_RADIUS = 10;
@@ -21,8 +18,8 @@ public class TestObject {
     private static final double SLIDER_MAX = 1100;
     private static Circle movingCircle = new Circle(CIRCLE_RADIUS, Color.rgb(214,182,144));
     public static Slider positionSlider = new Slider(SLIDER_MIN, SLIDER_MAX, (LINE_LENGTH / 2)+100);
-//private Rays rays = new Rays();
-    private Rays rays;
+//private RaysUI rays = new RaysUI();
+    private RaysUI rays;
     public Slider getPositionSlider() {
         return positionSlider;
     }
@@ -53,7 +50,7 @@ public class TestObject {
         movingCircle.setCenterX(LINE_LENGTH / 2);
         movingCircle.setCenterY(LINE_Y);
 
-        rays = new Rays(positionSlider.getValue(), (LINE_Y+86));
+        rays = new RaysUI(positionSlider.getValue(), (LINE_Y+86));
 
         positionSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             movingCircle.setTranslateX(newValue.doubleValue() - ((LINE_LENGTH / 2) + 80));

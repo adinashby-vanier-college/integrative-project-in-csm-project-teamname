@@ -14,7 +14,7 @@ module com.example.theunknownvariable {
     exports com.example.theunknownvariable.Model;
 
     opens com.example.theunknownvariable to javafx.fxml;
-    opens com.example.theunknownvariable.UI to javafx.fxml;
     opens com.example.theunknownvariable.Controller to javafx.fxml, org.junit.platform.commons, TheUnknownVariable;
     opens com.example.theunknownvariable.Model to javafx.fxml;
+    opens com.example.theunknownvariable.UI to TheUnknownVariable, javafx.fxml, org.junit.platform.commons;
 }

@@ -1,7 +1,6 @@
 package com.example.theunknownvariable.Controller;
 
 import com.example.theunknownvariable.UI.*;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MainPageController {
@@ -14,7 +13,7 @@ public class MainPageController {
 
     public void handleGame1() {
         if (!GameStateManager.getInstance().isGame1Locked()) {
-            LensGameMain lensGameMain = new LensGameMain(stage);
+            LensGameController lensGameMain = new LensGameController(stage);
             stage.setScene(lensGameMain.getLensGameInstructionsScene());
             stage.centerOnScreen();
         }

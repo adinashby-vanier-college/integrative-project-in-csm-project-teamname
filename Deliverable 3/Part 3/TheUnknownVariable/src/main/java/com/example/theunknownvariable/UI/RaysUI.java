@@ -4,7 +4,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
-public class Rays {
+public class RaysUI {
 
     private static final double SLIDER_MIN = 400;
     private static final double SLIDER_MAX = 1100;
@@ -22,7 +22,7 @@ public class Rays {
     private final Line bottomRay1;
     private final Line bottomRay2;
 
-    public Rays(double objectX, double objectY) {
+    public RaysUI(double objectX, double objectY) {
         this.objectX = objectX;
         this.objectY = objectY;
         this.raysPane = new Pane();

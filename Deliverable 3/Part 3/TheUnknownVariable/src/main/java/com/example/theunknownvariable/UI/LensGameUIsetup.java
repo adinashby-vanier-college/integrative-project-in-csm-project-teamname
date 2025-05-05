@@ -9,7 +9,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -21,7 +20,7 @@ import javafx.stage.Stage;
 /**
  * Controller class for the Lens Game interface and logic
  */
-public class LensGameMainUIsetup {
+public class LensGameUIsetup {
     // Root container for the scene
     static StackPane rootContainer = new StackPane();
     // Scene for the main lens game
@@ -32,7 +31,7 @@ public class LensGameMainUIsetup {
     private static Stage stage;
 
     // Constructor to set the stage
-    public LensGameMainUIsetup(Stage stage) {
+    public LensGameUIsetup(Stage stage) {
         this.stage = stage;
     }
 
@@ -54,7 +53,7 @@ public class LensGameMainUIsetup {
         background.setAlignment(Pos.CENTER);
 
         // Add ruler to the scene
-        RulerMarker ruler = new RulerMarker();
+        RulerMarkerUI ruler = new RulerMarkerUI();
         Canvas canvas = ruler.getRulerCanvas(770.0, 70.0);
         StackPane rulerStackPane = new StackPane(canvas);
         rulerStackPane.setAlignment(Pos.CENTER_RIGHT);
@@ -98,7 +97,7 @@ public class LensGameMainUIsetup {
         hinthomeVbox.setPadding(new Insets(10));
 
         // Add draggable test object (simulates object distance)
-        TestObject testObject = new TestObject();
+        TestObjectUI testObject = new TestObjectUI();
         StackPane testObjectContainer = testObject.getObjectPane();
        // Pane testObjectContainer = testObject.getObjectPane();
 
@@ -122,7 +121,7 @@ public class LensGameMainUIsetup {
         sliderContainer.setPadding(new Insets(0, 20, 20, 20));
 
         // Add marker functionality to show position on ruler
-        RulerMarker marker = new RulerMarker();
+        RulerMarkerUI marker = new RulerMarkerUI();
         marker.MarkerMaker();
         HBox markerHbox = new HBox(marker.getMarkerContainer());
         marker.markerButton.setOnAction(event -> {
@@ -269,13 +268,13 @@ public class LensGameMainUIsetup {
 
     // Getter for the lens game scene (creates it if not yet created)
     public static Scene getLensGameScene() {
-        return lensGameScene != null ? lensGameScene : new LensGameMainUIsetup(stage).buildLensGameScene();
+        return lensGameScene != null ? lensGameScene : new LensGameUIsetup(stage).buildLensGameScene();
     }
 
     // Getter for the instructions scene (creates it if not yet created)
     public static Scene getLensGameInstructionsScene() {
         if (lensGameInstructionsScene == null) {
-            lensGameInstructionsScene = new LensGameMainUIsetup(stage).buildLensGameInstructions();
+            lensGameInstructionsScene = new LensGameUIsetup(stage).buildLensGameInstructions();
         }
         return lensGameInstructionsScene;
     }

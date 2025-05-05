@@ -1,4 +1,4 @@
-package com.example.theunknownvariable.Controller;
+package com.example.theunknownvariable.UI;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,7 +14,7 @@ public class LensUI extends Application {
     public static HBox lensContainer;
     @Override
     public void start(Stage stage) {
-        double radiusX = 100; // Reduced to better match the expected shape
+        double radiusX = 100;
         double radiusY = 200;
         double lensWidth = 70;
 
@@ -32,8 +32,8 @@ public class LensUI extends Application {
 
 // Properly align the arcs inside the lens container
         HBox lensBox = new HBox(leftArc, rightArc);
-        lensBox.setSpacing(-radiusX / 2); // Pull the arcs closer together
-        lensBox.setRotate(0); // Ensure it's correctly oriented
+        lensBox.setSpacing(-radiusX / 2); // arcs closer together
+        lensBox.setRotate(0);
 
         lensContainer = new HBox(lensBox);
         lensContainer.setAlignment(Pos.CENTER);
@@ -55,7 +55,7 @@ public class LensUI extends Application {
 
             // Left arc (left side of the lens)
             Arc leftArc = new Arc(0, 0, radiusX, radiusY, 120, 40); // Start at 120° to curve outward
-            leftArc.setFill(Color.rgb(173, 216, 230, 0.5)); // Light blue, 50% transparent
+            leftArc.setFill(Color.rgb(173, 216, 230, 0.5));
             leftArc.setStroke(Color.TRANSPARENT);
             leftArc.setType(ArcType.OPEN);
 
@@ -67,7 +67,7 @@ public class LensUI extends Application {
 
             // Align arcs properly in HBox
             HBox lensBox = new HBox(leftArc, rightArc);
-            lensBox.setSpacing(-lensWidth - 21); // Adjust so they meet at the center
+            lensBox.setSpacing(-lensWidth - 21); // meet at the center
             lensBox.setRotate(-40.5);
 
             lensContainer = new HBox(lensBox);

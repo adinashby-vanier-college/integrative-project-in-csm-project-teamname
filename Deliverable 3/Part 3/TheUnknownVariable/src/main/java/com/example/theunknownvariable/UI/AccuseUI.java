@@ -160,23 +160,63 @@ public class AccuseUI extends StackPane {
                 "    -fx-border-width: 3px;\n" +
                 "    -fx-border-radius: 5px;\n" +
                 "    -fx-background-radius: 5px;");
-        yesButton.setOnAction(actionEvent -> {
-            Stage verdictstage = new Stage();
-            verdictstage.initModality(Modality.APPLICATION_MODAL);
-            verdictstage.setTitle("verdict");
-            Label verdictLabel = new Label("to be continued...");
-            verdictLabel.setStyle("-fx-font-family: \"Times New Roman\";\n" +
-                    "    -fx-font-size: 20px;\n" +
-                    "    -fx-font-weight: bold;\n" +
-                    "    -fx-text-fill: rgb(22,42,51)");
-            HBox verdictBox = new HBox(verdictLabel);
-            verdictBox.setAlignment(Pos.CENTER);
-            verdictBox.setPadding(new Insets(10));
-            Scene verdictScene = new Scene(verdictBox, 300, 300);
 
-            verdictstage.setScene(verdictScene);
-            verdictstage.showAndWait();
+
+        yesButton.setOnAction(actionEvent -> {
+            popupStage.close();
+
+            Stage verdictStage = new Stage();
+            verdictStage.initModality(Modality.APPLICATION_MODAL);
+            verdictStage.setTitle("Verdict");
+
+            String verdictMessage;
+            boolean playerWon = suspectName.equals("Lea Mio") || suspectName.contains("Lea Mio");
+
+            if (playerWon) {
+                verdictMessage = "You got it! 🎉 Lea Mio was the culprit!";
+            } else {
+                verdictMessage = "Wrong! You let the culprit go...";
+            }
+
+            Label verdictLabel = new Label(verdictMessage);
+            verdictLabel.setWrapText(true);
+            verdictLabel.setStyle("-fx-font-family: \"Times New Roman\";\n" +
+                    "-fx-font-size: 20px;\n" +
+                    "-fx-font-weight: bold;\n" +
+                    "-fx-text-fill: rgb(22,42,51)");
+            verdictLabel.setTextAlignment(TextAlignment.CENTER);
+
+            Button okButton = new Button("OK");
+            okButton.setStyle("-fx-background-color: rgb(178,219,238);\n" +
+                    "-fx-text-fill: rgb(22,42,51);\n" +
+                    "-fx-font-family: \"Times New Roman\";\n" +
+                    "-fx-font-size: 20px;\n" +
+                    "-fx-pref-width: 100px;\n" +
+                    "-fx-pref-height: 50px;\n" +
+                    "-fx-border-color: rgb(22,42,51);\n" +
+                    "-fx-border-width: 3px;\n" +
+                    "-fx-border-radius: 5px;\n" +
+                    "-fx-background-radius: 5px;");
+
+            okButton.setOnAction(e -> {
+                verdictStage.close();
+                if (!playerWon) {
+                    GameOverUI gameOver = new GameOverUI();
+                    Scene gameOverScene = gameOver.displayGameOverScreen(stage);
+                    switchScenes(gameOverScene);
+                }
+                // You can add a win screen here if you'd like.
+            });
+
+            VBox verdictBox = new VBox(20, verdictLabel, okButton);
+            verdictBox.setAlignment(Pos.CENTER);
+            verdictBox.setPadding(new Insets(20));
+            Scene verdictScene = new Scene(verdictBox, 400, 300);
+
+            verdictStage.setScene(verdictScene);
+            verdictStage.showAndWait();
         });
+
 
 
         VBox areyousureVBox = new VBox(30,areyousureLabel,yesButton);

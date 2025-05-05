@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-public class RulerMarker {
+public class RulerMarkerUI {
     private static final double rulerSIZE = 40;
 
     public static void main(String[] args) {
@@ -72,7 +72,7 @@ public class RulerMarker {
         }
     }
     public Canvas getRulerCanvas(Double w,Double h){
-        RulerMarker ruler = new RulerMarker();
+        RulerMarkerUI ruler = new RulerMarkerUI();
         Canvas canvas = new Canvas(w, h);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         ruler.drawRuler(gc, w, h);

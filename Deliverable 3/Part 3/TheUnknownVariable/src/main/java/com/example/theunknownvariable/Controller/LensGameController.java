@@ -20,7 +20,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class LensGameMain{
+public class LensGameController {
     static StackPane rootContainer = new StackPane();
     private static Scene lensGameScene;
     private static Scene lensGameInstructionsScene;
@@ -33,17 +33,9 @@ public class LensGameMain{
     private static int attempts = 0;
     private static Label attemptsLabel = new Label("attempts: 0/3");;
 
-    public LensGameMain(Stage stage){
+    public LensGameController(Stage stage){
         this.stage = stage;
     }
-
-//    public void start(Stage stage) {
-//        lensGameScene = buildLensGameScene();
-//        lensGameInstructionsScene = buildLensGameInstructions();
-//        stage.setScene(lensGameInstructionsScene);
-//        stage.setTitle("LensUI Game");
-//        stage.show();
-//    }
 
 
     public Scene buildLensGameScene() {
@@ -54,7 +46,7 @@ public class LensGameMain{
         background.setAlignment(Pos.CENTER);
 
         //ruler
-        RulerMarker ruler = new RulerMarker();
+        RulerMarkerUI ruler = new RulerMarkerUI();
         Canvas canvas = ruler.getRulerCanvas(770.0, 70.0);
         StackPane rulerStackPane = new StackPane(canvas);
         rulerStackPane.setAlignment(Pos.CENTER_RIGHT);
@@ -99,7 +91,7 @@ public class LensGameMain{
         hinthomeVbox.setPadding(new Insets(10));
 
         //test object
-        TestObject testObject = new TestObject();
+        TestObjectUI testObject = new TestObjectUI();
         //StackPane testObjectContainer = testObject.getObjectPane();
         Pane testObjectContainer = testObject.getObjectPane();
 
@@ -128,7 +120,7 @@ public class LensGameMain{
         sliderContainer.setPadding(new Insets(0,20,20,20));
 
         //marker
-        RulerMarker marker = new RulerMarker();
+        RulerMarkerUI marker = new RulerMarkerUI();
         marker.MarkerMaker();
         HBox markerHbox = new HBox(marker.getMarkerContainer());
 
@@ -399,11 +391,11 @@ public class LensGameMain{
         stage.centerOnScreen();
     }
     public static Scene getLensGameScene() {
-        return lensGameScene != null ? lensGameScene : new LensGameMain(stage).buildLensGameScene();
+        return lensGameScene != null ? lensGameScene : new LensGameController(stage).buildLensGameScene();
     }
     public static Scene getLensGameInstructionsScene() {
         if (lensGameInstructionsScene == null) {
-            lensGameInstructionsScene = new LensGameMain(stage).buildLensGameInstructions();
+            lensGameInstructionsScene = new LensGameController(stage).buildLensGameInstructions();
         }
         return lensGameInstructionsScene;
     }
