@@ -81,5 +81,7 @@ public class GameStateManager {
     }
 
 
-
+    public boolean areAllGamesLocked() {
+        return isGame1Locked() && isGame2Locked() && isGame3Locked() && isGame4Locked();
+    }
 }

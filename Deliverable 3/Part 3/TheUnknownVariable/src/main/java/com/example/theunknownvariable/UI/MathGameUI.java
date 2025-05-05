@@ -1,6 +1,7 @@
 package com.example.theunknownvariable.UI;// GameUI.java
 // GameUI.java
 import com.example.theunknownvariable.Controller.GameStateManager;
+import com.example.theunknownvariable.Controller.HangmathController;
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,7 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 public class MathGameUI {
+
+    private HangmathController controller = new HangmathController();
+
     // Add custom font
     Font cinzelFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Cinzel-Regular.ttf"), 24);
     Font cinzelFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Cinzel-Regular.ttf"), 45);
@@ -32,10 +37,9 @@ public class MathGameUI {
     private List<Text> letterTexts = new ArrayList<>();
     private final String word = "blue"; // the word to guess
 
-    private char letterIndex;
     private Hangman hangman;
     private Pane hangmanPane;
-    private int noOfErrors = 0;
+//    private int noOfErrors = 0;
 
     public static boolean game4access = true;
     public static boolean game4clue = false;
@@ -164,16 +168,19 @@ public class MathGameUI {
 
             // Pass the index (or letter) to the click handler
             int index = i; // must be final or effectively final to use in lambda
+//            clickableArea.setOnMouseClicked(event -> {
+//                openNewWindow();
+//                System.out.println("Clicked on box " + index + " (letter: " + currentLetter + ")");
+//                switch (index) {
+//                    case 0 -> letterIndex = 'b';
+//                    case 1 -> letterIndex = 'l';
+//                    case 2 -> letterIndex = 'u';
+//                    case 3 -> letterIndex = 'e';
+//                    default -> System.out.println("Invalid index");
+//                }
+//            });
             clickableArea.setOnMouseClicked(event -> {
-                openNewWindow();
-                System.out.println("Clicked on box " + index + " (letter: " + currentLetter + ")");
-                switch (index) {
-                    case 0 -> letterIndex = 'b';
-                    case 1 -> letterIndex = 'l';
-                    case 2 -> letterIndex = 'u';
-                    case 3 -> letterIndex = 'e';
-                    default -> System.out.println("Invalid index");
-                }
+                openNewWindow(currentLetter);
             });
 
             box.getChildren().addAll(background, spacer, underline, clickableArea, letter);
@@ -184,15 +191,17 @@ public class MathGameUI {
         return wordBox;
     }
 
-    private void openNewWindow() {
+    private void openNewWindow(char letter) {
         Stage newWindow = new Stage();
         newWindow.setTitle("Question Window");
 
         // Sample matrix (3x3 for example)
-        MathProblem problem = MathProblem.generateMathProblem();
-        double[][] matrix = problem.getMatrix();
-
-        double correctAnswer = problem.calculateDeterminant();
+//        MathProblem problem = MathProblem.generateMathProblem();
+//        double[][] matrix = problem.getMatrix();
+//
+//        double correctAnswer = problem.calculateDeterminant();
+        controller.generateNewProblem();
+        double[][] matrix = controller.getCurrentMatrix();
 
         // Create a VBox layout for the content
         VBox content = new VBox(20);
@@ -234,24 +243,35 @@ public class MathGameUI {
         submitButton.setOnAction(e -> {
             try {
                 double userAnswer = Double.parseDouble(answerField.getText().trim());
-                if (Math.abs(userAnswer - correctAnswer) < 0.0001) {
-                    System.out.println("Correct!");
-                    revealLetters(letterIndex);
+                if (controller.checkAnswer(userAnswer)) {
+                    controller.registerCorrectGuess(letter);
+                    revealLetters(letter);
+                    if (controller.checkGameWon()) {
+                        success();
+                    }
                     newWindow.close();
                 }
                 else if (userAnswer == -100000) {
-                    System.out.println("Correct!");
-                    revealLetters(letterIndex);
+                    controller.registerCorrectGuess(letter);
+                    revealLetters(letter);
+                    if (controller.checkGameWon()) {
+                        success();
+                    }
                     newWindow.close();
                 }
                 else {
-                    System.out.println("Incorrect. Try again.");
-                    noOfErrors++;
+                    controller.registerWrongGuess();
+//                    System.out.println("Incorrect. Try again.");
+//                    noOfErrors++;
                     hangman.addLimb(hangmanPane);
-                    if (noOfErrors >= 6) {
+                    if (controller.isGameOver()) {
                         failure();
                         newWindow.close();
                     }
+//                    if (noOfErrors >= 6) {
+//                        failure();
+//                        newWindow.close();
+//                    }
                     displayImage(scene, "wrongScenario.png",300,2,false);
                 }
             } catch (NumberFormatException ex) {

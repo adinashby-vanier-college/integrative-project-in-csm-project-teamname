@@ -3,6 +3,7 @@ package com.example.theunknownvariable.Controller;
 import com.example.theunknownvariable.Model.Substance;
 import com.example.theunknownvariable.UI.ChemUI;
 import com.example.theunknownvariable.UI.MainPage;
+import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -16,8 +17,8 @@ public class ChemController {
 
     private Button selectedButtonGroup1 = null;
     private Button selectedButtonGroup2 = null;
-    private int rightAnsNb = 0;
-    private int wrongAnsNb = 0;
+    public int rightAnsNb = 0;
+    public int wrongAnsNb = 0;
 
     private final Stage stage;
 
@@ -34,76 +35,103 @@ public class ChemController {
         eventHandling();
     }
 
-    //Handling the events of the game interface's buttons
     public void eventHandling() {
+        // Safely handle Menu button
+        if (view.getMenuButton() != null) {
+            view.getMenuButton().setOnAction(event -> {
+                MainPage mainPage = new MainPage(stage);
+                Scene scene = mainPage.displayMainPage();
+                view.switchScenes(scene);
+            });
+        }
 
-        //Menu button: switch to main page
-        view.getMenuButton().setOnAction(event -> {
-            MainPage mainPage = new MainPage(stage);
-            Scene scene = mainPage.displayMainPage();
-            view.switchScenes(scene);
-        });
+        // Safely handle Hint button
+        if (view.getHintButton() != null) {
+            view.getHintButton().setOnAction(event -> {
+                Stage hintStage = new Stage();
+                Scene scene = view.displayHint();
+                hintStage.setScene(scene);
+                hintStage.centerOnScreen();
+                hintStage.showAndWait();
+            });
+        }
 
-        //Hint button: display hint
-        view.getHintButton().setOnAction(event -> {
-            Stage hintStage = new Stage();
-            Scene scene = view.displayHint();
-            hintStage.setScene(scene);
-            hintStage.centerOnScreen();
-            hintStage.showAndWait();
-        });
+        // Safely handle Group 1 buttons
+        if (view.getSub1Button() != null) {
+            handleButtonClick(view.getSub1Button(), 1, 0, true);
+        }
+        if (view.getSub2Button() != null) {
+            handleButtonClick(view.getSub2Button(), 2, 0, true);
+        }
+        if (view.getSub3Button() != null) {
+            handleButtonClick(view.getSub3Button(), 3, 0, true);
+        }
 
-        //Group 1 buttons for toggling effect
-        handleButtonClick(view.getSub1Button(), 1, 0, true);
-        handleButtonClick(view.getSub2Button(), 2, 0, true);
-        handleButtonClick(view.getSub3Button(), 3, 0, true);
+        // Safely handle Group 2 buttons
+        if (view.getSub4Button() != null) {
+            handleButtonClick(view.getSub4Button(), 0, 1, false);
+        }
+        if (view.getSub5Button() != null) {
+            handleButtonClick(view.getSub5Button(), 0, 2, false);
+        }
+        if (view.getSub6Button() != null) {
+            handleButtonClick(view.getSub6Button(), 0, 3, false);
+        }
 
-        //Group 2 buttons for toggling effect
-        handleButtonClick(view.getSub4Button(), 0, 1, false);
-        handleButtonClick(view.getSub5Button(), 0, 2, false);
-        handleButtonClick(view.getSub6Button(), 0, 3, false);
+        // Safely handle Mix button
+        if (view.getMixButton() != null && reactionController != null && graphController != null) {
+            view.getMixButton().setOnAction(event -> {
+                reactionController.mix();
+                graphController.plotReaction(reactionController.getReactionNb());
+            });
+        }
 
-        //Mix button: calls the method that handles the reaction
-        view.getMixButton().setOnAction(event -> {
-            reactionController.mix();
-            graphController.plotReaction(reactionController.getReactionNb());
-        });
+        // Safely handle Instructions button
+        if (view.getInstructionsButton() != null) {
+            view.getInstructionsButton().setOnAction(event -> {
+                System.out.println("Yess button is clicked and we know that");
+                Scene scene = view.displayGame();
+                view.switchScenes(scene);
+            });
+        }
 
-        //Switch to game 3
-        view.getInstructionsButton().setOnAction(event->{
-            System.out.println("Yess button is clicked and we know that");
-            Scene scene = view.displayGame();
-            view.switchScenes(scene);
-        });
+        // Safely handle Try button
+        if (view.getTryButton() != null && reactionController != null && graphController != null && view != null) {
+            view.getTryButton().setOnAction(event -> {
+                reactionController.mix();
+                graphController.plotReaction(reactionController.getReactionNb());
 
-        //Try button: calls the reaction handler method and submit answer to game system
-        view.getTryButton().setOnAction(event ->{
-            reactionController.mix();
-            graphController.plotReaction(reactionController.getReactionNb());
-            //Check if the reaction is correct
-            if(reactionController.checkUserAnswer()==0){
-                rightAnsNb+=1;
-                view.getRightAnswers().setText(rightAnsNb+"/3");
-                view.displayImage(view.getGameScene(),"rightScenario.png",300,2,false);
-            }
-            //Check if the reaction is incorrect
-            else if(reactionController.checkUserAnswer()==2){
-                view.displayImage(view.getGameScene(), "wrongScenario.png",300,2,false);
-                wrongAnsNb+=1;
-                view.getWrongAnswers().setText(wrongAnsNb+"/3");
-            }
-            //Check if user got all the good answers
-            if (rightAnsNb==3){
-                GameStateManager.getInstance().unlockClue3();
-                GameStateManager.getInstance().lockGame3();
-                view.displayImage(view.getGameScene(),"clueScene.png",800,5,true);
-            }
-            //Check if user used 3 wrong attempts
-            if (wrongAnsNb==3){
-                GameStateManager.getInstance().lockGame3();
-                view.displayImage(view.getGameScene(),"gameOver.png",800,5,true);
-            }
-        });
+                //Check if the reaction is correct
+                if(reactionController.checkUserAnswer() == 0) {
+                    rightAnsNb += 1;
+                    if (view.getRightAnswers() != null) {
+                        view.getRightAnswers().setText(rightAnsNb + "/3");
+                    }
+                    view.displayImage(view.getGameScene(), "rightScenario.png", 300, 2, false);
+                }
+                //Check if the reaction is incorrect
+                else if(reactionController.checkUserAnswer() == 2) {
+                    view.displayImage(view.getGameScene(), "wrongScenario.png", 300, 2, false);
+                    wrongAnsNb += 1;
+                    if (view.getWrongAnswers() != null) {
+                        view.getWrongAnswers().setText(wrongAnsNb + "/3");
+                    }
+                }
+
+                //Check if user got all the good answers
+                if (rightAnsNb == 3 && GameStateManager.getInstance() != null) {
+                    GameStateManager.getInstance().unlockClue3();
+                    GameStateManager.getInstance().lockGame3();
+                    view.displayImage(view.getGameScene(), "clueScene.png", 800, 5, true);
+                }
+
+                //Check if user used 3 wrong attempts
+                if (wrongAnsNb == 3 && GameStateManager.getInstance() != null) {
+                    GameStateManager.getInstance().lockGame3();
+                    view.displayImage(view.getGameScene(), "gameOver.png", 800, 5, true);
+                }
+            });
+        }
     }
     private void handleButtonClick(Button button, int newTube1, int newTube2, boolean isGroup1) {
         button.setOnAction(event -> {
@@ -146,4 +174,19 @@ public class ChemController {
             view.getTube2ImageView().setImage(new Image("tubeFINAL" + (newTube2 +3) + ".png"));
         }
     }
+
+    // In ChemController.java
+    public void handleMixAction() {
+        reactionController.mix();
+        graphController.plotReaction(reactionController.getReactionNb());
+    }
+
+    public void handleSubstanceSelection(int substanceNb, boolean isGroup1) {
+        if (isGroup1) {
+            Substance.getInstance().setSubstanceNb1(substanceNb);
+        } else {
+            Substance.getInstance().setSubstanceNb2(substanceNb);
+        }
+    }
+
 }

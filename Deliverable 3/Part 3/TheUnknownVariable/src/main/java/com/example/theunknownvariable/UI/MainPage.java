@@ -22,12 +22,16 @@ public class MainPage {
     private Button menuButton;
     private Button cluesButton;
 
+    //Controller
+    private MainPageController controller;
+
     //Stage
     private Stage stage;
 
     //Constructor
-    public MainPage(Stage stage){
+    public MainPage(Stage stage) {
         this.stage = stage;
+        this.controller = new MainPageController(stage);
     }
 
     //Scene of the interface
@@ -68,66 +72,13 @@ public class MainPage {
         return new Scene(pane,1366,768);
     }
 
-    //Handles the intercation with interface's components
-    public void eventHandling(){
-        /*
-        For each game, check if it game is unlocked (never completed before) and proceed
-        switch to the game scene
-         */
-        //Switch to game 1
-        g1Button.setOnAction(event->{
-            if(!GameStateManager.getInstance().isGame1Locked()){
-                LensGameMain lensGameMain = new LensGameMain(stage);
-                Scene scene = lensGameMain.getLensGameInstructionsScene();
-                switchScenes(scene);
-            }
-
-        });
-        //Switch to game 2
-        g2Button.setOnAction(event->{
-            if(!GameStateManager.getInstance().isGame2Locked()) {
-                UserInterface2 projectileMotion = new UserInterface2(stage);
-                Scene scene = projectileMotion.displayInstructions();
-                switchScenes(scene);
-            }
-        });
-        //Switch to game 3
-        g3Button.setOnAction(event->{
-            if(!GameStateManager.getInstance().isGame3Locked()) {
-                ChemUI view = new ChemUI(stage);
-                EnthalpyGraph graphController = new EnthalpyGraph(view);
-                ReactionHandler reactionController = new ReactionHandler(view,graphController);
-
-                ChemController controller = new ChemController(view,reactionController,graphController,stage);
-
-                view.initialize();
-
-                Scene scene = view.displayInstructions();
-                switchScenes(scene);
-            }
-        });
-        //Switch to game 4
-        g4Button.setOnAction(event->{
-            if(!GameStateManager.getInstance().isGame4Locked()) {
-                MathGameUI mathGame = new MathGameUI(stage);
-                Scene scene = mathGame.displayMathGame(stage);
-                switchScenes(scene);
-            }
-        });
-
-        //Switch to clue scene
-        cluesButton.setOnAction(event->{
-            Clues cluesScene = new Clues(stage);
-            Scene scene = cluesScene.displayClues();
-            switchScenes(scene);
-        });
-
-        //Switch to home
-        menuButton.setOnAction(event->{
-            HomePage homePage = new HomePage(stage);
-            Scene scene = homePage.displayHomePage();
-            switchScenes(scene);
-        });
+    public void eventHandling() {
+        g1Button.setOnAction(e -> controller.handleGame1());
+        g2Button.setOnAction(e -> controller.handleGame2());
+        g3Button.setOnAction(e -> controller.handleGame3());
+        g4Button.setOnAction(e -> controller.handleGame4());
+        cluesButton.setOnAction(e -> controller.handleClues());
+        menuButton.setOnAction(e -> controller.handleMenu());
     }
 
     //Method that switch scenes
