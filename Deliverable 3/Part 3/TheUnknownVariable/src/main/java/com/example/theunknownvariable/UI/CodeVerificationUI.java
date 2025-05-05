@@ -1,5 +1,6 @@
 package com.example.theunknownvariable.UI;
 
+import javafx.animation.PauseTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -10,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class CodeVerificationUI {
 
@@ -92,4 +94,6 @@ public class CodeVerificationUI {
 
         return new Scene(root);
     }
+
+
 }
