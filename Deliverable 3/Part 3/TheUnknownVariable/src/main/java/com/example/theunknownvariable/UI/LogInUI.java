@@ -105,7 +105,7 @@ public class LogInUI {
         labelContainer.setPrefSize(600, 500);
         labelContainer.setStyle("-fx-background-color: #003049");
 
-        Image image = new Image(String.valueOf(getClass().getResource("/chemFinal.jpg")));
+        Image image = new Image(String.valueOf(getClass().getResource("/loginBG.jpg")));
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(600);
         imageView.setFitHeight(500);
