@@ -2,6 +2,8 @@ package com.example.theunknownvariable.Controller;
 
 import com.example.theunknownvariable.PasswordUtils;
 import com.example.theunknownvariable.UI.LogInUI;
+import com.example.theunknownvariable.UI.MurderMysteryIntro;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -54,6 +56,19 @@ public class LogInController {
             view.loginResultLabel.setText("Login successful!");
             view.loginResultLabel.setStyle("-fx-text-fill: green;");
             // Load your next scene here
+            MurderMysteryIntro intro = new MurderMysteryIntro();
+            Scene introScene = intro.getScene(); // You must implement getScene() in that class!
+
+            Stage stage = (Stage) view.loginResultLabel.getScene().getWindow();
+
+            intro.setOnIntroFinished(() -> {
+                HomePageController homePage = new HomePageController(stage);
+                Scene homeScene = homePage.getScene();
+                stage.setScene(homeScene);
+            });
+
+            stage.setScene(introScene);
+            stage.show();
         } else {
             view.loginResultLabel.setText("Invalid credentials.");
             view.loginResultLabel.setStyle("-fx-text-fill: red;");
@@ -82,6 +97,8 @@ public class LogInController {
             view.signUpResultLabel.setText("Sign-Up successful!");
             view.signUpResultLabel.setStyle("-fx-text-fill: green;");
             // Load your next scene here
+            MurderMysteryIntro intro = new MurderMysteryIntro();
+            Scene introScene = intro.getScene(); // You must implement getScene() in that class!
         }
     }
 

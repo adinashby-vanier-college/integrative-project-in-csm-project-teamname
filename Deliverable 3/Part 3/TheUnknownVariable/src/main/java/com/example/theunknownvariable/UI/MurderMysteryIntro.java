@@ -1,6 +1,5 @@
 package com.example.theunknownvariable.UI;
 
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -8,12 +7,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MurderMysteryIntro extends Application {
+public class MurderMysteryIntro {
+
+    private StackPane root;
+    private Scene scene;
+
+    public Scene getScene() {
+        setupScene();
+        return scene;
+    }
+
 
     private int sceneIndex = 0;
     private VBox dialogueBox;
@@ -22,8 +29,8 @@ public class MurderMysteryIntro extends Application {
     private List<String> dialogueLines = new ArrayList<>();
     private List<String> backgroundImages = new ArrayList<>();
 
-    @Override
-    public void start(Stage primaryStage) {
+
+    private Scene setupScene() {
         dialogueBox = new VBox();
         dialogueBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6); -fx-padding: 20;");
 
@@ -46,10 +53,8 @@ public class MurderMysteryIntro extends Application {
         setupDialogue();
         advanceScene();
 
-        Scene scene = new Scene(root, 800, 600);
-        primaryStage.setTitle("Murder Mystery - Intro");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        this.scene = new Scene(root, 800, 600);
+        return this.scene;
     }
 
     private void setupDialogue() {
@@ -76,15 +81,20 @@ public class MurderMysteryIntro extends Application {
     private void advanceScene() {
         if (sceneIndex < dialogueLines.size()) {
             dialogueLabel.setText(dialogueLines.get(sceneIndex));
-            String path = backgroundImages.get(sceneIndex);
-            Image img = new Image(getClass().getResource(path).toExternalForm());
-            background.setImage(img);
+            background.setImage(new Image(getClass().getResource(backgroundImages.get(sceneIndex)).toExternalForm()));
             sceneIndex++;
+        } else {
+            // Intro is done — go to next scene
+            if (onIntroFinished != null) {
+                onIntroFinished.run();
+            }
         }
     }
 
-
-    public static void main(String[] args) {
-        launch(args);
+    private Runnable onIntroFinished;
+    public void setOnIntroFinished(Runnable action) {
+        this.onIntroFinished = action;
     }
+
+
 }
