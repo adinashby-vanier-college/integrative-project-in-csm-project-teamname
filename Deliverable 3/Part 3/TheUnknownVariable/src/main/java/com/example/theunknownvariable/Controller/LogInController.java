@@ -1,11 +1,10 @@
 package com.example.theunknownvariable.Controller;
 
+import com.example.theunknownvariable.PasswordUtils;
 import com.example.theunknownvariable.UI.LogInUI;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LogInController {
     private final LogInUI view;
@@ -76,19 +75,24 @@ public class LogInController {
             view.signUpResultLabel.setText("Username already exists.");
             view.signUpResultLabel.setStyle("-fx-text-fill: red;");
         } else {
-            saveUser(username, password);
+            // ✅ Hash the password before saving
+            String hashedPassword = PasswordUtils.hashPassword(password);
+            saveUser(username, hashedPassword);
+
             view.signUpResultLabel.setText("Sign-Up successful!");
             view.signUpResultLabel.setStyle("-fx-text-fill: green;");
             // Load your next scene here
         }
     }
 
+    // ✅ Compare the hashed password input with the stored one
     private boolean checkCredentials(String username, String password) {
+        String hashedInput = PasswordUtils.hashPassword(password);
         try (BufferedReader reader = new BufferedReader(new FileReader("users.csv"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 2 && parts[0].equals(username) && parts[1].equals(password)) {
+                if (parts.length == 2 && parts[0].equals(username) && parts[1].equals(hashedInput)) {
                     return true;
                 }
             }
@@ -106,9 +110,9 @@ public class LogInController {
         return false;
     }
 
-    private void saveUser(String username, String password) {
+    private void saveUser(String username, String hashedPassword) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.csv", true))) {
-            writer.write(username + "," + password + "\n");
+            writer.write(username + "," + hashedPassword + "\n");
         } catch (IOException ignored) {}
     }
 
