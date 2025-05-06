@@ -200,12 +200,17 @@ public class AccuseUI extends StackPane {
 
             okButton.setOnAction(e -> {
                 verdictStage.close();
-                if (!playerWon) {
-                    GameOverUI gameOver = new GameOverUI();
-                    Scene gameOverScene = gameOver.displayGameOverScreen(stage);
-                    switchScenes(gameOverScene);
+                if (playerWon) {
+                    LeaArrestScene arrest = new LeaArrestScene();
+
+                    Scene winningScene = arrest.buildArrestScene();
+                    switchScenes(winningScene);
+
+                } else {
+//                    GameOverUI gameOver = new GameOverUI();
+//                    Scene gameOverScene = gameOver.displayGameOverScreen(stage);
+//                    switchScenes(gameOverScene);
                 }
-                // You can add a win screen here if you'd like.
             });
 
             VBox verdictBox = new VBox(20, verdictLabel, okButton);
