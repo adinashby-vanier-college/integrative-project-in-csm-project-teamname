@@ -65,6 +65,7 @@ public class LogInController {
                 HomePageController homePage = new HomePageController(stage);
                 Scene homeScene = homePage.getScene();
                 stage.setScene(homeScene);
+                stage.centerOnScreen();
             });
 
             stage.setScene(introScene);

@@ -82,15 +82,15 @@ public class GameOverScene extends Application {
 
     private void setupDialogue() {
         dialogueLines.add("You made the arrest. But something feels wrong...");
-        backgroundImages.add("/gunshot.png");
+        backgroundImages.add("/detective_pondering.png");
 
 
         dialogueLines.add("Hours later, another body is found.");
-        backgroundImages.add("/gunshot.png");
+        backgroundImages.add("/crime_scene.png");
 
 
         dialogueLines.add("The real killer is still out there.");
-        backgroundImages.add("/gunshot.png");
+        backgroundImages.add("/crime_scene.png");
 
 
         dialogueLines.add("You lost.");
