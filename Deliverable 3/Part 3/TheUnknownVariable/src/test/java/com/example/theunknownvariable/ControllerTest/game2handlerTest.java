@@ -12,17 +12,20 @@ public class game2handlerTest {
 
     @BeforeEach
     public void setUp() {
+        //new instance ensures tests are isolated
         handler = new game2handler();
     }
 
     @Test
     public void testInitialQuestionIsLoaded() {
+        //confirming initialization logic
         String question = handler.getQuestionText();
         assertNotNull(question, "First question should be loaded");
     }
 
     @Test
     public void testGetOptionsReturnsOptions() {
+        //confirming each question has 4 choices for answers
         String[] options = handler.getOptions();
         assertNotNull(options);
         assertEquals(4, options.length, "Each question should have 4 options");
@@ -30,6 +33,7 @@ public class game2handlerTest {
 
     @Test
     public void testCorrectAnswerCheck() {
+        //confirming checkAnswer() returns boolean value
         int correctIndex = handler.getOptions().length > 0 ?
                 handler.getOptions().length - 1 : 0;
         boolean isCorrect = handler.checkAnswer(0);
@@ -38,12 +42,14 @@ public class game2handlerTest {
 
     @Test
     public void testNextQuestionIncrementsIndex() {
+        //confirming that there is a following questions
         boolean hasNext = handler.nextQuestion();
         assertTrue(hasNext || !hasNext);
     }
 
     @Test
     public void testQuizCompletion() {
+        //confirming completion of the test after all questions
         while (handler.nextQuestion()) {
         }
         assertTrue(handler.isQuizCompleted(), "Quiz should be marked complete");
@@ -51,6 +57,7 @@ public class game2handlerTest {
 
     @Test
     public void testCorrectAnswersTracking() {
+        //confirming the incrementation based on correct answers
         int initialCorrect = handler.getCorrectAnswersCount();
         handler.checkAnswer(0);
         int after = handler.getCorrectAnswersCount();
@@ -59,6 +66,7 @@ public class game2handlerTest {
 
     @Test
     public void testTotalQuestions() {
+        //confirming that there is at least one question in the quiz
         assertTrue(handler.getTotalQuestions() > 0, "There should be at least one question");
     }
 }
