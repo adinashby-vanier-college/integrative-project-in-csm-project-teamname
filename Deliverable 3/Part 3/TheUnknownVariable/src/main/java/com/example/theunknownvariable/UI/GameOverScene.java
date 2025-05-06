@@ -22,6 +22,34 @@ public class GameOverScene extends Application {
     private List<String> dialogueLines = new ArrayList<>();
     private List<String> backgroundImages = new ArrayList<>();
 
+    public Scene buildGameOverScene(){
+
+        dialogueBox = new VBox();
+        dialogueBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6); -fx-padding: 20;");
+
+        dialogueLabel = new Label();
+        dialogueLabel.setWrapText(true);
+        dialogueLabel.setFont(Font.font("Verdana", 20));
+        dialogueLabel.setStyle("-fx-text-fill: white;");
+        dialogueBox.getChildren().add(dialogueLabel);
+
+        background = new ImageView();
+        background.setFitWidth(800);
+        background.setFitHeight(600);
+        background.setPreserveRatio(false);
+
+        StackPane root = new StackPane();
+        root.getChildren().addAll(background, dialogueBox);
+
+        root.setOnMouseClicked(e -> advanceScene());
+
+        setupDialogue();
+        advanceScene();
+
+        return new Scene(root, 800, 600);
+
+    }
+
     @Override
     public void start(Stage primaryStage) {
         dialogueBox = new VBox();

@@ -172,13 +172,14 @@ public class AccuseUI extends StackPane {
             String verdictMessage;
             boolean playerWon = suspectName.equals("Lea Mio") || suspectName.contains("Lea Mio");
 
-            if (playerWon) {
-                verdictMessage = "You got it! 🎉 Lea Mio was the culprit!";
-            } else {
-                verdictMessage = "Wrong! You let the culprit go...";
-            }
+//            if (playerWon) {
+//                verdictMessage = "You got it! 🎉 Lea Mio was the culprit!";
+//            } else {
+//                verdictMessage = "Wrong! You let the culprit go...";
+//            }
 
-            Label verdictLabel = new Label(verdictMessage);
+//            Label verdictLabel = new Label(verdictMessage);
+            Label verdictLabel = new Label("You can't go back once you click OK...");
             verdictLabel.setWrapText(true);
             verdictLabel.setStyle("-fx-font-family: \"Times New Roman\";\n" +
                     "-fx-font-size: 20px;\n" +
@@ -200,12 +201,19 @@ public class AccuseUI extends StackPane {
 
             okButton.setOnAction(e -> {
                 verdictStage.close();
-                if (!playerWon) {
-                    GameOverUI gameOver = new GameOverUI();
-                    Scene gameOverScene = gameOver.displayGameOverScreen(stage);
-                    switchScenes(gameOverScene);
+                if (playerWon) {
+                    LeaArrestScene arrest = new LeaArrestScene();
+                    Scene winningScene = arrest.buildArrestScene();
+                    switchScenes(winningScene);
+
+                } else {
+//                    GameOverUI gameOver = new GameOverUI();
+//                    Scene gameOverScene = gameOver.displayGameOverScreen(stage);
+//                    switchScenes(gameOverScene);
+                    GameOverScene gameOver = new GameOverScene();
+                    Scene losingScene = gameOver.buildGameOverScene();
+                    switchScenes(losingScene);
                 }
-                // You can add a win screen here if you'd like.
             });
 
             VBox verdictBox = new VBox(20, verdictLabel, okButton);
