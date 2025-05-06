@@ -1,0 +1,96 @@
+.slider .thumb {
+    -fx-background-image: url("/Assets/slider_thumb.png");
+    -fx-background-size: 30px 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-pref-width: 30px;
+    -fx-pref-height: 30px;
+    -fx-padding: 10px;
+}
+.slider:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.button{
+-fx-background-color: rgb(214,182,144);
+    -fx-text-fill: #6B3F26;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 20px;
+    -fx-pref-width: 230px;
+    -fx-pref-height: 50px;
+    -fx-border-color: #6B3F26;
+    -fx-border-width: 3px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.button:hover {
+    -fx-background-color: rgb(234,202,164);
+    -fx-font-size: 21px;
+}
+.label {
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 37px;
+    -fx-font-weight: bold;
+    -fx-text-fill: rgb(241, 226, 221);
+}
+.label.instructions {
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 20px;
+    -fx-line-spacing: 10px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-effect: dropshadow( gaussian , rgb(107, 63, 38) , 2 , 1 , 0 , 0);
+    -fx-text-alignment: center;
+    -fx-text-fill: rgb(241, 226, 221);
+}
+
+.text-field {
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6B3F26;
+
+    -fx-pref-width: 170px;
+    -fx-pref-height: 50px;
+    -fx-border-color: #6B3F26;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-focus-color: #B22222; /* Red color for focus highlight */
+    -fx-faint-focus-color: #B22222; /* Red faint focus color */
+}
+
+.text-area {
+    -fx-pref-width: 1000px;
+    -fx-pref-height: 500px;
+    -fx-border-color: #6B3F26;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+
+
+    -fx-background-color: transparent;
+
+
+    -fx-control-inner-background: transparent;
+    -fx-background-insets: 0;
+    -fx-background: none;
+
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 25px;
+    -fx-text-fill: rgb(241, 226, 221);
+    -fx-wrap-text: true;
+    -fx-vbar-policy: always;
+    -fx-hbar-policy: never;
+}.text-area .content {
+     -fx-background-color: transparent;
+ }.text-area .scroll-pane {
+      -fx-background-color: transparent;
+      -fx-border-color: transparent;
+  }
+
+.text-area .viewport {
+    -fx-background-color: transparent;
+}
