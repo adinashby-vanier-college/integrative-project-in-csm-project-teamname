@@ -113,6 +113,9 @@ public class LeaArrestScene extends Application {
         dialogueLines.add("*Justice compiled successfully.*");
         backgroundImages.add("/gunshot.png");
 
+        dialogueLines.add("");
+        backgroundImages.add("/goodjob.png");
+
     }
 
     private void advanceScene() {
