@@ -1,4 +1,4 @@
-package com.example.theunknownvariable.Controller;
+package com.example.theunknownvariable;
 
 import com.example.theunknownvariable.UI.AccuseUI;
 import com.example.theunknownvariable.UI.HomePage;
@@ -6,7 +6,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class mariasTester extends Application {
+public class accuseTester extends Application {
     //    @Override
 //    public void start(Stage stage) throws Exception {
 //        LensGameController lensGameMain = new LensGameController(stage);
