@@ -41,8 +41,8 @@ public class MurderMysteryIntro {
         dialogueBox.getChildren().add(dialogueLabel);
 
         background = new ImageView();
-        background.setFitWidth(800);
-        background.setFitHeight(600);
+        background.setFitWidth(1366);
+        background.setFitHeight(768);
         background.setPreserveRatio(false);
 
         StackPane root = new StackPane();
@@ -53,7 +53,7 @@ public class MurderMysteryIntro {
         setupDialogue();
         advanceScene();
 
-        this.scene = new Scene(root, 800, 600);
+        this.scene = new Scene(root, 1366, 768);
         return this.scene;
     }
 
