@@ -81,11 +81,20 @@ public class MurderMysteryIntro {
     private void advanceScene() {
         if (sceneIndex < dialogueLines.size()) {
             dialogueLabel.setText(dialogueLines.get(sceneIndex));
-            String path = backgroundImages.get(sceneIndex);
-            Image img = new Image(getClass().getResource(path).toExternalForm());
-            background.setImage(img);
+            background.setImage(new Image(getClass().getResource(backgroundImages.get(sceneIndex)).toExternalForm()));
             sceneIndex++;
+        } else {
+            // Intro is done — go to next scene
+            if (onIntroFinished != null) {
+                onIntroFinished.run();
+            }
         }
     }
+
+    private Runnable onIntroFinished;
+    public void setOnIntroFinished(Runnable action) {
+        this.onIntroFinished = action;
+    }
+
 
 }

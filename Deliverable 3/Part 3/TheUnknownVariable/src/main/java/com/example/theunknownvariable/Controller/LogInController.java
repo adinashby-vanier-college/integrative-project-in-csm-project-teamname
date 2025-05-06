@@ -60,6 +60,13 @@ public class LogInController {
             Scene introScene = intro.getScene(); // You must implement getScene() in that class!
 
             Stage stage = (Stage) view.loginResultLabel.getScene().getWindow();
+
+            intro.setOnIntroFinished(() -> {
+                HomePageController homePage = new HomePageController(stage);
+                Scene homeScene = homePage.getScene();
+                stage.setScene(homeScene);
+            });
+
             stage.setScene(introScene);
             stage.show();
         } else {
