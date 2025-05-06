@@ -39,7 +39,7 @@ public class SuspectReader {
                     String occupation = details[3].trim();
                     String eyes = details[4].trim();
 
-                    String suspectInfo = "name: " + name + "\n" +
+                    String suspectInfo = "Name: " + name + "\n" +
                             "Height: " + height + "\n" +
                             "Glasses: " + glasses + "\n" +
                             "Occupation: " + occupation + "\n" +
