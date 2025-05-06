@@ -1,7 +1,9 @@
 package com.example.theunknownvariable;
 
 import com.example.theunknownvariable.Controller.HomePageController;
+import com.example.theunknownvariable.Controller.LogInController;
 import com.example.theunknownvariable.UI.HomePage;
+import com.example.theunknownvariable.UI.LogInUI;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -21,10 +23,12 @@ public class Main extends Application {
 
         playBackgroundMusic();
         //Display the first scene of the game: The home page
+        LogInController controller = new LogInController(stage);
+        Scene loginScene = controller.getView().createScene(controller);
         HomePageController homePage = new HomePageController(stage);
         Scene scene = homePage.getScene();
         stage.setTitle("The Unknown Variable");
-        stage.setScene(scene);
+        stage.setScene(loginScene);
         stage.show();
     }
 
