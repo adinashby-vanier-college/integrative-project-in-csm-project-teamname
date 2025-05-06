@@ -37,54 +37,59 @@ public class AccuseUI extends StackPane {
         StackPane root = new StackPane();
         root.setPrefSize(1366, 768);
 
-        Image backgroundImage = new Image("/suspectBackground.jpg");
+        Image backgroundImage = new Image("/accuseBG.jpg");
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(1390);
         backgroundView.setFitHeight(790);
         backgroundView.setPreserveRatio(true);
 
         GridPane suspectGrid = new GridPane();
-        suspectGrid.setHgap(80);
-        suspectGrid.setVgap(60);
+        suspectGrid.setHgap(50);
+        suspectGrid.setVgap(30);
         suspectGrid.setAlignment(Pos.CENTER);
 
         for (int i = 0; i < NUM_SUSPECTS; i++) {
             Image suspectImage = new Image(getClass().getResource(SUSPECT_IMAGES[i]).toExternalForm());
             ImageView suspectImageView = new ImageView(suspectImage);
-            suspectImageView.setFitWidth(200);
-            suspectImageView.setFitHeight(200);
+            suspectImageView.setFitWidth(175);
+            suspectImageView.setFitHeight(175);
             suspectImageView.setPreserveRatio(true);
 
             Label suspectNameLabel = new Label(SUSPECT_NAMES[i]);
-            suspectNameLabel.setPrefWidth(200);
+            suspectNameLabel.setPrefWidth(175);
+            suspectNameLabel.setPrefHeight(20);
             suspectNameLabel.setAlignment(Pos.CENTER);
             suspectNameLabel.setStyle(
                     "-fx-font-size: 16px;" +
                             "-fx-font-weight: bold;" +
-                            "-fx-text-fill: #2d2b2a;" +
+//                            "-fx-text-fill: #2d2b2a;" +
+                            "-fx-text-fill: #2f0d0d;" +
                             "-fx-background-color: #cfc6bc;" +
                             "-fx-padding: 8px;" +
                             "-fx-background-radius: 6px;"
             );
 
-            VBox suspectCard = new VBox(12);
+            VBox suspectCard = new VBox(11);
             suspectCard.setAlignment(Pos.CENTER);
-            suspectCard.setPadding(new Insets(12));
-            suspectCard.setPrefSize(220, 300);
+            suspectCard.setPadding(new Insets(8));
+            suspectCard.setPrefSize(200, 280);
             suspectCard.setStyle(
-                    "-fx-background-color: #2d2b2a;" +
+//                    "-fx-background-color: #2d2b2a;" +
+                    "-fx-background-color: #250202;" +
                             "-fx-background-radius: 15px;" +
                             "-fx-effect: dropshadow(gaussian, rgba(86,82,78,0.5), 10, 0, 0, 6);"
             );
             suspectCard.getChildren().addAll(suspectImageView, suspectNameLabel);
 
             suspectCard.setOnMouseEntered(e -> suspectCard.setStyle(
-                    "-fx-background-color: #56524e;" +
+//                    "-fx-background-color: #56524e;" +
+                    "-fx-background-color: #4b0707;" +
                             "-fx-background-radius: 15px;" +
                             "-fx-effect: dropshadow(gaussian, rgba(86,82,78,0.7), 12, 0, 0, 6);"
             ));
             suspectCard.setOnMouseExited(e -> suspectCard.setStyle(
-                    "-fx-background-color: #2d2b2a;" +
+//                    "-fx-background-color: #2d2b2a;" +
+                    "-fx-background-color: #250202;" +
                             "-fx-background-radius: 15px;" +
                             "-fx-effect: dropshadow(gaussian, rgba(86,82,78,0.5), 10, 0, 0, 6);"
             ));
@@ -98,13 +103,13 @@ public class AccuseUI extends StackPane {
         }
         Label accuseLabel = new Label("Who is the culprit?");
         accuseLabel.setStyle("-fx-font-family: \"Times New Roman\";\n" +
-                "    -fx-font-size: 37px;\n" +
+                "    -fx-font-size: 45px;\n" +
                 "    -fx-font-weight: bold;\n" +
-                "    -fx-text-fill: rgb(22,42,51);");
+                "    -fx-text-fill: rgb(37,2,2);");
         menuButton = getMenuButton();
         StackPane.setAlignment(menuButton, Pos.BOTTOM_RIGHT);
-        StackPane.setAlignment(accuseLabel, Pos.TOP_CENTER); StackPane.setMargin(accuseLabel, new Insets(13,0,0,20));
-        StackPane.setMargin(menuButton, new Insets(0, 20, 20, 0));
+        StackPane.setAlignment(accuseLabel, Pos.TOP_CENTER); StackPane.setMargin(accuseLabel, new Insets(23,0,0,20));
+        StackPane.setMargin(menuButton, new Insets(0, 10, 10, 0));
 
         root.getChildren().addAll(backgroundView, suspectGrid, menuButton, accuseLabel);
         getChildren().add(root);
@@ -144,19 +149,20 @@ public class AccuseUI extends StackPane {
 
         Label areyousureLabel = new Label("Are you sure...?");
         areyousureLabel.setStyle("-fx-font-family: \"Times New Roman\";\n" +
-                "    -fx-font-size: 23px;\n" +
+                "    -fx-font-size: 33px;\n" +
                 "    -fx-font-weight: bold;\n" +
-                "    -fx-text-fill: rgb(22,42,51)");
+                "    -fx-text-fill: rgb(19,1,1);");
+
         areyousureLabel.setTextAlignment(TextAlignment.CENTER);
 
         Button yesButton = new Button("Yes!");
-        yesButton.setStyle("-fx-background-color: rgb(178,219,238);\n" +
-                "    -fx-text-fill: rgb(22,42,51);\n" +
+        yesButton.setStyle("-fx-background-color: rgb(238,178,178);\n" +
+                "    -fx-text-fill: rgb(51,22,22);\n" +
                 "    -fx-font-family: \"Times New Roman\";\n" +
                 "    -fx-font-size: 20px;\n" +
                 "    -fx-pref-width: 100px;\n" +
                 "    -fx-pref-height: 50px;\n" +
-                "    -fx-border-color: rgb(22,42,51);\n" +
+                "    -fx-border-color: rgb(51,22,22);\n" +
                 "    -fx-border-width: 3px;\n" +
                 "    -fx-border-radius: 5px;\n" +
                 "    -fx-background-radius: 5px;");
@@ -164,6 +170,14 @@ public class AccuseUI extends StackPane {
 
         yesButton.setOnAction(actionEvent -> {
             popupStage.close();
+
+            Image okIMG = new Image("/okBG.jpg");
+            ImageView okIV = new ImageView(okIMG);
+            okIV.setFitWidth(740);
+            okIV.setFitHeight(494);
+            okIV.setPreserveRatio(true);
+            HBox bg = new HBox(okIV);
+            bg.setAlignment(Pos.CENTER);
 
             Stage verdictStage = new Stage();
             verdictStage.initModality(Modality.APPLICATION_MODAL);
@@ -179,22 +193,22 @@ public class AccuseUI extends StackPane {
 //            }
 
 //            Label verdictLabel = new Label(verdictMessage);
-            Label verdictLabel = new Label("You can't go back once you click OK...");
+            Label verdictLabel = new Label("You can't go back\nonce you click OK...");
             verdictLabel.setWrapText(true);
             verdictLabel.setStyle("-fx-font-family: \"Times New Roman\";\n" +
-                    "-fx-font-size: 20px;\n" +
+                    "-fx-font-size: 27px;\n" +
                     "-fx-font-weight: bold;\n" +
-                    "-fx-text-fill: rgb(22,42,51)");
+                    "-fx-text-fill: rgb(19,1,1)");
             verdictLabel.setTextAlignment(TextAlignment.CENTER);
 
             Button okButton = new Button("OK");
-            okButton.setStyle("-fx-background-color: rgb(178,219,238);\n" +
-                    "-fx-text-fill: rgb(22,42,51);\n" +
+            okButton.setStyle("-fx-background-color: rgb(238,178,178);\n" +
+                    "-fx-text-fill: rgb(51,22,22);\n" +
                     "-fx-font-family: \"Times New Roman\";\n" +
                     "-fx-font-size: 20px;\n" +
                     "-fx-pref-width: 100px;\n" +
                     "-fx-pref-height: 50px;\n" +
-                    "-fx-border-color: rgb(22,42,51);\n" +
+                    "-fx-border-color: rgb(51,22,22);\n" +
                     "-fx-border-width: 3px;\n" +
                     "-fx-border-radius: 5px;\n" +
                     "-fx-background-radius: 5px;");
@@ -219,7 +233,9 @@ public class AccuseUI extends StackPane {
             VBox verdictBox = new VBox(20, verdictLabel, okButton);
             verdictBox.setAlignment(Pos.CENTER);
             verdictBox.setPadding(new Insets(20));
-            Scene verdictScene = new Scene(verdictBox, 400, 300);
+            StackPane verdictStack = new StackPane(bg,verdictBox);
+            verdictStack.setAlignment(Pos.CENTER);
+            Scene verdictScene = new Scene(verdictStack, 400, 300);
 
             verdictStage.setScene(verdictScene);
             verdictStage.showAndWait();
@@ -227,15 +243,15 @@ public class AccuseUI extends StackPane {
 
 
 
-        VBox areyousureVBox = new VBox(30,areyousureLabel,yesButton);
+        VBox areyousureVBox = new VBox(40,areyousureLabel,yesButton);
         areyousureVBox.setAlignment(Pos.CENTER);
         areyousureVBox.setPadding(new Insets(20));
 
 
-        Image backgroundImage = new Image("/suspect2Background.png");
+        Image backgroundImage = new Image("/sureBG.jpg");
         ImageView backgroundImageView = new ImageView(backgroundImage);
-        backgroundImageView.setFitWidth(400);
-        backgroundImageView.setFitHeight(400);
+        backgroundImageView.setFitWidth(1280/2);
+        backgroundImageView.setFitHeight(854/2);
         backgroundImageView.setPreserveRatio(true);
         HBox background = new HBox(backgroundImageView);
         background.setAlignment(Pos.CENTER);
