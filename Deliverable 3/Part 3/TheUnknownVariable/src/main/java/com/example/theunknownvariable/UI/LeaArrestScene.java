@@ -81,33 +81,33 @@ public class LeaArrestScene extends Application {
 
     private void setupDialogue() {
         dialogueLines.add("Lea Mio stares at you, wrists cuffed, yet eyes burning with something... unrepentant.");
-        backgroundImages.add("/gunshot.png");
+        backgroundImages.add("/interrogation.png");
 
         dialogueLines.add("\"He thought he could erase me. Rewrite my code. Replace me like a bad plugin.\"");
-        backgroundImages.add("/gunshot.png");
+        backgroundImages.add("/interrogation.png");
 
         dialogueLines.add("\"Adin made a new Omnivox. A safer one. But mine... mine was the original. My legacy.\"");
-        backgroundImages.add("/gunshot.png");
+        backgroundImages.add("/interrogation.png");
 
 
         dialogueLines.add("You narrow your eyes. \"You killed him. For improving your software?\"");
-        backgroundImages.add("/gunshot.png");
+        backgroundImages.add("/interrogation.png");
 
 
         dialogueLines.add("She smiles bitterly. \"No. I killed him because he stole the spotlight. My platform was dying.\"");
-        backgroundImages.add("/gunshot.png");
+        backgroundImages.add("/interrogation.png");
 
 
         dialogueLines.add("\"He wasn’t fixing Omnivox. He was burying it. Burying me.\"");
-        backgroundImages.add("/gunshot.png");
+        backgroundImages.add("/interrogation.png");
 
 
         dialogueLines.add("\"I was the future once,\" she whispers. \"Now I'm just deprecated.\"");
-        backgroundImages.add("/gunshot.png");
+        backgroundImages.add("/interrogation.png");
 
 
         dialogueLines.add("You stand, pushing your chair back. \"Case closed.\"");
-        backgroundImages.add("/gunshot.png");
+        backgroundImages.add("/interrogation.png");
 
 
         dialogueLines.add("*Justice compiled successfully.*");

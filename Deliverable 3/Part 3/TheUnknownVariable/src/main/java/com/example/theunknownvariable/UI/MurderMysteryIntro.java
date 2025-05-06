@@ -64,7 +64,7 @@ public class MurderMysteryIntro {
         dialogueLines.add("\"Home, sweet—\"");
         backgroundImages.add("/door_open.png");
 
-        dialogueLines.add("*Gunshot echoes. Adin collapses.*");
+        dialogueLines.add("*Gunshot echoes. Adin Ashby collapses.*");
         backgroundImages.add("/gunshot.png");
 
         dialogueLines.add("The body was discovered the next morning. No witnesses. No clear motive. " +
