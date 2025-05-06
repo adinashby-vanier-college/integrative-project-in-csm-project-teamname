@@ -7,9 +7,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +24,7 @@ public class GameOverScene extends Application {
     private ImageView background;
     private List<String> dialogueLines = new ArrayList<>();
     private List<String> backgroundImages = new ArrayList<>();
+    private MediaPlayer mediaPlayer;
 
     public Scene buildGameOverScene(){
 
@@ -94,7 +98,7 @@ public class GameOverScene extends Application {
 
 
         dialogueLines.add("You lost.");
-        backgroundImages.add("/gunshot.png");
+        backgroundImages.add("/gameoverImage.jpg");
 
     }
 
@@ -105,6 +109,24 @@ public class GameOverScene extends Application {
             Image img = new Image(getClass().getResource(path).toExternalForm());
             background.setImage(img);
             sceneIndex++;
+        }
+        if (sceneIndex==dialogueLines.size()-1)playBackgroundMusic();
+
+    }
+
+    private void playBackgroundMusic() {
+        try {
+            URL resource = getClass().getResource("/fail.mp3");
+            if (resource == null) {
+                throw new IllegalArgumentException("Audio file not found!");
+            }
+
+            Media media = new Media(resource.toString());
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setVolume(0.7); // Set desired volume
+            mediaPlayer.play();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

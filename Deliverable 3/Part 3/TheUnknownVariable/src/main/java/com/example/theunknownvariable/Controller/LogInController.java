@@ -58,8 +58,8 @@ public class LogInController {
             // Load your next scene here
             MurderMysteryIntro intro = new MurderMysteryIntro();
             Scene introScene = intro.getScene(); // You must implement getScene() in that class!
-
             Stage stage = (Stage) view.loginResultLabel.getScene().getWindow();
+            stage.centerOnScreen();
 
             intro.setOnIntroFinished(() -> {
                 HomePageController homePage = new HomePageController(stage);
@@ -69,6 +69,7 @@ public class LogInController {
             });
 
             stage.setScene(introScene);
+            stage.centerOnScreen();
             stage.show();
         } else {
             view.loginResultLabel.setText("Invalid credentials.");
